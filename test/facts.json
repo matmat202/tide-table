@@ -320,5 +320,3617 @@
    "probe": "2026-03-01 09:30",
    "regime": "no harmonic hourly"
   }
+ ],
+ "sun": [
+  {
+   "date": "2026-01-01",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-01-01 07:25",
+   "set": "2026-01-01 17:01",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-03-08 07:31",
+   "set": "2026-03-08 19:10",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-03-20 07:13",
+   "set": "2026-03-20 19:21",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-06-21 05:48",
+   "set": "2026-06-21 20:35",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-09-23 06:58",
+   "set": "2026-09-23 19:04",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-10-27 07:30",
+   "set": "2026-10-27 18:16",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-11-01 06:35",
+   "set": "2026-11-01 17:10",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-12-21 07:21",
+   "set": "2026-12-21 16:54",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2024-02-29 06:41",
+   "set": "2024-02-29 18:03",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-01-20 07:21",
+   "set": "2026-01-20 17:20",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-02-10 07:04",
+   "set": "2026-02-10 17:43",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-04-15 06:34",
+   "set": "2026-04-15 19:45",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-05-10 06:04",
+   "set": "2026-05-10 20:08",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-07-25 06:07",
+   "set": "2026-07-25 20:24",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-08-02 06:14",
+   "set": "2026-08-02 20:17",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-09-05 06:43",
+   "set": "2026-09-05 19:32",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 37.8063,
+   "lng": -122.4659,
+   "place": "San Francisco",
+   "polar": null,
+   "rise": "2026-11-18 06:53",
+   "set": "2026-11-18 16:56",
+   "tz": "America/Los_Angeles"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-01-01 07:09",
+   "set": "2026-01-01 18:01",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-03-08 06:45",
+   "set": "2026-03-08 18:38",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-03-20 06:35",
+   "set": "2026-03-20 18:42",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-06-21 05:50",
+   "set": "2026-06-21 19:16",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-09-23 06:20",
+   "set": "2026-09-23 18:26",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-10-27 06:32",
+   "set": "2026-10-27 17:58",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-11-01 06:34",
+   "set": "2026-11-01 17:55",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-12-21 07:04",
+   "set": "2026-12-21 17:54",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2024-02-29 06:52",
+   "set": "2024-02-29 18:35",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-01-20 07:11",
+   "set": "2026-01-20 18:14",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-02-10 07:04",
+   "set": "2026-02-10 18:27",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-04-15 06:12",
+   "set": "2026-04-15 18:50",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-05-10 05:55",
+   "set": "2026-05-10 19:00",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-07-25 06:02",
+   "set": "2026-07-25 19:13",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-08-02 06:05",
+   "set": "2026-08-02 19:09",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-09-05 06:16",
+   "set": "2026-09-05 18:43",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 21.3067,
+   "lng": -157.867,
+   "place": "Honolulu",
+   "polar": null,
+   "rise": "2026-11-18 06:44",
+   "set": "2026-11-18 17:48",
+   "tz": "Pacific/Honolulu"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-01-01 07:20",
+   "set": "2026-01-01 16:39",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-03-08 07:18",
+   "set": "2026-03-08 18:55",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-03-20 06:59",
+   "set": "2026-03-20 19:08",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-06-21 05:25",
+   "set": "2026-06-21 20:30",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-09-23 06:44",
+   "set": "2026-09-23 18:51",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-10-27 07:20",
+   "set": "2026-10-27 17:58",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-11-01 06:26",
+   "set": "2026-11-01 16:52",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-12-21 07:16",
+   "set": "2026-12-21 16:31",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2024-02-29 06:30",
+   "set": "2024-02-29 17:46",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-01-20 07:15",
+   "set": "2026-01-20 16:59",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-02-10 06:56",
+   "set": "2026-02-10 17:24",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-04-15 06:17",
+   "set": "2026-04-15 19:35",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-05-10 05:44",
+   "set": "2026-05-10 20:01",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-07-25 05:46",
+   "set": "2026-07-25 20:18",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-08-02 05:53",
+   "set": "2026-08-02 20:10",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-09-05 06:27",
+   "set": "2026-09-05 19:21",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 40.7,
+   "lng": -74.01,
+   "place": "New York",
+   "polar": null,
+   "rise": "2026-11-18 06:46",
+   "set": "2026-11-18 16:35",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-01-01 10:13",
+   "set": "2026-01-01 15:53",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-03-08 08:37",
+   "set": "2026-03-08 19:44",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-03-20 07:59",
+   "set": "2026-03-20 20:15",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-06-21 04:20",
+   "set": "2026-06-21 23:42",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-09-23 07:46",
+   "set": "2026-09-23 19:55",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-10-27 09:14",
+   "set": "2026-10-27 18:11",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-11-01 08:28",
+   "set": "2026-11-01 16:57",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-12-21 10:14",
+   "set": "2026-12-21 15:41",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2024-02-29 08:00",
+   "set": "2024-02-29 18:24",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-01-20 09:46",
+   "set": "2026-01-20 16:35",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-02-10 08:55",
+   "set": "2026-02-10 17:33",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-04-15 06:37",
+   "set": "2026-04-15 21:22",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-05-10 05:24",
+   "set": "2026-05-10 22:29",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-07-25 05:15",
+   "set": "2026-07-25 22:55",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-08-02 05:35",
+   "set": "2026-08-02 22:34",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-09-05 07:02",
+   "set": "2026-09-05 20:52",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 61.2181,
+   "lng": -149.9003,
+   "place": "Anchorage",
+   "polar": null,
+   "rise": "2026-11-18 09:14",
+   "set": "2026-11-18 16:14",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-03-08 09:23",
+   "set": "2026-03-08 19:54",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-03-20 08:23",
+   "set": "2026-03-20 20:47",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-09-23 08:12",
+   "set": "2026-09-23 20:24",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-10-27 10:48",
+   "set": "2026-10-27 17:32",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-11-01 10:15",
+   "set": "2026-11-01 16:03",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2024-02-29 09:00",
+   "set": "2024-02-29 18:20",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-02-10 10:38",
+   "set": "2026-02-10 16:45",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-04-15 06:10",
+   "set": "2026-04-15 22:47",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-05-10 02:57",
+   "set": "2026-05-11 02:23",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-08-02 03:07",
+   "set": "2026-08-03 01:42",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-09-05 06:54",
+   "set": "2026-09-05 21:54",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 71.29,
+   "lng": -156.79,
+   "place": "Utqiagvik",
+   "polar": null,
+   "rise": "2026-11-18 12:41",
+   "set": "2026-11-18 13:42",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-01-01 05:57",
+   "set": "2026-01-01 18:55",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-03-08 06:25",
+   "set": "2026-03-08 18:41",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-03-20 06:26",
+   "set": "2026-03-20 18:33",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-06-21 06:46",
+   "set": "2026-06-21 18:03",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-09-23 06:11",
+   "set": "2026-09-23 18:18",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-10-27 05:49",
+   "set": "2026-10-27 18:23",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-11-01 05:47",
+   "set": "2026-11-01 18:25",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-12-21 05:51",
+   "set": "2026-12-21 18:50",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2024-02-29 06:23",
+   "set": "2024-02-29 18:46",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-01-20 06:08",
+   "set": "2026-01-20 18:58",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-02-10 06:18",
+   "set": "2026-02-10 18:55",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-04-15 06:29",
+   "set": "2026-04-15 18:15",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-05-10 06:34",
+   "set": "2026-05-10 18:03",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-07-25 06:46",
+   "set": "2026-07-25 18:12",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-08-02 06:43",
+   "set": "2026-08-02 18:14",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-09-05 06:24",
+   "set": "2026-09-05 18:18",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": -14.2781,
+   "lng": -170.6922,
+   "place": "Pago Pago",
+   "polar": null,
+   "rise": "2026-11-18 05:43",
+   "set": "2026-11-18 18:32",
+   "tz": "Pacific/Pago_Pago"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-01-01 07:11",
+   "set": "2026-01-01 17:50",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-03-08 07:43",
+   "set": "2026-03-08 19:33",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-03-20 07:31",
+   "set": "2026-03-20 19:38",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-06-21 06:39",
+   "set": "2026-06-21 20:18",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-09-23 07:16",
+   "set": "2026-09-23 19:22",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-10-27 07:31",
+   "set": "2026-10-27 18:50",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-11-01 06:34",
+   "set": "2026-11-01 17:47",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-12-21 07:06",
+   "set": "2026-12-21 17:43",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2024-02-29 06:50",
+   "set": "2024-02-29 18:29",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-01-20 07:12",
+   "set": "2026-01-20 18:04",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-02-10 07:04",
+   "set": "2026-02-10 18:18",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-04-15 07:05",
+   "set": "2026-04-15 19:49",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-05-10 06:46",
+   "set": "2026-05-10 20:01",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-07-25 06:52",
+   "set": "2026-07-25 20:14",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-08-02 06:56",
+   "set": "2026-08-02 20:10",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-09-05 07:09",
+   "set": "2026-09-05 19:41",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 24.5551,
+   "lng": -81.8081,
+   "place": "Key West",
+   "polar": null,
+   "rise": "2026-11-18 06:45",
+   "set": "2026-11-18 17:39",
+   "tz": "America/New_York"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-01-02 05:52",
+   "set": "2026-01-02 21:16",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-03-09 07:19",
+   "set": "2026-03-09 20:03",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-03-21 07:34",
+   "set": "2026-03-21 19:42",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-06-22 08:06",
+   "set": "2026-06-22 16:59",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-09-24 06:17",
+   "set": "2026-09-24 18:29",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-10-28 06:18",
+   "set": "2026-10-28 20:11",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-11-02 06:11",
+   "set": "2026-11-02 20:18",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-12-22 05:44",
+   "set": "2026-12-22 21:14",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2024-03-01 07:09",
+   "set": "2024-03-01 20:16",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-01-21 06:14",
+   "set": "2026-01-21 21:09",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-02-11 06:44",
+   "set": "2026-02-11 20:45",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-04-16 07:05",
+   "set": "2026-04-16 17:56",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-05-11 07:34",
+   "set": "2026-05-11 17:20",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-07-26 07:52",
+   "set": "2026-07-26 17:23",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-08-03 07:43",
+   "set": "2026-08-03 17:31",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-09-06 06:50",
+   "set": "2026-09-06 18:09",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": -43.95,
+   "lng": -176.55,
+   "place": "Chatham Islands",
+   "polar": null,
+   "rise": "2026-11-19 05:52",
+   "set": "2026-11-19 20:41",
+   "tz": "Pacific/Chatham"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-01-01 11:58",
+   "set": "2026-01-01 16:12",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-03-08 09:43",
+   "set": "2026-03-08 20:42",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-03-20 09:00",
+   "set": "2026-03-20 21:18",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-06-21 04:19",
+   "set": "2026-06-22 01:47",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-09-23 08:48",
+   "set": "2026-09-23 20:57",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-10-27 10:31",
+   "set": "2026-10-27 18:57",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-11-01 09:48",
+   "set": "2026-11-01 17:40",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-12-21 12:02",
+   "set": "2026-12-21 15:57",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2024-02-29 09:10",
+   "set": "2024-02-29 19:18",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-01-20 11:19",
+   "set": "2026-01-20 17:07",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-02-10 10:14",
+   "set": "2026-02-10 18:18",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-04-15 07:27",
+   "set": "2026-04-15 22:38",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-05-10 05:58",
+   "set": "2026-05-11 00:00",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-07-25 05:42",
+   "set": "2026-07-26 00:31",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-08-02 06:09",
+   "set": "2026-08-03 00:03",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-09-05 07:55",
+   "set": "2026-09-05 22:02",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 64.5011,
+   "lng": -165.4064,
+   "place": "Nome",
+   "polar": null,
+   "rise": "2026-11-18 10:44",
+   "set": "2026-11-18 16:48",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-01-01 06:56",
+   "set": "2026-01-01 17:59",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-03-08 06:38",
+   "set": "2026-03-08 18:32",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-03-20 06:28",
+   "set": "2026-03-20 18:35",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-06-21 05:49",
+   "set": "2026-06-21 19:03",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-09-23 06:13",
+   "set": "2026-09-23 18:19",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-10-27 06:22",
+   "set": "2026-10-27 17:54",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-11-01 06:24",
+   "set": "2026-11-01 17:51",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-12-21 06:51",
+   "set": "2026-12-21 17:53",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2024-02-29 06:43",
+   "set": "2024-02-29 18:30",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-01-20 06:59",
+   "set": "2026-01-20 18:11",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-02-10 06:54",
+   "set": "2026-02-10 18:23",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-04-15 06:07",
+   "set": "2026-04-15 18:41",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-05-10 05:52",
+   "set": "2026-05-10 18:49",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-07-25 05:59",
+   "set": "2026-07-25 19:01",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-08-02 06:02",
+   "set": "2026-08-02 18:58",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-09-05 06:10",
+   "set": "2026-09-05 18:35",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 18.4655,
+   "lng": -66.1057,
+   "place": "San Juan",
+   "polar": null,
+   "rise": "2026-11-18 06:32",
+   "set": "2026-11-18 17:46",
+   "tz": "America/Puerto_Rico"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-01-01 10:24",
+   "set": "2026-01-01 17:55",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-03-08 09:36",
+   "set": "2026-03-08 20:57",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-03-20 09:07",
+   "set": "2026-03-20 21:20",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-06-21 06:34",
+   "set": "2026-06-21 23:41",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-09-23 08:54",
+   "set": "2026-09-23 21:01",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-10-27 09:57",
+   "set": "2026-10-27 19:41",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-11-01 09:07",
+   "set": "2026-11-01 18:31",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-12-21 10:22",
+   "set": "2026-12-21 17:46",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2024-02-29 08:54",
+   "set": "2024-02-29 19:43",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-01-20 10:09",
+   "set": "2026-01-20 18:25",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-02-10 09:35",
+   "set": "2026-02-10 19:06",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-04-15 08:04",
+   "set": "2026-04-15 22:08",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-05-10 07:11",
+   "set": "2026-05-10 22:54",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-07-25 07:09",
+   "set": "2026-07-25 23:15",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-08-02 07:22",
+   "set": "2026-08-02 23:01",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-09-05 08:22",
+   "set": "2026-09-05 21:45",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 53.88,
+   "lng": -166.54,
+   "place": "Dutch Harbor",
+   "polar": null,
+   "rise": "2026-11-18 09:39",
+   "set": "2026-11-18 18:02",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-01-01 06:44",
+   "set": "2026-01-01 18:05",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-03-08 06:33",
+   "set": "2026-03-08 18:30",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-03-20 06:25",
+   "set": "2026-03-20 18:32",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-06-21 05:55",
+   "set": "2026-06-21 18:50",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-09-23 06:10",
+   "set": "2026-09-23 18:17",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-10-27 06:14",
+   "set": "2026-10-27 17:56",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-11-01 06:15",
+   "set": "2026-11-01 17:54",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-12-21 06:39",
+   "set": "2026-12-21 17:59",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2024-02-29 06:38",
+   "set": "2024-02-29 18:29",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-01-20 06:48",
+   "set": "2026-01-20 18:15",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-02-10 06:46",
+   "set": "2026-02-10 18:25",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-04-15 06:08",
+   "set": "2026-04-15 18:34",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-05-10 05:56",
+   "set": "2026-05-10 18:38",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-07-25 06:04",
+   "set": "2026-07-25 18:51",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-08-02 06:06",
+   "set": "2026-08-02 18:48",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-09-05 06:10",
+   "set": "2026-09-05 18:30",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 13.4383,
+   "lng": 144.6558,
+   "place": "Guam",
+   "polar": null,
+   "rise": "2026-11-18 06:21",
+   "set": "2026-11-18 17:50",
+   "tz": "Pacific/Guam"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-01-01 07:27",
+   "set": "2026-01-01 18:26",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-03-08 07:07",
+   "set": "2026-03-08 19:01",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-03-20 06:58",
+   "set": "2026-03-20 19:04",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-06-21 06:16",
+   "set": "2026-06-21 19:34",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-09-23 06:42",
+   "set": "2026-09-23 18:49",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-10-27 06:51",
+   "set": "2026-10-27 18:22",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-11-01 06:53",
+   "set": "2026-11-01 18:20",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-12-21 07:22",
+   "set": "2026-12-21 18:20",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2024-02-29 07:13",
+   "set": "2024-02-29 18:58",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-01-20 07:30",
+   "set": "2026-01-20 18:38",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-02-10 07:24",
+   "set": "2026-02-10 18:50",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-04-15 06:36",
+   "set": "2026-04-15 19:11",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-05-10 06:20",
+   "set": "2026-05-10 19:19",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-07-25 06:27",
+   "set": "2026-07-25 19:32",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-08-02 06:30",
+   "set": "2026-08-02 19:29",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-09-05 06:39",
+   "set": "2026-09-05 19:05",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 19.2906,
+   "lng": 166.6175,
+   "place": "Wake Island",
+   "polar": null,
+   "rise": "2026-11-18 07:02",
+   "set": "2026-11-18 18:14",
+   "tz": "Pacific/Wake"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-01-01 07:03",
+   "set": "2026-01-01 18:41",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-03-08 06:59",
+   "set": "2026-03-08 19:00",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-03-20 06:53",
+   "set": "2026-03-20 18:59",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-06-21 06:31",
+   "set": "2026-06-21 19:09",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-09-23 06:38",
+   "set": "2026-09-23 18:44",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-10-27 06:37",
+   "set": "2026-10-27 18:28",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-11-01 06:38",
+   "set": "2026-11-01 18:27",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-12-21 06:58",
+   "set": "2026-12-21 18:35",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2024-02-29 07:03",
+   "set": "2024-02-29 19:00",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-01-20 07:09",
+   "set": "2026-01-20 18:50",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-02-10 07:08",
+   "set": "2026-02-10 18:57",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-04-15 06:39",
+   "set": "2026-04-15 18:58",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-05-10 06:30",
+   "set": "2026-05-10 19:00",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-07-25 06:39",
+   "set": "2026-07-25 19:11",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-08-02 06:40",
+   "set": "2026-08-02 19:10",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-09-05 06:40",
+   "set": "2026-09-05 18:55",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 8.7317,
+   "lng": 167.7361,
+   "place": "Kwajalein",
+   "polar": null,
+   "rise": "2026-11-18 06:42",
+   "set": "2026-11-18 18:25",
+   "tz": "Pacific/Kwajalein"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-03-08 08:47",
+   "set": "2026-03-08 19:23",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-03-20 07:51",
+   "set": "2026-03-20 20:13",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-09-23 07:39",
+   "set": "2026-09-23 19:51",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-10-27 10:05",
+   "set": "2026-10-27 17:08",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-11-01 09:31",
+   "set": "2026-11-01 15:42",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2024-02-29 08:23",
+   "set": "2024-02-29 17:51",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-01-20 12:13",
+   "set": "2026-01-20 13:58",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-02-10 09:54",
+   "set": "2026-02-10 16:23",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-04-15 05:44",
+   "set": "2026-04-15 22:06",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-05-10 03:09",
+   "set": "2026-05-11 00:40",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-08-02 03:19",
+   "set": "2026-08-03 00:33",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-09-05 06:25",
+   "set": "2026-09-05 21:16",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 70.4,
+   "lng": -148.5267,
+   "place": "Prudhoe Bay",
+   "polar": null,
+   "rise": "2026-11-18 11:20",
+   "set": "2026-11-18 13:57",
+   "tz": "America/Anchorage"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-01-01 12:42",
+   "set": "2026-01-01 15:05",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-03-08 09:36",
+   "set": "2026-03-08 20:27",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-03-20 08:48",
+   "set": "2026-03-20 21:08",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-09-23 08:36",
+   "set": "2026-09-23 20:46",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-10-27 10:34",
+   "set": "2026-10-27 18:32",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-11-01 09:53",
+   "set": "2026-11-01 17:12",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-12-21 12:58",
+   "set": "2026-12-21 14:39",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2024-02-29 09:06",
+   "set": "2024-02-29 19:00",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-01-20 11:39",
+   "set": "2026-01-20 16:24",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-02-10 10:18",
+   "set": "2026-02-10 17:51",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-04-15 07:04",
+   "set": "2026-04-15 22:39",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-05-10 05:18",
+   "set": "2026-05-11 00:18",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-07-25 04:53",
+   "set": "2026-07-26 00:56",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-08-02 05:29",
+   "set": "2026-08-03 00:20",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-09-05 07:36",
+   "set": "2026-09-05 21:58",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 66.8983,
+   "lng": -162.6025,
+   "place": "Kotzebue",
+   "polar": null,
+   "rise": "2026-11-18 11:02",
+   "set": "2026-11-18 16:07",
+   "tz": "America/Nome"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-01-01 09:53",
+   "set": "2026-01-01 17:46",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-03-08",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-03-08 09:15",
+   "set": "2026-03-08 20:39",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-03-20 08:48",
+   "set": "2026-03-20 21:00",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-06-21 06:27",
+   "set": "2026-06-21 23:09",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-09-23 08:34",
+   "set": "2026-09-23 20:41",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-10-27 09:32",
+   "set": "2026-10-27 19:27",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-11-01",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-11-01 08:41",
+   "set": "2026-11-01 18:17",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-12-21 09:51",
+   "set": "2026-12-21 17:37",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2024-02-29",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2024-02-29 08:32",
+   "set": "2024-02-29 19:26",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-01-20",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-01-20 09:41",
+   "set": "2026-01-20 18:14",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-02-10 09:09",
+   "set": "2026-02-10 18:52",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-04-15 07:49",
+   "set": "2026-04-15 21:44",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-05-10",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-05-10 07:00",
+   "set": "2026-05-10 22:26",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-07-25",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-07-25 06:59",
+   "set": "2026-07-25 22:46",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-08-02 07:11",
+   "set": "2026-08-02 22:33",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-09-05",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-09-05 08:05",
+   "set": "2026-09-05 21:23",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 51.863,
+   "lng": -176.632,
+   "place": "Adak",
+   "polar": null,
+   "rise": "2026-11-18 09:11",
+   "set": "2026-11-18 17:51",
+   "tz": "America/Adak"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": null,
+   "rise": "2026-03-20 03:25",
+   "set": "2026-03-20 23:10",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": null,
+   "rise": "2026-09-23 02:21",
+   "set": "2026-09-23 19:55",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 89.0,
+   "lng": 0.0,
+   "place": "Lat 89 N",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": null,
+   "rise": "2026-03-20 00:07",
+   "set": "2026-03-20 21:13",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": -89.0,
+   "lng": 0.0,
+   "place": "Lat 89 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-01-01 10:43",
+   "set": "2026-01-01 13:23",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-02-10 08:28",
+   "set": "2026-02-10 16:01",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-03-20 06:00",
+   "set": "2026-03-20 18:16",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-04-15 04:17",
+   "set": "2026-04-15 19:45",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-08-02 02:41",
+   "set": "2026-08-02 21:27",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-09-23 05:44",
+   "set": "2026-09-23 17:58",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-10-27 07:40",
+   "set": "2026-10-27 15:45",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-11-18 09:06",
+   "set": "2026-11-18 14:23",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 66.6,
+   "lng": 0.0,
+   "place": "Arctic Circle",
+   "polar": null,
+   "rise": "2026-12-21 10:54",
+   "set": "2026-12-21 13:01",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-02-10 03:38",
+   "set": "2026-02-10 20:47",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-03-20 05:57",
+   "set": "2026-03-20 18:15",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-04-15 07:25",
+   "set": "2026-04-15 16:33",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-06-21 10:58",
+   "set": "2026-06-21 13:05",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-08-02 09:03",
+   "set": "2026-08-02 15:09",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-09-23 05:43",
+   "set": "2026-09-23 18:03",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-10-27 03:27",
+   "set": "2026-10-27 20:03",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": null,
+   "rise": "2026-11-18 01:55",
+   "set": "2026-11-18 21:38",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": -66.6,
+   "lng": 0.0,
+   "place": "Antarctic Circle",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-01-01 05:59",
+   "set": "2026-01-01 18:07",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-02-10 06:10",
+   "set": "2026-02-10 18:17",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-03-20 06:04",
+   "set": "2026-03-20 18:10",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-04-15 05:56",
+   "set": "2026-04-15 18:03",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-06-21 05:58",
+   "set": "2026-06-21 18:05",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-08-02 06:02",
+   "set": "2026-08-02 18:09",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-09-23 05:49",
+   "set": "2026-09-23 17:55",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-10-27 05:40",
+   "set": "2026-10-27 17:47",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-11-18 05:41",
+   "set": "2026-11-18 17:48",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 0.0,
+   "lng": 0.0,
+   "place": "Equator at Greenwich",
+   "polar": null,
+   "rise": "2026-12-21 05:54",
+   "set": "2026-12-21 18:01",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": null,
+   "rise": "2026-02-10 12:30",
+   "set": "2026-02-10 15:59",
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": null,
+   "rise": "2026-03-20 07:58",
+   "set": "2026-03-20 20:19",
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": null,
+   "rise": "2026-04-15 05:05",
+   "set": "2026-04-15 23:00",
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": null,
+   "rise": "2026-09-23 07:39",
+   "set": "2026-09-23 20:02",
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": null,
+   "rise": "2026-10-27 11:10",
+   "set": "2026-10-27 16:15",
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": 75.0,
+   "lng": 120.0,
+   "place": "Lat 75 N, 120 E",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "Asia/Vladivostok"
+  },
+  {
+   "date": "2026-01-01",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-02-10",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-03-20",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": null,
+   "rise": "2026-03-20 09:46",
+   "set": "2026-03-20 22:23",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-04-15",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": null,
+   "rise": "2026-04-15 14:19",
+   "set": "2026-04-15 17:37",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-06-21",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-08-02",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "night",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-09-23",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": null,
+   "rise": "2026-09-23 09:29",
+   "set": "2026-09-23 22:19",
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-10-27",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-11-18",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  },
+  {
+   "date": "2026-12-21",
+   "lat": -80.0,
+   "lng": -60.0,
+   "place": "Lat 80 S",
+   "polar": "day",
+   "rise": null,
+   "set": null,
+   "tz": "UTC"
+  }
+ ],
+ "sun_anchors": [
+  {
+   "date": "2026-10-27",
+   "place": "San Francisco",
+   "rise": "2026-10-27 07:30",
+   "set": "2026-10-27 18:16"
+  },
+  {
+   "date": "2026-06-21",
+   "place": "Honolulu",
+   "rise": "2026-06-21 05:50",
+   "set": "2026-06-21 19:16"
+  },
+  {
+   "date": "2026-03-08",
+   "place": "New York",
+   "rise": "2026-03-08 07:18",
+   "set": "2026-03-08 18:55"
+  }
  ]
 }

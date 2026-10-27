@@ -348,5 +348,195 @@ for (const g of facts.gauges) {
   ok('San Francisco is a gauge', shipped.find((s) => s.id === '9414290').g === 1);
 }
 
+// --- lines bin/mutate found unguarded (2026-10-27) --------------------------------------
+//
+// `bin/mutate site/tide-logic.js site/tide-logic.test.mjs --sibling test` scored 185/327
+// and an output sweep (state/scratch/tide-equiv/sweep.mjs, control 5/5) said 62 of the
+// survivors genuinely change what the page answers. These are those lines. Grouped by the
+// function they belong to rather than by mutant, because the point is the guarantee.
+
+// parseRows/parseObserved: a null ROW, not merely a malformed one. `!r || typeof r.t` must
+// short-circuit; as `&&` it reaches null.t and the whole payload throws.
+eq('a null row is dropped, not thrown on', L.parseRows({ predictions: [
+  null, { t: '2026-03-01 05:00', v: '1.5', type: 'H' }] }).length, 1);
+eq('a row with no time at all is dropped', L.parseRows({ predictions: [{ v: '1.5', type: 'H' }] }), []);
+eq('an observed null row is dropped', L.parseObserved({ data: [null, { t: '2026-03-01 05:00', v: '1.5' }] }).length, 1);
+eq('an observed blank reading is not a tide at datum', L.parseObserved({ data: [
+  { t: '2026-03-01 05:00', v: '' }, { t: '2026-03-01 05:06', v: '   ' }] }), []);
+
+// nextTide past the end: the loop must stop AT rows.length (one past is undefined.t), and
+// say index -1 rather than 0, which a caller would read as "the first tide".
+{
+  const rows = L.parseRows(load('9414290', 'hilo'));
+  const past = L.nextTide(rows, '2999-01-01 00:00');
+  eq('after the last tide there is no next', past.next, null);
+  eq('and the previous one is the last row', past.prev.t, rows[rows.length - 1].t);
+  eq('and the index says "none", not "the first"', past.index, -1);
+  const first = L.nextTide(rows, '1900-01-01 00:00');
+  eq('before the first tide there is no previous', first.prev, null);
+  eq('and the index is the first row', first.index, 0);
+}
+
+// dayOf must take exactly the date, not a character of the time.
+eq('a day is ten characters, not eleven', L.dayOf('2026-03-01 06:01'), '2026-03-01');
+
+// untilText needs BOTH times; as `&&` one bad argument yields "in NaNm".
+eq('one unparseable time gives no countdown', [
+  L.untilText('2026-03-01 06:00', 'oops'), L.untilText('oops', '2026-03-01 06:00')], ['', '']);
+eq('a whole number of hours drops the minutes', L.untilText('2026-03-01 06:00', '2026-03-01 08:00'), 'in 2h');
+eq('under an hour is minutes only', L.untilText('2026-03-01 06:00', '2026-03-01 06:47'), 'in 47m');
+eq('the same minute is "now"', L.untilText('2026-03-01 06:00', '2026-03-01 06:00'), 'now');
+
+// phase: an unparseable `now`, and two tides that do not straddle anything.
+eq('phase needs a readable now', L.phase(lo, hi, 'oops'), null);
+eq('phase of a zero-length stretch is nothing', L.phase(lo, lo, '2026-03-01 06:00'), null);
+eq('phase of a backwards stretch is nothing', L.phase(hi, lo, '2026-03-01 09:00'), null);
+
+// curve: the shape of the sampling itself. Two rows are enough for a curve; fewer than two
+// samples is not a curve; and the samples must START and END on the real extremes, which is
+// what makes the drawn line touch the plotted highs and lows.
+{
+  const two = [{ t: '2026-03-01 06:00', v: 0, type: 'L' }, { t: '2026-03-01 12:00', v: 10, type: 'H' }];
+  eq('two tides are enough for a curve', L.curve(two, 2).length, 2);
+  eq('fewer than two samples is not a curve', [L.curve(two, 1), L.curve(two, 0), L.curve(two, -5)], [[], [], []]);
+  eq('the default is 240 samples', L.curve(two).length, 240);
+  const c2 = L.curve(two, 2);
+  eq('the first sample sits on the first tide', [c2[0].m, c2[0].v], [L.wallMinutes(two[0].t), 0]);
+  eq('the last sample sits on the last tide', [c2[1].m, c2[1].v], [L.wallMinutes(two[1].t), 10]);
+
+  // Three tides, sampled so one lands exactly on the middle extreme: the walk to the next
+  // segment has to happen, and happen at the right row.
+  const three = [
+    { t: '2026-03-01 06:00', v: 0, type: 'L' },
+    { t: '2026-03-01 12:00', v: 10, type: 'H' },
+    { t: '2026-03-01 18:00', v: 2, type: 'L' },
+  ];
+  const c3 = L.curve(three, 3);
+  eq('a three-tide curve touches all three', c3.map((p) => +p.v.toFixed(9)), [0, 10, 2]);
+  eq('and its samples are the three tide times', c3.map((p) => p.m), three.map((r) => L.wallMinutes(r.t)));
+  ok('a sample inside the second segment follows the second pair', (() => {
+    const c = L.curve(three, 5);                       // samples at 06, 09, 12, 15, 18
+    const want = L.between(three[1], three[2], 0.5);    // 15:00 is half way through pair 2
+    return Math.abs(c[3].v - want) < 1e-9;
+  })());
+  eq('a curve over rows that share one minute is empty', L.curve([
+    { t: '2026-03-01 06:00', v: 0, type: 'L' }, { t: '2026-03-01 06:00', v: 1, type: 'H' }], 5), []);
+}
+
+// distanceKm: pin the earth's radius itself. Half the equator is pi*R, so this fixes R to
+// the metre; the "about 560 km" check above tolerates 3 km and cannot.
+near('half way round the world is pi times the radius', L.distanceKm(0, 0, 0, 180), Math.PI * 6371, 1e-6);
+
+// nearest: asking for none must give none, not one.
+eq('nearest with a limit of zero is empty', L.nearest(shipped, 37.8, -122.4, 0), []);
+eq('a negative limit is empty too', L.nearest(shipped, 37.8, -122.4, -3), []);
+
+// gaugeFor: the two guarantees the shipped gauge block rests on and nothing covered --
+// the exact edge of the reach, and that NEARNESS beats the id tie-break. A gauge list is
+// built so the nearer gauge has the LARGER id: if the tie-break's `&&` ever becomes `||`,
+// or `===` becomes `!==`, the page reads a gauge that is not the closest one.
+{
+  const g = (id, lat, lng) => ({ id, lat, lng, name: id, region: 'r', state: 'X', tz: 'UTC', g: 1 });
+  const here0 = { id: 'HERE', lat: 37.1, lng: -122.0, tz: 'UTC' };
+  const far = g('A', 37.1, -122.5), near0 = g('Z', 37.1, -122.1);
+  eq('the nearer gauge wins even with the later id', L.gaugeFor(here0, [far, near0]).id, 'Z');
+  eq('and in the other input order', L.gaugeFor(here0, [near0, far]).id, 'Z');
+  // Exactly equidistant, three of them handed over in the wrong order: a two-gauge tie
+  // compares one pair and would let a broken tie-break through.
+  const tie = [g('M', 37.1, -121.9), g('A', 37.1, -122.1), g('Z', 37.1, -121.9)];
+  eq('an exact tie is broken by the lower id', L.gaugeFor(here0, tie).id, 'A');
+  eq('the tie-break does not depend on input order', L.gaugeFor(here0, [...tie].reverse()).id, 'A');
+  // The reach is inclusive at its exact edge, which 39/41 km cannot show.
+  const d = L.distanceKm(here0.lat, here0.lng, far.lat, far.lng);
+  eq('a gauge exactly at the reach counts', L.gaugeFor(here0, [far], d).id, 'A');
+  ok('a hair beyond it does not', L.gaugeFor(here0, [far], d - 1e-9) === null);
+  eq('no gauges at all is null', L.gaugeFor(here0, []), null);
+  eq('no station is null', L.gaugeFor(null, [near0]), null);
+}
+
+// search: the four ranks, in the wrong input order, on a list built for it. Done against
+// synthetic stations so each branch is reached on purpose rather than by luck.
+{
+  const st = (id, name, region) => ({ id, name, region, lat: 1, lng: 1, tz: 'UTC' });
+  const list = [
+    st('555', 'Nowhere', 'Bayview County'),      // rank 2: region only
+    st('bay777', 'Nowhere Else', 'Nowhere'),     // rank 3: id prefix only
+    st('111', 'Old Bay Light', 'Nowhere'),       // rank 1: mid-name
+    st('222', 'Bay Harbor', 'Nowhere'),          // rank 0: name prefix
+  ];
+  eq('ranks: name-prefix, mid-name, region, then bare id',
+    L.search(list, 'bay').map((s) => s.id), ['222', '111', '555', 'bay777']);
+  // Same rank, three of them, handed over in reverse: the name tie-break must sort them.
+  const same = [st('1', 'Bay Charlie', 'r'), st('2', 'Bay Bravo', 'r'), st('3', 'Bay Alpha', 'r')];
+  eq('equal ranks are ordered by name', L.search(same, 'bay').map((s) => s.id), ['3', '2', '1']);
+  // Rank must BEAT alphabetical order, or a collapsed rank reads as correct: the two are
+  // only distinguishable when they disagree. 'Bay Zulu' is a name-prefix match that sorts
+  // after 'Abraham Bay', a mid-name one, so rank has to be what decides.
+  const fight = [
+    st('mid', 'Abraham Bay', 'Nowhere'),
+    st('pre', 'Bay Zulu', 'Nowhere'),
+    st('reg', 'Nowhere', 'Bayside'),
+  ];
+  eq('a name-prefix match outranks an earlier-sorting mid-name one',
+    L.search(fight, 'bay').map((s) => s.id), ['pre', 'mid', 'reg']);
+  // And on the shipped list, which is what the reader types into: every hit on the first
+  // page of a common word must be a real name-prefix match.
+  ok('the first page of "bay" is all name-prefix matches', (() => {
+    const r = L.search(shipped, 'bay', 10);
+    return r.length === 10 && r.every((x) => L.fold(x.name).startsWith('bay'));
+  })());
+  // 21 stations in the shipped list share a folded name with another. Equal rank and equal
+  // name must keep the order they came in: an inconsistent comparator reverses them.
+  const same3 = [st('3', 'Bay Point', 'r'), st('1', 'Bay Point', 'r'), st('2', 'Bay Point', 'r')];
+  eq('stations sharing a name keep their input order',
+    L.search(same3, 'bay').map((x) => x.id), ['3', '1', '2']);
+  const many = Array.from({ length: 30 }, (_, i) => st('id' + i, 'Bay Same', 'r'));
+  eq('and still do past the length where the sort changes strategy',
+    L.search(many, 'bay', 30).map((x) => x.id), many.map((x) => x.id));
+  // A match one character into the name is still a mid-name match, not a region or id one.
+  // Reachable by typing a word short of its first letter ('akland' for Oakland).
+  eq('a match at the second character ranks as mid-name',
+    L.search([st('x', 'Oakland Pier', 'Nowhere'), st('y', 'Nowhere', 'Akland County')], 'akland')
+      .map((z) => z.id), ['x', 'y']);
+  eq('a limit of zero finds nothing', L.search(list, 'bay', 0), []);
+  eq('a station matched only by its id still comes back', L.search(list, 'bay777').map((s) => s.id), ['bay777']);
+  eq('nothing matches nothing', L.search(list, 'zzz'), []);
+}
+
+// daylightLows: asking for none must give none. `n > 0 ? n : 0` guards a negative limit,
+// and slice(0, 1) would hand the page a tide it did not ask for.
+{
+  const sf2 = { lat: 37.8063, lng: -122.4659, tz: 'America/Los_Angeles' };
+  const low = [{ t: '2026-10-27 12:00', v: 1, type: 'L' }];
+  eq('no lows asked for, none given', [
+    L.daylightLows(low, sf2, '2026-10-27 00:00', 0),
+    L.daylightLows(low, sf2, '2026-10-27 00:00', -4)], [[], []]);
+}
+
+// --- the sun, against Python's own implementation ----------------------------------------
+//
+// sunWall decides which low tides the month list shows, and three hand-pinned days left
+// the solar coefficients unguarded: 24 mutants of them changed the page's answer and the
+// suite passed every one. test/facts.py now recomputes sunrise and sunset in Python over a
+// grid of places and dates -- the same published NOAA algorithm, every coefficient and sign
+// transcribed separately, which is the class of fault that survived -- and anchors itself
+// to NOAA's solar calculator at the three days above (facts.py asserts those anchors when
+// it writes the file, so this grid cannot drift away from an outside source unnoticed).
+eq('the sun reference carries its outside anchors', facts.sun_anchors.length, 3);
+ok('the sun grid spans the year and both polar cases',
+  facts.sun.length >= 90 && facts.sun.some((r) => r.polar === 'day') && facts.sun.some((r) => r.polar === 'night'),
+  `${facts.sun.length} place-days`);
+{
+  let agree = 0;
+  const wrong = [];
+  for (const r of facts.sun) {
+    const got = L.sunWall(r.date, r.lat, r.lng, r.tz);
+    if (got.rise === r.rise && got.set === r.set && got.polar === r.polar) agree++;
+    else if (wrong.length < 4) wrong.push(`${r.place} ${r.date}: ${JSON.stringify(got)} vs ${r.rise}/${r.set}/${r.polar}`);
+  }
+  ok(`sunrise and sunset agree with Python at every place-day (${facts.sun.length})`,
+    agree === facts.sun.length, wrong.join(' | '));
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
