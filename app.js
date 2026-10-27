@@ -352,13 +352,15 @@ async function show(station) {
     url.searchParams.set('station', station.id);
     history.replaceState(null, '', url);
     render();
+    // Not awaited: the gauge is independent of the month list, and waiting behind that
+    // 30-day request held the block back by seconds on the live site (2026-10-27).
+    readGauge(station);
     // The month is a second, larger request and the page is complete without it, so it
     // renders after, and only if the reader has not moved on to another station meanwhile.
     try {
       const got = T.parseRows(await getJson(predictionUrl(station.id, 'hilo', 30)));
       if (current === station) { month = got; render(); }
     } catch { /* the list is a bonus; its failure leaves the page as it was */ }
-    await readGauge(station);
   } catch (e) {
     message(`Could not reach NOAA: ${e.message}`, true);
   }
