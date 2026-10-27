@@ -260,5 +260,41 @@ eq('a negative height uses a real minus sign', L.heightText(-1.044), '−1.0 ft'
 eq('zero is not negative zero', L.heightText(0), '0.0 ft');
 eq('metres if asked', L.heightText(2.03, 'm'), '2.0 m');
 
+// --- the month's best low tides, in daylight ------------------------------------------------------
+// Sun times pinned to the Daylight site's sun-logic.js (itself checked against NOAA's solar
+// calculator) at the minute; Honolulu's 5:50/7:16 solstice is also the published almanac value.
+eq('San Francisco sunrise/sunset', L.sunWall('2026-10-27', 37.8063, -122.4659, 'America/Los_Angeles'),
+  { rise: '2026-10-27 07:30', set: '2026-10-27 18:16', polar: null });
+eq('Honolulu solstice', L.sunWall('2026-06-21', 21.3067, -157.867, 'Pacific/Honolulu'),
+  { rise: '2026-06-21 05:50', set: '2026-06-21 19:16', polar: null });
+eq('New York on the DST day', L.sunWall('2026-03-08', 40.7, -74.01, 'America/New_York'),
+  { rise: '2026-03-08 07:18', set: '2026-03-08 18:55', polar: null });
+eq('Utqiagvik midwinter is polar night', L.sunWall('2026-12-21', 71.29, -156.79, 'America/Anchorage').polar, 'night');
+eq('Utqiagvik midsummer is polar day', L.sunWall('2026-06-21', 71.29, -156.79, 'America/Anchorage').polar, 'day');
+{
+  const sf = { lat: 37.8063, lng: -122.4659, tz: 'America/Los_Angeles' };
+  const r = (t, v, type = 'L') => ({ t, v, type });
+  const rows = [
+    r('2026-10-27 03:10', -1.9),          // lowest, but in the dark
+    r('2026-10-27 07:40', -0.3),          // just after sunrise
+    r('2026-10-27 07:20', -1.5),          // just before sunrise: dark
+    r('2026-10-28 18:10', 0.4),           // just before sunset
+    r('2026-10-28 18:30', -1.2),          // just after sunset: dark
+    r('2026-10-29 12:00', 6.1, 'H'),      // a high, however placed
+    r('2026-10-30 12:00', -0.3),          // ties the 07:40 low on height
+    r('2026-10-31 13:00', 1.0),
+    r('2026-10-26 12:00', -2.5),          // the past
+  ].sort((a, b) => (a.t < b.t ? -1 : 1));
+  const got = L.daylightLows(rows, sf, '2026-10-27 00:00', 3);
+  eq('daylight lows: dark, high and past tides excluded, lowest first, tie earliest first', got,
+    [r('2026-10-27 07:40', -0.3), r('2026-10-30 12:00', -0.3), r('2026-10-28 18:10', 0.4)]);
+  eq('daylight lows respect the limit', L.daylightLows(rows, sf, '2026-10-27 00:00', 1).length, 1);
+  eq('a daylight high is not a low', L.daylightLows([r('2026-10-27 12:00', -3, 'H')], sf, '2026-10-27 00:00'), []);
+  eq('a low at now still counts', L.daylightLows([r('2026-10-27 12:00', 1)], sf, '2026-10-27 12:00').length, 1);
+  const north = { lat: 71.29, lng: -156.79, tz: 'America/Anchorage' };
+  eq('polar day: a midnight low is in daylight', L.daylightLows([r('2026-06-21 00:30', 0.2)], north, '2026-06-20 00:00').length, 1);
+  eq('polar night: no low is in daylight', L.daylightLows([r('2026-12-21 12:00', 0.2)], north, '2026-12-20 00:00').length, 0);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

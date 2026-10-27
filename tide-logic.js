@@ -265,3 +265,75 @@ export function clockText(t) {
 
 export const heightText = (v, unit = 'ft') =>
   `${v >= 0 ? '' : '\u2212'}${Math.abs(v).toFixed(1)} ${unit}`;
+
+// ---- the month's best low tides, in daylight ----------------------------------------------
+//
+// The day strip shows six days, and the lowest daylight low of the next month fell outside
+// it at 37 of 40 sampled stations (2026-10-27). Tidepooling wants exactly that tide, so it
+// is listed on its own. Sun times are NOAA's solar-position equations, copied from the
+// Daylight site's sun-logic.js (tested there against NOAA's calculator); here they only
+// decide whether a low tide falls between sunrise and sunset.
+
+const RAD = Math.PI / 180, DEG = 180 / Math.PI;
+const ZENITH = 90.833;
+
+function solar(jd) {
+  const T = (jd - 2451545) / 36525;
+  const L0 = (((280.46646 + T * (36000.76983 + T * 0.0003032)) % 360) + 360) % 360;
+  const M = 357.52911 + T * (35999.05029 - 0.0001537 * T);
+  const e = 0.016708634 - T * (0.000042037 + 0.0000001267 * T);
+  const C = Math.sin(M * RAD) * (1.914602 - T * (0.004817 + 0.000014 * T))
+    + Math.sin(2 * M * RAD) * (0.019993 - 0.000101 * T) + Math.sin(3 * M * RAD) * 0.000289;
+  const omega = 125.04 - 1934.136 * T;
+  const lambda = L0 + C - 0.00569 - 0.00478 * Math.sin(omega * RAD);
+  const eps0 = 23 + (26 + (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60) / 60;
+  const eps = eps0 + 0.00256 * Math.cos(omega * RAD);
+  const decl = Math.asin(Math.sin(eps * RAD) * Math.sin(lambda * RAD)) * DEG;
+  const y = Math.tan((eps / 2) * RAD) ** 2;
+  const eot = 4 * DEG * (y * Math.sin(2 * L0 * RAD) - 2 * e * Math.sin(M * RAD)
+    + 4 * e * y * Math.sin(M * RAD) * Math.cos(2 * L0 * RAD)
+    - 0.5 * y * y * Math.sin(4 * L0 * RAD) - 1.25 * e * e * Math.sin(2 * M * RAD));
+  return { decl, eot };
+}
+
+const cosH = (lat, decl) => Math.cos(ZENITH * RAD) / (Math.cos(lat * RAD) * Math.cos(decl * RAD))
+  - Math.tan(lat * RAD) * Math.tan(decl * RAD);
+
+// Sunrise and sunset on a station's calendar date, as station wall-clock strings, so they
+// compare directly against NOAA's rows. `polar` is 'day' or 'night' when the sun never
+// sets or never rises; rise and set are then null.
+export function sunWall(date, lat, lng, tz) {
+  const [y, m, d] = date.split('-').map(Number);
+  const base = Date.UTC(y, m - 1, d) / 86400e3 + 2440587.5;
+  let noon = 720 - 4 * lng;
+  for (let i = 0; i < 2; i++) noon = 720 - 4 * lng - solar(base + noon / 1440).eot;
+  const c = cosH(lat, solar(base + noon / 1440).decl);
+  if (c > 1) return { rise: null, set: null, polar: 'night' };
+  if (c < -1) return { rise: null, set: null, polar: 'day' };
+  const event = (sign) => {
+    let t = noon + sign * 4 * Math.acos(c) * DEG;
+    for (let i = 0; i < 2; i++) {
+      const s = solar(base + t / 1440);
+      const cc = Math.max(-1, Math.min(1, cosH(lat, s.decl)));
+      t = 720 - 4 * lng - s.eot + sign * 4 * Math.acos(cc) * DEG;
+    }
+    return wallNow(new Date(Date.UTC(y, m - 1, d) + t * 60e3), tz);
+  };
+  return { rise: event(-1), set: event(1), polar: null };
+}
+
+// The `n` lowest low tides between sunrise and sunset, lowest first (earlier first on a
+// tie), from `now` on. A low at 3 am is no use to anyone on the rocks, however low it is.
+export function daylightLows(rows, station, now, n = 5) {
+  const sun = new Map();
+  const lit = (r) => {
+    const date = dayOf(r.t);
+    if (!sun.has(date)) sun.set(date, sunWall(date, station.lat, station.lng, station.tz));
+    const s = sun.get(date);
+    if (s.polar) return s.polar === 'day';
+    return r.t >= s.rise && r.t <= s.set;
+  };
+  return rows.filter((r) => r.type === L && r.t >= now && lit(r))
+    .sort((a, b) => a.v - b.v || (a.t < b.t ? -1 : a.t > b.t ? 1 : 0))
+    .slice(0, n > 0 ? n : 0);
+}

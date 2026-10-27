@@ -15,6 +15,7 @@ let STATIONS = [];
 let current = null;          // the station being shown
 let rows = [];               // high/low predictions
 let hourly = [];             // NOAA's harmonic series, when the station has one
+let month = [];              // high/low for the next 30 days, for the daylight lows
 let dayIndex = null;
 
 // ---- data ---------------------------------------------------------------------------
@@ -24,10 +25,10 @@ const ymd = (d) => `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(
 // A window around today, wide enough that "next tide" always has an answer and the day
 // strip has somewhere to go. Asked for in the STATION's local time (lst_ldt): NOAA applies
 // each station's DST itself, which is the one thing this page must not try to redo.
-function predictionUrl(station, interval) {
+function predictionUrl(station, interval, ahead = 5) {
   const now = new Date();
   const from = new Date(now.getTime() - 86400000);
-  const to = new Date(now.getTime() + 5 * 86400000);
+  const to = new Date(now.getTime() + ahead * 86400000);
   const q = new URLSearchParams({
     product: 'predictions', application: 'tide-table',
     begin_date: ymd(from), end_date: ymd(to),
@@ -240,6 +241,40 @@ function render() {
 
   out.append(el('h3', null, `Tides on ${day.date}`));
   out.append(table(day));
+  if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
+}
+
+// The month's lowest daylight lows. The day strip covers six days; the tide a tidepooler
+// wants is usually outside them (37 of 40 sampled stations), so it gets its own list.
+function lows(list) {
+  const sec = el('section', 'lows');
+  sec.append(el('h3', null, 'Lowest daylight tides, next 30 days'));
+  if (!list.length) {
+    sec.append(el('p', 'note', 'No low tide falls between sunrise and sunset here in the next 30 days.'));
+    return sec;
+  }
+  sec.append(el('p', 'note', 'Low water between sunrise and sunset at the station, lowest first — the ones worth going out on the rocks for. Below 0 ft is a minus tide.'));
+  const t = el('table');
+  const head = el('tr');
+  for (const [h, cls] of [['Day', ''], ['Time', 'num'], ['Height', 'num']]) {
+    const th = el('th', cls, h);
+    if (cls) th.style.textAlign = 'right';
+    head.append(th);
+  }
+  const thead = el('thead');
+  thead.append(head);
+  t.append(thead);
+  const body = el('tbody');
+  for (const r of list) {
+    const tr = el('tr');
+    tr.append(el('td', null, new Date(`${T.dayOf(r.t)}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' })));
+    tr.append(el('td', 'num', T.clockText(r.t)));
+    tr.append(el('td', r.v < 0 ? 'num minus' : 'num', T.heightText(r.v)));
+    body.append(tr);
+  }
+  t.append(body);
+  sec.append(t);
+  return sec;
 }
 
 // ---- choosing a station -----------------------------------------------------------------
@@ -247,6 +282,7 @@ function render() {
 async function show(station) {
   current = station;
   dayIndex = null;      // resolved to today's index in render(), once the days are known
+  month = [];
   $('#hits').replaceChildren();
   $('#q').value = station.name;
   message(`Loading tides for ${station.name}…`);
@@ -266,6 +302,12 @@ async function show(station) {
     url.searchParams.set('station', station.id);
     history.replaceState(null, '', url);
     render();
+    // The month is a second, larger request and the page is complete without it, so it
+    // renders after, and only if the reader has not moved on to another station meanwhile.
+    try {
+      const got = T.parseRows(await getJson(predictionUrl(station.id, 'hilo', 30)));
+      if (current === station) { month = got; render(); }
+    } catch { /* the list is a bonus; its failure leaves the page as it was */ }
   } catch (e) {
     message(`Could not reach NOAA: ${e.message}`, true);
   }
