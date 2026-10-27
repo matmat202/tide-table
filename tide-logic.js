@@ -205,6 +205,78 @@ export function parseHourly(payload) {
   return out;
 }
 
+// ---- what the water is doing now ----------------------------------------------------------
+//
+// A prediction is astronomy; the water also answers to wind, pressure and river flow, and
+// at a gauge NOAA publishes what it actually measured every six minutes. The gap between
+// the two is the thing a prediction cannot tell you: a storm surge, or a king tide running
+// higher than the table says. Measured over Sep 26 - Oct 26 2026 at 30 random gauges
+// (state/scratch/tide-now/lever.py), see BRIEF.md for the numbers.
+
+// Six-minute water levels. Same row shape as the hourly predictions and the same rule: a
+// reading that is not a number is dropped, not drawn. NOAA marks a reading it could not
+// take with v:"" -- Number("") is 0, so the empty string must be refused explicitly or a
+// missing reading becomes a tide at datum.
+export function parseObserved(payload) {
+  const raw = (payload && payload.data) || [];
+  const out = [];
+  for (const r of raw) {
+    if (!r || typeof r.t !== 'string') continue;
+    const t = r.t.trim();
+    if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(t)) continue;
+    if (typeof r.v !== 'string' || r.v.trim() === '') continue;
+    const v = Number(r.v);
+    if (!Number.isFinite(v)) continue;
+    out.push({ t, v });
+  }
+  out.sort((a, b) => (a.t < b.t ? -1 : a.t > b.t ? 1 : 0));
+  return out;
+}
+
+// Observed minus predicted, averaged over the latest `span` readings that have a
+// prediction at the same minute. Averaged because one six-minute reading carries waves
+// and seiche; an hour of them is the water's level. Null when nothing pairs up -- a gauge
+// that is down is not a gauge reading zero.
+export function departure(observed, predicted, span = 10) {
+  const p = new Map(predicted.map((r) => [r.t, r.v]));
+  const pairs = observed.filter((r) => p.has(r.t));
+  if (!pairs.length) return null;
+  const last = pairs.slice(-span);
+  const diff = last.reduce((a, r) => a + (r.v - p.get(r.t)), 0) / last.length;
+  const now = last[last.length - 1];
+  return { t: now.t, v: now.v, predicted: p.get(now.t), diff, n: last.length };
+}
+
+// Within a quarter of a foot the honest word is 'as predicted': that is about the spread
+// of an ordinary calm day at most gauges, and calling 0.1 ft 'above' would be noise.
+export const CALM_FT = 0.25;
+export function departureText(diff) {
+  if (!Number.isFinite(diff)) return '';
+  if (Math.abs(diff) < CALM_FT) return 'about as predicted';
+  return `${Math.abs(diff).toFixed(1)} ft ${diff > 0 ? 'above' : 'below'} the prediction`;
+}
+
+// Water temperature: NOAA's `date=latest` returns one reading. Null on anything else.
+export function parseTemp(payload) {
+  const rows = parseObserved(payload);
+  return rows.length ? rows[rows.length - 1] : null;
+}
+
+// The gauge to read for a station: the station itself if it has one, else the nearest
+// gauge within `maxKm`. A surge is spread over tens of kilometres of coast, so a nearby
+// gauge says something true about the water here; a far one does not, and none is better
+// than a wrong one. `gauges` are stations carrying g:1.
+export function gaugeFor(station, gauges, maxKm = 40) {
+  if (!station) return null;
+  if (station.g) return { ...station, km: 0 };
+  let best = null;
+  for (const g of gauges) {
+    const km = distanceKm(station.lat, station.lng, g.lat, g.lng);
+    if (km <= maxKm && (!best || km < best.km || (km === best.km && g.id < best.id))) best = { ...g, km };
+  }
+  return best;
+}
+
 // ---- stations ----------------------------------------------------------------------------
 
 const R_KM = 6371;

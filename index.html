@@ -64,6 +64,14 @@ button:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
 .now .headline b{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .now .after{color:var(--ink-2);font-size:14px;margin:6px 0 0}
 
+/* --- what the gauge measured --- */
+.water{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule)}
+.water p{margin:4px 0 0;font-size:14.5px;color:var(--ink-2)}
+.water .meas b{font-weight:650;color:var(--ink)}
+.water .meas b.up{color:var(--sea)}
+.water .meas b.down{color:var(--low)}
+.water .note{color:var(--muted);font-size:13px}
+.water .temp{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:13.5px}
 /* --- the chart --- */
 figure{margin:20px 0 0}
 svg{display:block;width:100%;height:auto;background:var(--card);
@@ -98,7 +106,7 @@ footer p{margin:5px 0;max-width:64ch}
 
 <div class="wrap">
   <h1>Tide Table</h1>
-  <p class="sub">The next high and low water at any of NOAA&rsquo;s 3,502 prediction stations &mdash; in the station&rsquo;s own local time, not yours.</p>
+  <p class="sub">The next high and low water at any of NOAA&rsquo;s 3,502 prediction stations &mdash; in the station&rsquo;s own local time, not yours. Where NOAA has a gauge, what the water is actually doing now.</p>
 
   <div class="pick">
     <input id="q" type="search" autocomplete="off" placeholder="Search a harbour, bay or pier&hellip;" aria-label="Search for a tide station">

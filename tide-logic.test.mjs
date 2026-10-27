@@ -296,5 +296,57 @@ eq('Utqiagvik midsummer is polar day', L.sunWall('2026-06-21', 71.29, -156.79, '
   eq('polar night: no low is in daylight', L.daylightLows([r('2026-12-21 12:00', 0.2)], north, '2026-12-20 00:00').length, 0);
 }
 
+// --- what the water is doing now, against Python's answer --------------------------------
+for (const g of facts.gauges) {
+  const obs = L.parseObserved(load(g.id, 'water_level'));
+  const pred = L.parseHourly(load(g.id, 'predictions'));
+  const d = L.departure(obs, pred);
+  eq(`gauge ${g.id}: latest paired reading matches Python`, [d.t, d.v, d.predicted, d.n], [g.t, g.v, g.predicted, g.n]);
+  near(`gauge ${g.id}: departure matches Python`, d.diff, g.diff, 1e-9);
+  eq(`gauge ${g.id}: temperature matches Python`, L.parseTemp(load(g.id, 'water_temperature')), g.temp);
+}
+{
+  const sf = facts.gauges.find((g) => g.id === '9414290');
+  ok('SF was running high on Oct 20 (the fixture is not a calm one)', sf.diff > 1);
+  eq('a sensor that is down reads null, not zero', L.parseTemp({ error: { message: 'No data was found.' } }), null);
+  const o = (t, v) => ({ t, v });
+  // NOAA writes a missing reading as v:"" and Number("") is 0: a gap must not become datum.
+  eq('a blank reading is dropped, not read as 0 ft', L.parseObserved({ data: [{ t: '2026-10-20 00:00', v: '' }, { t: '2026-10-20 00:06', v: ' ' }, { t: '2026-10-20 00:12', v: 'x' }, { t: '2026-10-20 00:18', v: '1.5' }] }), [o('2026-10-20 00:18', 1.5)]);
+  eq('a reading at a malformed time is dropped', L.parseObserved({ data: [{ t: '20 Oct 00:00', v: '1' }] }), []);
+  eq('observed rows come out in time order', L.parseObserved({ data: [{ t: '2026-10-20 00:06', v: '2' }, { t: '2026-10-20 00:00', v: '1' }, { t: '2026-10-20 00:12', v: '3' }] }).map((r) => r.t), ['2026-10-20 00:00', '2026-10-20 00:06', '2026-10-20 00:12']);
+  // Departure: only readings with a prediction at the same minute count, the latest `span`.
+  const pr = [o('00:00', 1), o('00:06', 1), o('00:12', 1), o('00:18', 1)];
+  const ob = [o('00:00', 9), o('00:06', 2), o('00:12', 3), o('00:15', 50), o('00:24', 50)];
+  const d = L.departure(ob, pr, 2);
+  eq('departure: unpaired readings ignored, last span averaged', [d.t, d.v, d.predicted, d.n, d.diff], ['00:12', 3, 1, 2, 1.5]);
+  eq('departure: a gauge with no paired reading is null, not zero', L.departure([o('00:03', 1)], pr), null);
+  eq('departure: the latest reading is reported, not the first', L.departure(ob, pr).t, '00:12');
+  near('departure: below is negative', L.departure([o('00:00', 0.5)], pr).diff, -0.5, 1e-12);
+  eq('words: calm', L.departureText(0.2), 'about as predicted');
+  eq('words: calm below', L.departureText(-0.24), 'about as predicted');
+  eq('words: just over calm', L.departureText(0.25), '0.3 ft above the prediction');
+  eq('words: above', L.departureText(1.16), '1.2 ft above the prediction');
+  eq('words: below', L.departureText(-0.6), '0.6 ft below the prediction');
+  eq('words: no number, no words', L.departureText(NaN), '');
+  // Which gauge to read.
+  const st = (id, lat, lng, g) => ({ id, lat, lng, ...(g ? { g: 1 } : {}) });
+  const gs = [st('A', 37.0, -122.0, 1), st('B', 37.2, -122.0, 1), st('C', 38.0, -122.0, 1)];
+  eq('a gauge station reads itself', L.gaugeFor(st('B', 37.2, -122.0, 1), gs).id, 'B');
+  eq('a gauge station reads itself even off the list', L.gaugeFor(st('D', 37.01, -122.0, 1), gs).id, 'D');
+  eq('a gauge station is 0 km from itself', L.gaugeFor(st('B', 37.2, -122.0, 1), gs).km, 0);
+  eq('a station without one reads the nearest', L.gaugeFor(st('X', 37.15, -122.0), gs).id, 'B');
+  eq('nearest, from the other side', L.gaugeFor(st('X', 37.05, -122.0), gs).id, 'A');
+  near('and says how far', L.gaugeFor(st('X', 37.15, -122.0), gs).km, 5.56, 0.05);
+  eq('no gauge within reach is null, not a far one', L.gaugeFor(st('X', 40.0, -122.0), gs), null);
+  eq('the reach is 40 km: 39 km counts', L.gaugeFor(st('X', 37.0 - 39 / 111.195, -122.0), gs).id, 'A');
+  eq('the reach is 40 km: 41 km does not', L.gaugeFor(st('X', 37.0 - 41 / 111.195, -122.0), gs), null);
+  // Against the shipped list: every flagged gauge is a real station, and temperature only on gauges.
+  const shipped = JSON.parse(readFileSync(here(pick('./data/stations.json', 'site/data/stations.json')), 'utf8')).stations;
+  const flagged = shipped.filter((s) => s.g);
+  ok('shipped list carries the gauges (238 on 2026-10-27)', flagged.length >= 200, `got ${flagged.length}`);
+  ok('temperature only where there is a gauge', shipped.every((s) => !s.w || s.g));
+  ok('San Francisco is a gauge', shipped.find((s) => s.id === '9414290').g === 1);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

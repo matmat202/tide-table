@@ -12,11 +12,13 @@ const el = (tag, cls, text) => {
 };
 
 let STATIONS = [];
+let GAUGES = [];             // stations where NOAA also measures the water (g:1)
 let current = null;          // the station being shown
 let rows = [];               // high/low predictions
 let hourly = [];             // NOAA's harmonic series, when the station has one
 let month = [];              // high/low for the next 30 days, for the daylight lows
 let dayIndex = null;
+let water = null;            // what the nearest gauge measured: { gauge, dep, temp }
 
 // ---- data ---------------------------------------------------------------------------
 
@@ -35,6 +37,18 @@ function predictionUrl(station, interval, ahead = 5) {
     datum: 'MLLW', station, time_zone: 'lst_ldt', units: 'english',
     format: 'json', interval,
   });
+  return `${API}?${q}`;
+}
+
+// The last two hours at a gauge, in its own local time: measured levels, or the six-minute
+// prediction for the same minutes, which is what the measurement is paired against.
+function gaugeUrl(id, product) {
+  const q = new URLSearchParams({
+    product, application: 'tide-table', station: id, range: '2',
+    datum: 'MLLW', time_zone: 'lst_ldt', units: 'english', format: 'json',
+  });
+  if (product === 'predictions') q.set('interval', '6');
+  if (product === 'water_temperature') { q.delete('range'); q.delete('datum'); q.set('date', 'latest'); }
   return `${API}?${q}`;
 }
 
@@ -59,6 +73,7 @@ function headline(station, now) {
   const { next, prev } = T.nextTide(rows, now);
   if (!next) {
     box.append(el('p', 'headline', 'No further tides in the fetched window.'));
+    if (water) box.append(measured(water));
     return box;
   }
   const kind = next.type === T.H ? 'High' : 'Low';
@@ -74,6 +89,40 @@ function headline(station, now) {
   if (prev) bits.push(`last ${prev.type === T.H ? 'high' : 'low'} was ${T.clockText(prev.t)}`);
   if (after) bits.push(`then ${after.type === T.H ? 'high' : 'low'} at ${T.clockText(after.t)}`);
   box.append(el('p', 'after', bits.join(' · ')));
+  if (water) box.append(measured(water));
+  return box;
+}
+
+// A reading more than this old is said to be old rather than passed off as 'now'.
+const STALE_MIN = 90;
+
+function ago(gauge, t) {
+  const m = T.wallMinutes(T.wallNow(new Date(), gauge.tz)) - T.wallMinutes(t);
+  return Number.isFinite(m) ? m : 0;
+}
+
+// What the water is actually doing: the gap between the gauge and the prediction, which is
+// the one thing a tide table cannot know in advance.
+function measured({ gauge, dep, temp }) {
+  const box = el('div', 'water');
+  const where = gauge.km > 0
+    ? `At ${gauge.name}, the nearest NOAA gauge (${gauge.km < 10 ? gauge.km.toFixed(1) : Math.round(gauge.km)} km away)`
+    : 'At this station\'s NOAA gauge';
+  if (dep) {
+    const p = el('p', 'meas');
+    const calm = Math.abs(dep.diff) < T.CALM_FT;
+    p.append(document.createTextNode(`${where}, the water measured ${T.heightText(dep.v)} at ${T.clockText(dep.t)}: `));
+    p.append(el('b', calm ? null : dep.diff > 0 ? 'up' : 'down', T.departureText(dep.diff)));
+    p.append(document.createTextNode('.'));
+    box.append(p);
+    if (!calm) {
+      box.append(el('p', 'note', `Wind, air pressure and river flow move the water as well as the moon. While this lasts, tides ${gauge.km > 0 ? 'nearby' : 'here'} run about ${Math.abs(dep.diff).toFixed(1)} ft ${dep.diff > 0 ? 'higher' : 'lower'} than the table below.`));
+    }
+    if (ago(gauge, dep.t) > STALE_MIN) box.append(el('p', 'note', `That is the gauge's latest reading; it has not reported since ${T.clockText(dep.t)}.`));
+  } else {
+    box.append(el('p', 'note', `${where} has no reading for the last two hours.`));
+  }
+  if (temp && ago(gauge, temp.t) <= STALE_MIN) box.append(el('p', 'temp', `Water ${temp.v.toFixed(1)} °F (${((temp.v - 32) / 1.8).toFixed(1)} °C) at ${T.clockText(temp.t)}.`));
   return box;
 }
 
@@ -283,6 +332,7 @@ async function show(station) {
   current = station;
   dayIndex = null;      // resolved to today's index in render(), once the days are known
   month = [];
+  water = null;
   $('#hits').replaceChildren();
   $('#q').value = station.name;
   message(`Loading tides for ${station.name}…`);
@@ -308,9 +358,27 @@ async function show(station) {
       const got = T.parseRows(await getJson(predictionUrl(station.id, 'hilo', 30)));
       if (current === station) { month = got; render(); }
     } catch { /* the list is a bonus; its failure leaves the page as it was */ }
+    await readGauge(station);
   } catch (e) {
     message(`Could not reach NOAA: ${e.message}`, true);
   }
+}
+
+// The gauge is a bonus too: most stations are not one, and a gauge can be down. Nothing
+// here may take the page down; the worst case is that the block is simply absent.
+async function readGauge(station) {
+  const gauge = T.gaugeFor(station, GAUGES);
+  if (!gauge) return;
+  try {
+    const [obs, pred] = await Promise.all([
+      getJson(gaugeUrl(gauge.id, 'water_level')), getJson(gaugeUrl(gauge.id, 'predictions'))]);
+    const dep = T.departure(T.parseObserved(obs), T.parseHourly(pred));
+    let temp = null;
+    if (gauge.w) {
+      try { temp = T.parseTemp(await getJson(gaugeUrl(gauge.id, 'water_temperature'))); } catch { /* none */ }
+    }
+    if (current === station) { water = { gauge, dep, temp }; render(); }
+  } catch { /* no block */ }
 }
 
 function showHits(list) {
@@ -354,6 +422,7 @@ $('#locate').addEventListener('click', () => {
 (async () => {
   try {
     STATIONS = (await getJson('data/stations.json')).stations;
+    GAUGES = STATIONS.filter((s) => s.g);
   } catch {
     message('Could not load the station list.', true);
     return;

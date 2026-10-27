@@ -1,4 +1,27 @@
 {
+ "gauges": [
+  {
+   "diff": 1.1136,
+   "id": "9414290",
+   "n": 10,
+   "predicted": 1.006,
+   "t": "2026-10-20 03:00",
+   "temp": null,
+   "v": 2.157
+  },
+  {
+   "diff": 1.3226,
+   "id": "9410840",
+   "n": 10,
+   "predicted": 1.885,
+   "t": "2026-10-20 03:00",
+   "temp": {
+    "t": "2026-10-20 03:00",
+    "v": 72.1
+   },
+   "v": 3.235
+  }
+ ],
  "note": "Reference answers recomputed in Python from test/noaa/. curve_error scores the page's high/low interpolation against NOAA's own harmonic hourly predictions.",
  "stations": [
   {
