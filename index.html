@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tide Table</title>
+<meta name="description" content="The next high and low tide at any of NOAA's 3,502 prediction stations, with the day's curve, in the station's own local time.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Tide Table">
+<meta property="og:description" content="The next high and low tide at any of NOAA's 3,502 prediction stations, with the day's curve.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b6a8f'/%3E%3Cpath d='M4 13q4-4 8 0t8 0 8 0' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M4 21q4-4 8 0t8 0 8 0' fill='none' stroke='%239fd3e6' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --paper:#f2f5f7; --card:#fff; --sunk:#e7edf1; --rule:#cfdae1;
+  --ink:#10252f; --ink-2:#3b545f; --muted:#566c77;
+  --sea:#0b6a8f; --sea-2:#9fd3e6; --high:#0b6a8f; --low:#8a5a12; --alert:#9a2b20;
+  --f-head:ui-serif,Georgia,"Times New Roman",serif;
+  --f-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-num:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0b1418; --card:#121f25; --sunk:#172830; --rule:#2a3d47;
+  --ink:#e8f1f5; --ink-2:#b2c6ce; --muted:#8aa2ac;
+  --sea:#5cc0e8; --sea-2:#1d4e63; --high:#5cc0e8; --low:#e0b169; --alert:#e3796c;
+}}
+:root[data-theme="dark"]{
+  --paper:#0b1418; --card:#121f25; --sunk:#172830; --rule:#2a3d47;
+  --ink:#e8f1f5; --ink-2:#b2c6ce; --muted:#8aa2ac;
+  --sea:#5cc0e8; --sea-2:#1d4e63; --high:#5cc0e8; --low:#e0b169; --alert:#e3796c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);
+  font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 56px}
+h1{font-family:var(--f-head);font-size:clamp(26px,6vw,34px);margin:0 0 2px;letter-spacing:-.015em}
+.sub{color:var(--muted);font-size:13.5px;margin:0 0 18px}
+
+/* --- picking a station --- */
+.pick{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
+#q{flex:1 1 220px;min-width:0;font:inherit;padding:10px 12px;border-radius:8px;
+  border:1px solid var(--rule);background:var(--card);color:var(--ink)}
+#q:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
+button{font:inherit;padding:10px 14px;border-radius:8px;border:1px solid var(--rule);
+  background:var(--card);color:var(--ink);cursor:pointer}
+button:hover{background:var(--sunk)}
+button:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
+#hits{list-style:none;margin:8px 0 0;padding:0;border:1px solid var(--rule);border-radius:8px;
+  background:var(--card);overflow:hidden}
+#hits:empty{display:none}
+#hits li{border-bottom:1px solid var(--rule)}
+#hits li:last-child{border-bottom:none}
+#hits button{width:100%;text-align:left;border:none;border-radius:0;background:none;padding:9px 12px}
+#hits .where{color:var(--muted);font-size:12.5px}
+
+/* --- the headline --- */
+.now{margin-top:20px;padding:16px;border-radius:10px;border:1px solid var(--rule);
+  background:var(--card);border-left:4px solid var(--sea)}
+.now h2{margin:0;font-family:var(--f-head);font-size:20px;font-weight:600}
+.now .station{color:var(--muted);font-size:13px;margin:0 0 8px}
+.now .headline{font-size:clamp(20px,4.6vw,25px);margin:0;letter-spacing:-.01em}
+.now .headline b{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.now .after{color:var(--ink-2);font-size:14px;margin:6px 0 0}
+
+/* --- the chart --- */
+figure{margin:20px 0 0}
+svg{display:block;width:100%;height:auto;background:var(--card);
+  border:1px solid var(--rule);border-radius:10px}
+figcaption{color:var(--muted);font-size:12.5px;margin-top:7px}
+
+/* --- the table --- */
+h3{font-family:var(--f-head);font-size:17px;margin:24px 0 6px;padding-bottom:5px;
+  border-bottom:2px solid var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;padding:0 0 6px}
+td{padding:9px 0;border-bottom:1px solid var(--rule);
+  font-family:var(--f-num);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+td.kind{font-family:var(--f-body)}
+td.num{text-align:right}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;border:1px solid currentColor}
+.tag.h{color:var(--high)} .tag.l{color:var(--low)}
+.days{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}
+.days button[aria-current="true"]{background:var(--sea);color:var(--paper);border-color:var(--sea)}
+.msg{margin-top:18px;padding:12px 14px;border-radius:8px;background:var(--sunk);
+  color:var(--ink-2);font-size:14px}
+.msg.bad{border-left:4px solid var(--alert)}
+footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);
+  color:var(--muted);font-size:12.5px}
+footer a{color:var(--sea)}
+footer p{margin:5px 0;max-width:64ch}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>Tide Table</h1>
+  <p class="sub">The next high and low water at any of NOAA&rsquo;s 3,502 prediction stations &mdash; in the station&rsquo;s own local time, not yours.</p>
+
+  <div class="pick">
+    <input id="q" type="search" autocomplete="off" placeholder="Search a harbour, bay or pier&hellip;" aria-label="Search for a tide station">
+    <button id="locate" type="button">Nearest me</button>
+  </div>
+  <ul id="hits" aria-label="Matching stations"></ul>
+
+  <div id="out" aria-live="polite"></div>
+
+  <footer>
+    <p id="src">Predictions from <a href="https://tidesandcurrents.noaa.gov/">NOAA CO-OPS</a>, fetched live for the station you pick and shown in its own local time. Heights are above MLLW (mean lower low water), in feet.</p>
+    <p>Where NOAA publishes an hourly harmonic series, the curve is that series. For subordinate stations, which have only high and low water, the curve is interpolated between them &mdash; a shape, not a prediction.</p>
+    <p>Tide predictions are astronomical. Real water level also answers to wind and barometric pressure, so do not navigate on this.</p>
+  </footer>
+</div>
+<script type="module" src="app.js"></script>

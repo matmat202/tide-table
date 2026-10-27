@@ -1,0 +1,301 @@
+{
+ "note": "Reference answers recomputed in Python from test/noaa/. curve_error scores the page's high/low interpolation against NOAA's own harmonic hourly predictions.",
+ "stations": [
+  {
+   "curve_error": {
+    "max_ft": 0.1814,
+    "mean_ft": 0.0448,
+    "n": 62
+   },
+   "days": [
+    {
+     "count": 4,
+     "date": "2026-03-01",
+     "range_ft": 6.948
+    },
+    {
+     "count": 4,
+     "date": "2026-03-02",
+     "range_ft": 6.6
+    },
+    {
+     "count": 3,
+     "date": "2026-03-03",
+     "range_ft": 5.978
+    }
+   ],
+   "first": {
+    "t": "2026-03-01 03:26",
+    "type": "L",
+    "v": 2.217
+   },
+   "hilo_rows": 11,
+   "hourly_rows": 72,
+   "id": "9414290",
+   "last": {
+    "t": "2026-03-03 17:20",
+    "type": "L",
+    "v": -0.19
+   },
+   "name": "San Francisco",
+   "next": {
+    "t": "2026-03-01 16:09",
+    "type": "L",
+    "v": -0.764
+   },
+   "prev": {
+    "t": "2026-03-01 09:28",
+    "type": "H",
+    "v": 6.184
+   },
+   "probe": "2026-03-01 09:30",
+   "regime": "mixed semidiurnal"
+  },
+  {
+   "curve_error": {
+    "max_ft": 6.0582,
+    "mean_ft": 1.6671,
+    "n": 67
+   },
+   "days": [
+    {
+     "count": 4,
+     "date": "2026-03-01",
+     "range_ft": 31.037
+    },
+    {
+     "count": 4,
+     "date": "2026-03-02",
+     "range_ft": 33.172
+    },
+    {
+     "count": 4,
+     "date": "2026-03-03",
+     "range_ft": 33.77
+    }
+   ],
+   "first": {
+    "t": "2026-03-01 00:08",
+    "type": "L",
+    "v": -1.121
+   },
+   "hilo_rows": 12,
+   "hourly_rows": 72,
+   "id": "9455920",
+   "last": {
+    "t": "2026-03-03 19:13",
+    "type": "H",
+    "v": 31.362
+   },
+   "name": "Anchorage",
+   "next": {
+    "t": "2026-03-01 12:22",
+    "type": "L",
+    "v": 4.078
+   },
+   "prev": {
+    "t": "2026-03-01 06:08",
+    "type": "H",
+    "v": 29.315
+   },
+   "probe": "2026-03-01 09:30",
+   "regime": "great range"
+  },
+  {
+   "curve_error": {
+    "max_ft": 0.5832,
+    "mean_ft": 0.1484,
+    "n": 69
+   },
+   "days": [
+    {
+     "count": 4,
+     "date": "2026-03-01",
+     "range_ft": 10.745
+    },
+    {
+     "count": 4,
+     "date": "2026-03-02",
+     "range_ft": 11.147
+    },
+    {
+     "count": 4,
+     "date": "2026-03-03",
+     "range_ft": 11.222
+    }
+   ],
+   "first": {
+    "t": "2026-03-01 02:58",
+    "type": "L",
+    "v": 0.536
+   },
+   "hilo_rows": 12,
+   "hourly_rows": 72,
+   "id": "8443970",
+   "last": {
+    "t": "2026-03-03 23:28",
+    "type": "H",
+    "v": 10.035
+   },
+   "name": "Boston",
+   "next": {
+    "t": "2026-03-01 15:41",
+    "type": "L",
+    "v": -0.41
+   },
+   "prev": {
+    "t": "2026-03-01 09:18",
+    "type": "H",
+    "v": 10.335
+   },
+   "probe": "2026-03-01 09:30",
+   "regime": "semidiurnal"
+  },
+  {
+   "curve_error": {
+    "max_ft": 0.1142,
+    "mean_ft": 0.0397,
+    "n": 64
+   },
+   "days": [
+    {
+     "count": 2,
+     "date": "2026-03-01",
+     "range_ft": 1.458
+    },
+    {
+     "count": 2,
+     "date": "2026-03-02",
+     "range_ft": 1.052
+    },
+    {
+     "count": 2,
+     "date": "2026-03-03",
+     "range_ft": 0.593
+    }
+   ],
+   "first": {
+    "t": "2026-03-01 07:49",
+    "type": "L",
+    "v": -0.496
+   },
+   "hilo_rows": 6,
+   "hourly_rows": 72,
+   "id": "8729840",
+   "last": {
+    "t": "2026-03-03 23:54",
+    "type": "H",
+    "v": 0.54
+   },
+   "name": "Pensacola",
+   "next": {
+    "t": "2026-03-01 21:55",
+    "type": "H",
+    "v": 0.962
+   },
+   "prev": {
+    "t": "2026-03-01 07:49",
+    "type": "L",
+    "v": -0.496
+   },
+   "probe": "2026-03-01 09:30",
+   "regime": "diurnal \u2014 one high and one low a day"
+  },
+  {
+   "curve_error": {
+    "max_ft": 0.0517,
+    "mean_ft": 0.0127,
+    "n": 68
+   },
+   "days": [
+    {
+     "count": 4,
+     "date": "2026-03-01",
+     "range_ft": 2.273
+    },
+    {
+     "count": 4,
+     "date": "2026-03-02",
+     "range_ft": 2.144
+    },
+    {
+     "count": 4,
+     "date": "2026-03-03",
+     "range_ft": 2.016
+    }
+   ],
+   "first": {
+    "t": "2026-03-01 02:56",
+    "type": "H",
+    "v": 2.078
+   },
+   "hilo_rows": 12,
+   "hourly_rows": 72,
+   "id": "1612340",
+   "last": {
+    "t": "2026-03-03 22:17",
+    "type": "L",
+    "v": -0.042
+   },
+   "name": "Honolulu",
+   "next": {
+    "t": "2026-03-01 09:49",
+    "type": "L",
+    "v": -0.126
+   },
+   "prev": {
+    "t": "2026-03-01 02:56",
+    "type": "H",
+    "v": 2.078
+   },
+   "probe": "2026-03-01 09:30",
+   "regime": "small range"
+  },
+  {
+   "curve_error": null,
+   "days": [
+    {
+     "count": 3,
+     "date": "2026-03-01",
+     "range_ft": 1.482
+    },
+    {
+     "count": 4,
+     "date": "2026-03-02",
+     "range_ft": 1.239
+    },
+    {
+     "count": 4,
+     "date": "2026-03-03",
+     "range_ft": 1.048
+    }
+   ],
+   "first": {
+    "t": "2026-03-01 07:39",
+    "type": "L",
+    "v": -0.313
+   },
+   "hilo_rows": 11,
+   "hourly_rows": 0,
+   "id": "9501801",
+   "last": {
+    "t": "2026-03-03 21:19",
+    "type": "L",
+    "v": 0.592
+   },
+   "name": "Alvarado (subordinate, no hourly series)",
+   "next": {
+    "t": "2026-03-01 16:45",
+    "type": "H",
+    "v": 1.169
+   },
+   "prev": {
+    "t": "2026-03-01 07:39",
+    "type": "L",
+    "v": -0.313
+   },
+   "probe": "2026-03-01 09:30",
+   "regime": "no harmonic hourly"
+  }
+ ]
+}
