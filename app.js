@@ -52,10 +52,25 @@ function gaugeUrl(id, product) {
   return `${API}?${q}`;
 }
 
-async function getJson(url) {
+async function fetchJson(url) {
   const r = await fetch(url);
   if (!r.ok) throw new Error(`NOAA returned ${r.status}`);
   return r.json();
+}
+
+// Requests started before the station list is in. Each is taken once, by the first
+// getJson for the same URL; a miss (a different date, a different station) just fetches.
+const early = new Map();
+function prefetch(url) {
+  const p = fetchJson(url);
+  p.catch(() => {});   // one nobody takes must not log an unhandled rejection
+  early.set(url, p);
+}
+function getJson(url) {
+  const p = early.get(url);
+  if (!p) return fetchJson(url);
+  early.delete(url);
+  return p;
 }
 
 // ---- rendering -----------------------------------------------------------------------
@@ -337,6 +352,9 @@ async function show(station) {
   $('#q').value = station.name;
   message(`Loading tides for ${station.name}…`);
   try {
+    // Both asked for at once: each is a full round trip to NOAA, and in series the hourly
+    // one held the first draw back by ~0.6 s on a phone link (site-speed, 2026-10-28).
+    const hourlyP = getJson(predictionUrl(station.id, 'h')).then(T.parseHourly).catch(() => []);
     const hiloRaw = await getJson(predictionUrl(station.id, 'hilo'));
     const err = T.errorOf(hiloRaw);
     if (err) { message(`NOAA could not predict this station: ${err}`, true); return; }
@@ -344,10 +362,7 @@ async function show(station) {
     if (!rows.length) { message('NOAA returned no high or low water for this station.', true); return; }
     // The hourly series is a bonus: subordinate stations have none, and the page is fully
     // usable without it, so its failure must never take the page down.
-    hourly = [];
-    try {
-      hourly = T.parseHourly(await getJson(predictionUrl(station.id, 'h')));
-    } catch { /* fall back to the interpolated curve */ }
+    hourly = await hourlyP;   // [] falls back to the interpolated curve
     const url = new URL(location.href);
     url.searchParams.set('station', station.id);
     history.replaceState(null, '', url);
@@ -422,6 +437,14 @@ $('#locate').addEventListener('click', () => {
 // ---- start -------------------------------------------------------------------------------
 
 (async () => {
+  // The start station's id is known before the 470 KB list is: it is in the URL, or it is
+  // San Francisco. Its two NOAA requests go out now, alongside the list, instead of after
+  // it -- on a phone link that was the difference between 5.6 s and ~2.5 s to the answer.
+  const startId = new URL(location.href).searchParams.get('station') || '9414290';
+  if (/^[0-9A-Z]{5,10}$/.test(startId)) {
+    prefetch(predictionUrl(startId, 'h'));
+    prefetch(predictionUrl(startId, 'hilo'));
+  }
   try {
     STATIONS = (await getJson('data/stations.json')).stations;
     GAUGES = STATIONS.filter((s) => s.g);
