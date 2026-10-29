@@ -43,6 +43,9 @@ h1{font-family:var(--f-head);font-size:clamp(26px,6vw,34px);margin:0 0 2px;lette
 
 .lows{margin-top:22px}
 .lows .note{color:var(--muted);font-size:13px;margin:8px 0 8px}
+.currents{margin-top:22px}
+.currents .note{color:var(--muted);font-size:13px;margin:8px 0 8px}
+.currents .next{margin:8px 0 10px}
 td.minus{color:var(--low);font-weight:600}
 /* --- picking a station --- */
 .pick{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
@@ -98,6 +101,7 @@ td.num{text-align:right}
 .tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:2px 6px;border-radius:3px;border:1px solid currentColor}
 .tag.h{color:var(--high)} .tag.l{color:var(--low)}
+.tag.flood{color:var(--high)} .tag.ebb{color:var(--low)} .tag.slack{color:var(--ink-2)}
 .days{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}
 .days button[aria-current="true"]{background:var(--sea);color:var(--paper);border-color:var(--sea)}
 .msg{margin-top:18px;padding:12px 14px;border-radius:8px;background:var(--sunk);
@@ -123,7 +127,7 @@ footer p{margin:5px 0;max-width:64ch}
   <div id="out" aria-live="polite"></div>
 
   <footer>
-    <p id="src">Predictions from <a href="https://tidesandcurrents.noaa.gov/">NOAA CO-OPS</a>, fetched live for the station you pick and shown in its own local time. Heights are above MLLW (mean lower low water), in feet.</p>
+    <p id="src">Predictions from <a href="https://tidesandcurrents.noaa.gov/">NOAA CO-OPS</a>, fetched live for the station you pick and shown in its own local time. Heights are above MLLW (mean lower low water), in feet. Currents are in knots, from NOAA's nearest current prediction station within 15 km, where there is one.</p>
     <p>Where NOAA publishes an hourly harmonic series, the curve is that series. For subordinate stations, which have only high and low water, the curve is interpolated between them &mdash; a shape, not a prediction.</p>
     <p>Tide predictions are astronomical. Real water level also answers to wind and barometric pressure, so do not navigate on this.</p>
   </footer>

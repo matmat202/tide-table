@@ -538,5 +538,66 @@ ok('the sun grid spans the year and both polar cases',
     agree === facts.sun.length, wrong.join(' | '));
 }
 
+// --- tidal currents (tide-currents) -------------------------------------------------------
+for (const st of facts.currents) {
+  const rows = L.parseCurrents(load(st.id, 'currents'));
+  eq(`currents at ${st.id} read as Python reads them`, rows, st.rows);
+  for (const [now, want] of Object.entries(st.next)) {
+    eq(`next slack/flood/ebb at ${st.id} from ${now}`, L.nextCurrents(rows, now), want);
+  }
+}
+{
+  const gg = facts.currents[0].rows;
+  ok('the fixture has all three kinds', ['slack', 'flood', 'ebb'].every((k) => gg.some((r) => r.type === k)));
+  ok('an ebb speed is positive', gg.filter((r) => r.type === 'ebb').every((r) => r.kn > 0));
+  const row = (o) => ({ current_predictions: { cp: [o] } });
+  const good = { Type: 'flood', Time: '2026-03-01 05:00', Velocity_Major: 2.5, meanFloodDir: 61, meanEbbDir: 239 };
+  eq('a good flood row', L.parseCurrents(row(good)), [{ t: '2026-03-01 05:00', type: 'flood', kn: 2.5, dir: 61 }]);
+  eq('an ebb runs toward the ebb heading, unsigned',
+    L.parseCurrents(row({ ...good, Type: 'ebb', Velocity_Major: -1.85 })), [{ t: '2026-03-01 05:00', type: 'ebb', kn: 1.85, dir: 239 }]);
+  eq('slack has no heading', L.parseCurrents(row({ ...good, Type: 'slack', Velocity_Major: -0.01 }))[0].dir, null);
+  eq('an unknown type is dropped', L.parseCurrents(row({ ...good, Type: 'max' })), []);
+  eq('a bad time is dropped', L.parseCurrents(row({ ...good, Time: '2026-03-01T05:00' })), []);
+  eq('a missing speed is dropped, not read as slack', L.parseCurrents(row({ ...good, Velocity_Major: null })), []);
+  eq('a non-numeric speed is dropped', L.parseCurrents(row({ ...good, Velocity_Major: 'x' })), []);
+  eq('an error payload is no rows', L.parseCurrents({ error: { message: 'Currents predictions are not available' } }), []);
+  eq('no payload is no rows', L.parseCurrents(null), []);
+  eq('three rows out of order come back in order', L.parseCurrents({ current_predictions: { cp: [
+    { ...good, Time: '2026-03-01 09:00' }, { ...good, Time: '2026-03-01 01:00' }, { ...good, Time: '2026-03-01 05:00' },
+  ] } }).map((r) => r.t), ['2026-03-01 01:00', '2026-03-01 05:00', '2026-03-01 09:00']);
+  const n = L.nextCurrents([{ t: '2026-03-01 05:00', type: 'slack' }], '2026-03-01 05:00');
+  ok('a slack at now still counts as next', n.slack && n.slack.t === '2026-03-01 05:00');
+  eq('nothing after now is null', L.nextCurrents([{ t: '2026-03-01 05:00', type: 'slack' }], '2026-03-01 06:00').slack, null);
+
+  const c = (id, lat, lng) => ({ id, name: id, lat, lng });
+  const cs = [c('FAR', 37.5, -122.0), c('B', 37.05, -122.0), c('A', 37.1, -122.0)];
+  const tideSt = { lat: 37.0, lng: -122.0 };
+  eq('the nearest current station wins', L.currentFor(tideSt, cs).id, 'B');
+  ok('it carries its distance', Math.abs(L.currentFor(tideSt, cs).km - 5.56) < 0.05);
+  eq('none within 15 km is none', L.currentFor({ lat: 30, lng: -122 }, cs), null);
+  eq('15 km is the default bar', L.currentFor(tideSt, [c('E', 37.14, -122.0)]), null);
+  eq('a tie goes to the lower id', L.currentFor(tideSt, [c('Z', 37.05, -122.0), c('Y', 37.05, -122.0)]).id, 'Y');
+  eq('no station, no current', L.currentFor(null, cs), null);
+
+  eq('0 degrees is N', L.compass(0), 'N');
+  eq('61 degrees is ENE', L.compass(61), 'ENE');
+  eq('239 degrees is WSW', L.compass(239), 'WSW');
+  eq('225 degrees is SW', L.compass(225), 'SW');
+  eq('350 degrees is N', L.compass(350), 'N');
+  eq('348 degrees is NNW', L.compass(348), 'NNW');
+  eq('no heading is blank', L.compass(null), '');
+}
+
+{
+  const tides = [{ t: '2026-03-01 04:00', v: 5, type: 'H' }, { t: '2026-03-01 10:00', v: 1, type: 'L' }, { t: '2026-03-01 16:00', v: 5, type: 'H' }];
+  const o = L.slackOffset({ t: '2026-03-01 10:38' }, tides);
+  eq('slack 38 min after the low', [o.min, o.tide.type], [38, 'L']);
+  eq('slack before a high is negative', L.slackOffset({ t: '2026-03-01 15:10' }, tides).min, -50);
+  eq('the nearest tide wins, not the first', L.slackOffset({ t: '2026-03-01 15:00' }, [tides[2], tides[0], tides[1]]).tide.t, '2026-03-01 16:00');
+  eq('it crosses midnight', L.slackOffset({ t: '2026-03-02 00:20' }, [{ t: '2026-03-01 23:50', v: 1, type: 'L' }]).min, 30);
+  eq('no tides, no offset', L.slackOffset({ t: '2026-03-01 10:38' }, []), null);
+  eq('no slack, no offset', L.slackOffset(null, tides), null);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

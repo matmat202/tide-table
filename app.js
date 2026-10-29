@@ -19,6 +19,8 @@ let hourly = [];             // NOAA's harmonic series, when the station has one
 let month = [];              // high/low for the next 30 days, for the daylight lows
 let dayIndex = null;
 let water = null;            // what the nearest gauge measured: { gauge, dep, temp }
+let CURRENTS = null;         // current-prediction stations, loaded after the first draw
+let flow = null;             // the nearest current station's predictions: { st, rows }
 
 // ---- data ---------------------------------------------------------------------------
 
@@ -49,6 +51,18 @@ function gaugeUrl(id, product) {
   });
   if (product === 'predictions') q.set('interval', '6');
   if (product === 'water_temperature') { q.delete('range'); q.delete('datum'); q.set('date', 'latest'); }
+  return `${API}?${q}`;
+}
+
+// Peak flood, peak ebb and slack at a CURRENT station, in its own local time. Asked from
+// yesterday so the day strip's earlier days have rows too.
+function currentsUrl(id) {
+  const now = new Date();
+  const q = new URLSearchParams({
+    product: 'currents_predictions', application: 'tide-table', station: id,
+    begin_date: ymd(new Date(now.getTime() - 86400000)), end_date: ymd(new Date(now.getTime() + 5 * 86400000)),
+    time_zone: 'lst_ldt', units: 'english', format: 'json', interval: 'MAX_SLACK',
+  });
   return `${API}?${q}`;
 }
 
@@ -305,6 +319,7 @@ function render() {
 
   out.append(el('h3', null, `Tides on ${day.date}`));
   out.append(table(day));
+  if (flow) out.append(currentsBlock(flow, day, now));
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
 }
 
@@ -341,6 +356,56 @@ function lows(list) {
   return sec;
 }
 
+// The nearest current station's day: when the water stops (slack) and when it runs
+// hardest each way. Placed under the tides because it is read against them: slack is NOT
+// high or low water, and the line above the table says by how much, here, today.
+function currentsBlock({ st, rows: cur }, day, now) {
+  const sec = el('section', 'currents');
+  sec.append(el('h3', null, `Currents on ${day.date}`));
+  const km = st.km < 10 ? st.km.toFixed(1) : Math.round(st.km);
+  sec.append(el('p', 'note', `NOAA's nearest current station: ${st.name} (${km} km away). Predictions, not for navigation.`));
+  const nx = T.nextCurrents(cur, now);
+  if (nx.slack) {
+    const off = T.slackOffset(nx.slack, rows);
+    let line = `Next slack ${T.clockText(nx.slack.t)}, ${T.untilText(now, nx.slack.t)}`;
+    if (off && Math.abs(off.min) >= 10 && Math.abs(off.min) <= 240) {
+      const m = Math.abs(off.min);
+      const dur = m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m} min`;
+      line += ` — ${dur} ${off.min > 0 ? 'after' : 'before'} the ${off.tide.type === T.H ? 'high' : 'low'} tide, not at it.`;
+    } else line += '.';
+    sec.append(el('p', 'next', line));
+  }
+  const today = cur.filter((r) => T.dayOf(r.t) === day.date);
+  if (!today.length) {
+    sec.append(el('p', 'note', 'NOAA predicts no slack or peak current at this station on this day.'));
+    return sec;
+  }
+  const t = el('table');
+  const head = el('tr');
+  for (const [h, cls] of [['Current', ''], ['Time', 'num'], ['Speed', 'num'], ['Toward', 'num']]) {
+    const th = el('th', cls, h);
+    if (cls) th.style.textAlign = 'right';
+    head.append(th);
+  }
+  const thead = el('thead');
+  thead.append(head);
+  t.append(thead);
+  const body = el('tbody');
+  for (const r of today) {
+    const tr = el('tr');
+    const kind = el('td', 'kind');
+    kind.append(el('span', `tag ${r.type}`, r.type === T.SLACK ? 'Slack' : r.type === T.FLOOD ? 'Peak flood' : 'Peak ebb'));
+    tr.append(kind);
+    tr.append(el('td', 'num', T.clockText(r.t)));
+    tr.append(el('td', 'num', r.type === T.SLACK ? '—' : `${r.kn.toFixed(1)} kn`));
+    tr.append(el('td', 'num', r.dir === null ? '—' : `${T.compass(r.dir)} ${Math.round(r.dir)}°`));
+    body.append(tr);
+  }
+  t.append(body);
+  sec.append(t);
+  return sec;
+}
+
 // ---- choosing a station -----------------------------------------------------------------
 
 async function show(station) {
@@ -348,6 +413,7 @@ async function show(station) {
   dayIndex = null;      // resolved to today's index in render(), once the days are known
   month = [];
   water = null;
+  flow = null;
   $('#hits').replaceChildren();
   $('#q').value = station.name;
   message(`Loading tides for ${station.name}…`);
@@ -370,6 +436,7 @@ async function show(station) {
     // Not awaited: the gauge is independent of the month list, and waiting behind that
     // 30-day request held the block back by seconds on the live site (2026-10-27).
     readGauge(station);
+    readCurrents(station);
     // The month is a second, larger request and the page is complete without it, so it
     // renders after, and only if the reader has not moved on to another station meanwhile.
     try {
@@ -395,6 +462,18 @@ async function readGauge(station) {
       try { temp = T.parseTemp(await getJson(gaugeUrl(gauge.id, 'water_temperature'))); } catch { /* none */ }
     }
     if (current === station) { water = { gauge, dep, temp }; render(); }
+  } catch { /* no block */ }
+}
+
+// Currents are a bonus as well: the station list is fetched only now, after the first
+// draw, and most tide stations on open coast have no current station within 15 km.
+async function readCurrents(station) {
+  try {
+    if (!CURRENTS) CURRENTS = (await getJson('data/currents.json')).stations;
+    const st = T.currentFor(station, CURRENTS);
+    if (!st) return;
+    const got = T.parseCurrents(await getJson(currentsUrl(st.id)));
+    if (got.length && current === station) { flow = { st, rows: got }; render(); }
   } catch { /* no block */ }
 }
 

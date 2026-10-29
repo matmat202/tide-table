@@ -409,3 +409,75 @@ export function daylightLows(rows, station, now, n = 5) {
     .sort((a, b) => a.v - b.v || (a.t < b.t ? -1 : a.t > b.t ? 1 : 0))
     .slice(0, n > 0 ? n : 0);
 }
+
+// ---- currents (tide-currents) -------------------------------------------------------------
+
+export const SLACK = 'slack', FLOOD = 'flood', EBB = 'ebb';
+
+// NOAA's MAX_SLACK rows -> { t, type, kn, dir }, time-ordered. `kn` is the speed, always
+// positive: NOAA signs ebb negative, and "-1.85 kn" reads as a typo. `dir` is the compass
+// heading the water runs TOWARD at a peak, and null at slack, where it runs nowhere.
+export function parseCurrents(payload) {
+  const cp = payload && payload.current_predictions && payload.current_predictions.cp;
+  if (!Array.isArray(cp)) return [];
+  const out = [];
+  for (const r of cp) {
+    if (!r || typeof r.Time !== 'string') continue;
+    const t = r.Time.trim();
+    if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(t)) continue;
+    const type = r.Type === SLACK || r.Type === FLOOD || r.Type === EBB ? r.Type : null;
+    if (!type) continue;
+    if (r.Velocity_Major === null || r.Velocity_Major === '' || r.Velocity_Major === undefined) continue;
+    const v = Number(r.Velocity_Major);
+    if (!Number.isFinite(v)) continue;
+    const d = type === SLACK ? NaN : Number(type === EBB ? r.meanEbbDir : r.meanFloodDir);
+    out.push({ t, type, kn: Math.abs(v), dir: Number.isFinite(d) ? d : null });
+  }
+  out.sort((a, b) => (a.t < b.t ? -1 : a.t > b.t ? 1 : 0));
+  return out;
+}
+
+// The current station to read for a tide station: the nearest within `maxKm`. Currents
+// change across a single channel, so the bar is tighter than the gauge's 40 km: 15 km is
+// what the kill-rule measurement paired stations at (state/scratch/tide-currents).
+export function currentFor(station, currents, maxKm = 15) {
+  if (!station) return null;
+  let best = null;
+  for (const c of currents) {
+    const km = distanceKm(station.lat, station.lng, c.lat, c.lng);
+    if (km <= maxKm && (!best || km < best.km || (km === best.km && c.id < best.id))) best = { ...c, km };
+  }
+  return best;
+}
+
+// The next slack, the next peak flood and the next peak ebb at or after `now`.
+export function nextCurrents(rows, now) {
+  const out = { slack: null, flood: null, ebb: null };
+  for (const r of rows) {
+    if (r.t >= now && !out[r.type]) out[r.type] = r;
+  }
+  return out;
+}
+
+const POINTS = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+// 0-360 degrees -> the nearest of 16 compass points. 348.75 and up is N again.
+export function compass(deg) {
+  if (!Number.isFinite(deg)) return '';
+  return POINTS[Math.round((((deg % 360) + 360) % 360) / 22.5) % 16];
+}
+
+// Minutes from the nearest high or low water to a slack, signed: +38 is 38 minutes AFTER
+// the tide turned. This is the number that makes the block worth having -- slack is not
+// high or low tide (median 38 min apart over 30 sampled pairs, 6 over an hour), and a
+// paddler who times a crossing by the tide table alone is off by exactly this much.
+export function slackOffset(slack, tides) {
+  const s = slack && wallMinutes(slack.t);
+  if (s === null || s === undefined || !tides || !tides.length) return null;
+  let best = null;
+  for (const r of tides) {
+    const m = wallMinutes(r.t);
+    if (m === null) continue;
+    if (best === null || Math.abs(s - m) < Math.abs(best.min)) best = { min: s - m, tide: r };
+  }
+  return best;
+}
