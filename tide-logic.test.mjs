@@ -255,10 +255,10 @@ eq('afternoon', L.clockText('2026-03-01 19:02'), '7:02 pm');
 eq('noon is 12 pm', L.clockText('2026-03-01 12:00'), '12:00 pm');
 eq('midnight is 12 am', L.clockText('2026-03-01 00:00'), '12:00 am');
 eq('a malformed time formats to nothing', L.clockText('oops'), '');
-eq('a height', L.heightText(6.646), '6.6 ft');
-eq('a negative height uses a real minus sign', L.heightText(-1.044), '−1.0 ft');
-eq('zero is not negative zero', L.heightText(0), '0.0 ft');
-eq('metres if asked', L.heightText(2.03, 'm'), '2.0 m');
+eq('a height', L.heightText(6.646), '6.6\u00a0ft');
+eq('a negative height uses a real minus sign', L.heightText(-1.044), '−1.0\u00a0ft');
+eq('zero is not negative zero', L.heightText(0), '0.0\u00a0ft');
+eq('metres if asked', L.heightText(2.03, 'm'), '2.0\u00a0m');
 
 // --- the month's best low tides, in daylight ------------------------------------------------------
 // Sun times pinned to the Daylight site's sun-logic.js (itself checked against NOAA's solar
@@ -324,9 +324,9 @@ for (const g of facts.gauges) {
   near('departure: below is negative', L.departure([o('00:00', 0.5)], pr).diff, -0.5, 1e-12);
   eq('words: calm', L.departureText(0.2), 'about as predicted');
   eq('words: calm below', L.departureText(-0.24), 'about as predicted');
-  eq('words: just over calm', L.departureText(0.25), '0.3 ft above the prediction');
-  eq('words: above', L.departureText(1.16), '1.2 ft above the prediction');
-  eq('words: below', L.departureText(-0.6), '0.6 ft below the prediction');
+  eq('words: just over calm', L.departureText(0.25), '0.3\u00a0ft above the prediction');
+  eq('words: above', L.departureText(1.16), '1.2\u00a0ft above the prediction');
+  eq('words: below', L.departureText(-0.6), '0.6\u00a0ft below the prediction');
   eq('words: no number, no words', L.departureText(NaN), '');
   // Which gauge to read.
   const st = (id, lat, lng, g) => ({ id, lat, lng, ...(g ? { g: 1 } : {}) });

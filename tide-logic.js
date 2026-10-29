@@ -253,7 +253,7 @@ export const CALM_FT = 0.25;
 export function departureText(diff) {
   if (!Number.isFinite(diff)) return '';
   if (Math.abs(diff) < CALM_FT) return 'about as predicted';
-  return `${Math.abs(diff).toFixed(1)} ft ${diff > 0 ? 'above' : 'below'} the prediction`;
+  return `${Math.abs(diff).toFixed(1)}${NB}ft ${diff > 0 ? 'above' : 'below'} the prediction`;
 }
 
 // Water temperature: NOAA's `date=latest` returns one reading. Null on anything else.
@@ -335,8 +335,12 @@ export function clockText(t) {
   return `${h}:${m[2]} ${suffix}`;
 }
 
+// A line may break anywhere but between a number and its unit (unit-wrap-sweep: on a
+// 320px phone "49 min" split across two lines).
+export const NB = '\u00a0';
+
 export const heightText = (v, unit = 'ft') =>
-  `${v >= 0 ? '' : '\u2212'}${Math.abs(v).toFixed(1)} ${unit}`;
+  `${v >= 0 ? '' : '\u2212'}${Math.abs(v).toFixed(1)}${NB}${unit}`;
 
 // ---- the month's best low tides, in daylight ----------------------------------------------
 //

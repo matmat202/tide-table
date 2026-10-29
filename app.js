@@ -135,7 +135,7 @@ function ago(gauge, t) {
 function measured({ gauge, dep, temp }) {
   const box = el('div', 'water');
   const where = gauge.km > 0
-    ? `At ${gauge.name}, the nearest NOAA gauge (${gauge.km < 10 ? gauge.km.toFixed(1) : Math.round(gauge.km)} km away)`
+    ? `At ${gauge.name}, the nearest NOAA gauge (${gauge.km < 10 ? gauge.km.toFixed(1) : Math.round(gauge.km)}${T.NB}km away)`
     : 'At this station\'s NOAA gauge';
   if (dep) {
     const p = el('p', 'meas');
@@ -145,7 +145,7 @@ function measured({ gauge, dep, temp }) {
     p.append(document.createTextNode('.'));
     box.append(p);
     if (!calm) {
-      box.append(el('p', 'note', `Wind, air pressure and river flow move the water as well as the moon. While this lasts, tides ${gauge.km > 0 ? 'nearby' : 'here'} run about ${Math.abs(dep.diff).toFixed(1)} ft ${dep.diff > 0 ? 'higher' : 'lower'} than the table below.`));
+      box.append(el('p', 'note', `Wind, air pressure and river flow move the water as well as the moon. While this lasts, tides ${gauge.km > 0 ? 'nearby' : 'here'} run about ${Math.abs(dep.diff).toFixed(1)}${T.NB}ft ${dep.diff > 0 ? 'higher' : 'lower'} than the table below.`));
     }
     if (ago(gauge, dep.t) > STALE_MIN) box.append(el('p', 'note', `That is the gauge's latest reading; it has not reported since ${T.clockText(dep.t)}.`));
   } else {
@@ -311,7 +311,7 @@ function render() {
   const { svg, usedHourly } = chart(day, now);
   fig.append(svg);
   const range = day.range === null ? 'only one kind of tide this day, so no range'
-    : `range ${day.range.toFixed(1)} ft`;
+    : `range ${day.range.toFixed(1)}${T.NB}ft`;
   fig.append(el('figcaption', null, usedHourly
     ? `${day.date} · ${range} · curve from NOAA's hourly harmonic series.`
     : `${day.date} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`));
@@ -363,14 +363,14 @@ function currentsBlock({ st, rows: cur }, day, now) {
   const sec = el('section', 'currents');
   sec.append(el('h3', null, `Currents on ${day.date}`));
   const km = st.km < 10 ? st.km.toFixed(1) : Math.round(st.km);
-  sec.append(el('p', 'note', `NOAA's nearest current station: ${st.name} (${km} km away). Predictions, not for navigation.`));
+  sec.append(el('p', 'note', `NOAA's nearest current station: ${st.name} (${km}${T.NB}km away). Predictions, not for navigation.`));
   const nx = T.nextCurrents(cur, now);
   if (nx.slack) {
     const off = T.slackOffset(nx.slack, rows);
     let line = `Next slack ${T.clockText(nx.slack.t)}, ${T.untilText(now, nx.slack.t)}`;
     if (off && Math.abs(off.min) >= 10 && Math.abs(off.min) <= 240) {
       const m = Math.abs(off.min);
-      const dur = m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m} min`;
+      const dur = m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}${T.NB}min`;
       line += ` — ${dur} ${off.min > 0 ? 'after' : 'before'} the ${off.tide.type === T.H ? 'high' : 'low'} tide, not at it.`;
     } else line += '.';
     sec.append(el('p', 'next', line));
