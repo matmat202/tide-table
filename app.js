@@ -321,6 +321,67 @@ function render() {
   out.append(table(day));
   if (flow) out.append(currentsBlock(flow, day, now));
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
+  if (month.length) out.append(rangeBlock(month, now));
+}
+
+const dayText = (date, weekday = true) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US',
+  { ...(weekday ? { weekday: 'short' } : {}), month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+// Each day's biggest swing for the month, with the big and small tides named. The month
+// starts yesterday, so today can be a turn; the bars start at today.
+function rangeBlock(monthRows, now) {
+  const sec = el('section', 'range');
+  sec.append(el('h3', null, 'Biggest and smallest tides, next 30 days'));
+  const all = T.dailySwings(monthRows);
+  const { big, small } = T.swingTurns(all);
+  const today = T.dayOf(now);
+  const days = all.filter((d) => d.date >= today);
+  const ahead = (ds) => ds.filter((d) => d.date >= today);
+  const list = (ds) => ds.map((d) => `${dayText(d.date).replace(/ /g, T.NB)} (${T.heightText(d.swing)})`).join(' and ');
+  const b = ahead(big), s = ahead(small);
+  const said = [b.length ? `Biggest swings around ${list(b)}` : '', s.length ? `smallest around ${list(s)}` : '']
+    .filter(Boolean).join('; ');
+  sec.append(el('p', 'note', `${said ? `${said}. ` : ''}Each bar is the day's largest rise or fall between high and low water: big days bring the highest highs and lowest lows, small days the gentlest water.`));
+  if (days.length < 2) return sec;
+
+  const W = 700, Hh = 132, padX = 4, top = 22, AXIS = 20;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${Hh}`);
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', said || 'Daily tidal swing for the next 30 days.');
+  const max = Math.max(...days.map((d) => d.swing)) || 1;
+  const slot = (W - padX * 2) / days.length, floor = Hh - AXIS;
+  const isBig = new Set(b.map((d) => d.date)), isSmall = new Set(s.map((d) => d.date));
+  const text = (x, y, str, anchor = 'middle') => {
+    const t = document.createElementNS(svg.namespaceURI, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('text-anchor', anchor);
+    t.setAttribute('font-size', '12'); t.setAttribute('fill', 'var(--muted)');
+    t.textContent = str;
+    svg.append(t);
+  };
+  const hOf = (d) => Math.max(2, (d.swing / max) * (floor - top));
+  days.forEach((d, i) => {
+    const h = hOf(d);
+    const x = padX + i * slot;
+    const bar = document.createElementNS(svg.namespaceURI, 'rect');
+    bar.setAttribute('x', x + slot * 0.15); bar.setAttribute('width', slot * 0.7);
+    bar.setAttribute('y', floor - h); bar.setAttribute('height', h);
+    bar.setAttribute('fill', isBig.has(d.date) ? 'var(--sea)' : 'var(--rule)');
+    const tip = document.createElementNS(svg.namespaceURI, 'title');
+    tip.textContent = `${dayText(d.date)}: ${T.heightText(d.swing)}`;
+    bar.append(tip);
+    svg.append(bar);
+    // A label is wider than its bar, so it clears the tallest bar it spans, not just its own.
+    const clear = Math.max(...days.slice(Math.max(0, i - 1), i + 2).map(hOf));
+    if (isBig.has(d.date) || isSmall.has(d.date)) text(x + slot / 2, floor - clear - 6, dayText(d.date, false));
+  });
+  text(padX, Hh - 5, 'Today', 'start');
+  text(W - padX, Hh - 5, dayText(days[days.length - 1].date, false), 'end');
+  const fig = el('figure');
+  fig.append(svg);
+  sec.append(fig);
+  return sec;
 }
 
 // The month's lowest daylight lows. The day strip covers six days; the tide a tidepooler

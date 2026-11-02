@@ -414,6 +414,39 @@ export function daylightLows(rows, station, now, n = 5) {
     .slice(0, n > 0 ? n : 0);
 }
 
+// ---- the month's range (tide-range) -------------------------------------------------------
+
+// Each day's biggest swing: the largest rise or fall between consecutive extremes that ENDS
+// on that day. Not rangeOf (highest high minus lowest low): a calendar day can cut a swing
+// in half -- San Francisco, 2026-11-02, reads 2.3 ft by rangeOf on a day whose biggest swing
+// was 5.2 ft, because the low that began it fell at 23:04 the night before -- and a diurnal
+// day with one kind of tide has no rangeOf at all (Pensacola, 2026-11-12).
+export function dailySwings(rows) {
+  const out = new Map();
+  for (let i = 1; i < rows.length; i++) {
+    const d = dayOf(rows[i].t), s = Math.abs(rows[i].v - rows[i - 1].v);
+    if (!out.has(d) || s > out.get(d)) out.set(d, s);
+  }
+  return [...out.entries()].map(([date, swing]) => ({ date, swing }));
+}
+
+// The days whose swing is the biggest (or smallest) within `w` days either side: the
+// month's big and small tides. Spring and neap where the tide is semidiurnal; where it is
+// diurnal (the Gulf) the cycle follows the moon's declination instead, which is why the page
+// says "biggest", not "spring". A plateau counts once, on its first day. The first and last
+// day never count: the series could keep rising past either end.
+export function swingTurns(days, w = 4) {
+  const big = [], small = [];
+  for (let i = 1; i < days.length - 1; i++) {
+    const x = days[i].swing;
+    const before = days.slice(Math.max(0, i - w), i).map((d) => d.swing);
+    const after = days.slice(i + 1, i + w + 1).map((d) => d.swing);
+    if (before.every((y) => x > y) && after.every((y) => x >= y)) big.push(days[i]);
+    if (before.every((y) => x < y) && after.every((y) => x <= y)) small.push(days[i]);
+  }
+  return { big, small };
+}
+
 // ---- currents (tide-currents) -------------------------------------------------------------
 
 export const SLACK = 'slack', FLOOD = 'flood', EBB = 'ebb';

@@ -599,5 +599,41 @@ for (const st of facts.currents) {
   eq('no slack, no offset', L.slackOffset(null, tides), null);
 }
 
+// --- tide-range: the month's biggest and smallest tides -----------------------------------
+// Reference answers recomputed by a separate Python pass over the same NOAA files
+// (test/noaa/*-month.json, 30 days of hilo fetched 2026-11-02), not by this module.
+{
+  const turns = (sid) => {
+    const t = L.swingTurns(L.dailySwings(L.parseRows(load(sid, 'month'))));
+    const f = (ds) => ds.map((d) => [d.date, Math.round(d.swing * 1000) / 1000]);
+    return { big: f(t.big), small: f(t.small) };
+  };
+  eq('SF (mixed): biggest near new and full moon', turns('9414290'),
+    { big: [['2026-11-09', 6.73], ['2026-11-25', 8.681]], small: [['2026-11-04', 5.172], ['2026-11-17', 4.159]] });
+  eq('Boston (semidiurnal)', turns('8443970'),
+    { big: [['2026-11-08', 10.585], ['2026-11-26', 13.25]], small: [['2026-11-03', 8.825], ['2026-11-17', 7.469]] });
+  eq('Pensacola (diurnal): a turn on every cycle, no gaps', turns('8729840'),
+    { big: [['2026-11-11', 1.626], ['2026-11-27', 2.264]], small: [['2026-11-05', 0.401], ['2026-11-19', 0.391]] });
+
+  const sw = L.dailySwings(L.parseRows(load('9414290', 'month')));
+  eq('one swing per day, every day', sw.length, 31);
+  near('a swing that began before midnight belongs to the day it ends', sw.find((d) => d.date === '2026-11-02').swing, 5.176, 0.001);
+  const pens = L.dailySwings(L.parseRows(load('8729840', 'month')));
+  ok('a one-tide diurnal day still has a swing', pens.find((d) => d.date === '2026-11-12').swing > 1.5);
+
+  const r = (t, v, type) => ({ t, v, type });
+  eq('a fall counts as much as a rise', L.dailySwings([r('2026-01-01 01:00', 6, 'H'), r('2026-01-01 07:00', 1, 'L')]), [{ date: '2026-01-01', swing: 5 }]);
+  eq('the first tide has no swing', L.dailySwings([r('2026-01-01 01:00', 6, 'H')]), []);
+  const days = (...s) => s.map((swing, i) => ({ date: `d${i}`, swing }));
+  // Three or more, out of order: a two-element case hides comparator bugs.
+  eq('a peak in the middle', L.swingTurns(days(1, 3, 2)).big.map((d) => d.date), ['d1']);
+  eq('a plateau counts once, on its first day', L.swingTurns(days(1, 3, 3, 1)).big.map((d) => d.date), ['d1']);
+  eq('the last day is never a turn', L.swingTurns(days(1, 2, 3)), { big: [], small: [] });
+  eq('the first day is never a turn', L.swingTurns(days(3, 2, 1)), { big: [], small: [] });
+  eq('a trough in the middle', L.swingTurns(days(3, 1, 2)).small.map((d) => d.date), ['d1']);
+  eq('w bounds the window', L.swingTurns(days(1, 5, 1, 1, 1, 1, 1, 2, 1), 2).big.map((d) => d.date), ['d1', 'd7']);
+  eq('w=4 is the default', L.swingTurns(days(1, 5, 1, 1, 1, 2, 1)).big.map((d) => d.date), ['d1']);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
