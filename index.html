@@ -45,6 +45,9 @@ h1{font-family:var(--f-head);font-size:clamp(26px,6vw,34px);margin:0 0 2px;lette
 .lows .note{color:var(--muted);font-size:13px;margin:8px 0 8px}
 .range{margin-top:22px}
 .range .note{color:var(--muted);font-size:13px;margin:8px 0 8px}
+.kings{margin-top:22px}
+.kings .note{color:var(--muted);font-size:13px;margin:8px 0 8px}
+.kings td.flood{color:var(--alert);font-weight:600}
 .currents{margin-top:22px}
 .currents .note{color:var(--muted);font-size:13px;margin:8px 0 8px}
 .currents .next{margin:8px 0 10px}
@@ -129,7 +132,7 @@ footer p{margin:5px 0;max-width:64ch}
   <div id="out" aria-live="polite"></div>
 
   <footer>
-    <p id="src">Predictions from <a href="https://tidesandcurrents.noaa.gov/">NOAA CO-OPS</a>, fetched live for the station you pick and shown in its own local time. Heights are above MLLW (mean lower low water), in feet. Currents are in knots, from NOAA's nearest current prediction station within 15 km, where there is one.</p>
+    <p id="src">Predictions from <a href="https://tidesandcurrents.noaa.gov/">NOAA CO-OPS</a>, fetched live for the station you pick and shown in its own local time. Heights are above MLLW (mean lower low water), in feet. Currents are in knots, from NOAA's nearest current prediction station within 15 km, where there is one. Flood levels are NOAA's station metadata (the National Weather Service's minor flood level, else NOAA's own), converted to MLLW.</p>
     <p>Where NOAA publishes an hourly harmonic series, the curve is that series. For subordinate stations, which have only high and low water, the curve is interpolated between them &mdash; a shape, not a prediction.</p>
     <p>Tide predictions are astronomical. Real water level also answers to wind and barometric pressure, so do not navigate on this.</p>
   </footer>

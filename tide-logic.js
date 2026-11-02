@@ -447,6 +447,57 @@ export function swingTurns(days, w = 4) {
   return { big, small };
 }
 
+// ---- the month's highest tides (king-tides) -----------------------------------------------
+//
+// King tides are the year's highest predicted highs. A height alone means nothing to a
+// reader, so each is set against the level at which flooding begins at that station. NOAA's
+// metadata API gives that level above STATION DATUM (STND), not MLLW: San Francisco's NWS
+// minor flood level reads 13.02 there, which is 7.04 ft above MLLW once MLLW's own 5.98 is
+// taken off. Comparing the raw 13.02 to a 7.0 ft tide would call every king tide 6 ft safe.
+
+// The minor flood level in feet above MLLW, or null. The National Weather Service's level
+// comes first, as it is the one its coastal flood advisories use; NOAA's national derived
+// level (`nos_minor`) is the fallback. Most subordinate stations have neither (404).
+export function floodLevel(levels, datums) {
+  const list = (datums && Array.isArray(datums.datums)) ? datums.datums : [];
+  const at = (name) => {
+    const d = list.find((x) => x && x.name === name);
+    return d && Number.isFinite(d.value) ? d.value : null;
+  };
+  const mllw = at('MLLW');
+  if (mllw === null || !levels) return null;
+  // The levels are above STND; the datums list is in its own frame, where STND has a value.
+  const stnd = at('STND') ?? 0;
+  for (const [key, by] of [['nws_minor', 'NWS'], ['nos_minor', 'NOS']]) {
+    const v = levels[key];
+    if (Number.isFinite(v)) return { ft: Math.round((v + stnd - mllw) * 100) / 100, by };
+  }
+  return null;
+}
+
+// The `n` highest high tides from `now` on, highest first (earlier first on a tie), at most
+// one per day: king tides come in runs of consecutive days, and a list of the same evening
+// and morning twice says less than a list of the days to watch.
+export function highestHighs(rows, now, n = 5) {
+  const best = new Map();
+  for (const r of rows) {
+    if (r.type !== H || r.t < now) continue;
+    const d = dayOf(r.t), had = best.get(d);
+    if (!had || r.v > had.v) best.set(d, r);
+  }
+  return [...best.values()]
+    .sort((a, b) => b.v - a.v || (a.t < b.t ? -1 : a.t > b.t ? 1 : 0))
+    .slice(0, n > 0 ? n : 0);
+}
+
+// How a high tide stands against the flood level. Within 0.05 ft either way is "at" it: the
+// page prints one decimal, and "0.0 ft below" reads as a contradiction.
+export function floodMarginText(v, flood) {
+  const d = flood - v;
+  if (Math.abs(d) < 0.05) return 'at flood level';
+  return d > 0 ? `${heightText(d)} below` : `${heightText(-d)} over`;
+}
+
 // ---- currents (tide-currents) -------------------------------------------------------------
 
 export const SLACK = 'slack', FLOOD = 'flood', EBB = 'ebb';

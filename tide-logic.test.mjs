@@ -635,5 +635,41 @@ for (const st of facts.currents) {
   eq('w=4 is the default', L.swingTurns(days(1, 5, 1, 1, 1, 2, 1)).big.map((d) => d.date), ['d1']);
 }
 
+// --- the month's highest tides (king-tides) --------------------------------------------
+{
+  // Flood levels are above STND; the answers below are NOAA's numbers minus MLLW, by hand.
+  const fl = (sid) => L.floodLevel(load(sid, 'floodlevels'), load(sid, 'datums'));
+  eq('SF: NWS minor 13.02 above STND is 7.04 above MLLW', fl('9414290'), { ft: 7.04, by: 'NWS' });
+  eq('Boston: NWS minor 16.03 - MLLW 3.53', fl('8443970'), { ft: 12.5, by: 'NWS' });
+  eq('Pensacola: NWS minor 11.69 - MLLW 8.43', fl('8729840'), { ft: 3.26, by: 'NWS' });
+  eq('Seldovia: only an action level, so no flood level', fl('9455920'), null);
+  const dat = (pairs) => ({ datums: pairs.map(([name, value]) => ({ name, value })) });
+  eq('NOS is the fallback when NWS has none', L.floodLevel({ nws_minor: null, nos_minor: 10 }, dat([['STND', 0], ['MLLW', 4]])), { ft: 6, by: 'NOS' });
+  eq('NWS wins over NOS', L.floodLevel({ nws_minor: 9, nos_minor: 10 }, dat([['STND', 0], ['MLLW', 4]])), { ft: 5, by: 'NWS' });
+  eq('a datums list in another frame is shifted by STND', L.floodLevel({ nws_minor: 9 }, dat([['MLLW', 1], ['STND', -3]])), { ft: 5, by: 'NWS' });
+  eq('no MLLW, no level', L.floodLevel({ nws_minor: 9 }, dat([['STND', 0], ['MHHW', 4]])), null);
+  eq('a 404 page is no level', L.floodLevel(null, dat([['STND', 0], ['MLLW', 4]])), null);
+
+  const sfm = L.parseRows(load('9414290', 'month'));
+  eq('SF: the five highest highs, one per day, highest first',
+    L.highestHighs(sfm, '2026-11-02 00:00').map((r) => [r.t, r.v]),
+    [['2026-11-25 10:49', 7.029], ['2026-11-26 11:38', 6.952], ['2026-11-24 10:05', 6.939],
+      ['2026-11-23 09:25', 6.716], ['2026-11-27 12:31', 6.687]]);  // recomputed in Python from the fixture
+  const r = (t, v, type = 'H') => ({ t, v, type });
+  // Three or more, out of order: a two-element case hides comparator bugs.
+  const rs = [r('2026-01-02 09:00', 5), r('2026-01-01 09:00', 7), r('2026-01-03 09:00', 6), r('2026-01-01 21:00', 6.5), r('2026-01-03 03:00', 9, 'L')];
+  eq('highest first, one per day, lows ignored', L.highestHighs(rs, '2026-01-01 00:00').map((x) => x.t), ['2026-01-01 09:00', '2026-01-03 09:00', '2026-01-02 09:00']);
+  eq('the day keeps its higher high, whichever comes first', L.highestHighs([r('2026-01-01 09:00', 5), r('2026-01-01 21:00', 6), r('2026-01-02 09:00', 1)], '2026-01-01 00:00').map((x) => x.v), [6, 1]);
+  eq('a tie goes to the earlier day', L.highestHighs([r('2026-01-03 09:00', 5), r('2026-01-01 09:00', 5), r('2026-01-02 09:00', 5)], '2026-01-01 00:00', 2).map((x) => x.t), ['2026-01-01 09:00', '2026-01-02 09:00']);
+  eq('a past tide is not ahead', L.highestHighs([r('2026-01-01 09:00', 9), r('2026-01-02 09:00', 1), r('2026-01-03 09:00', 2)], '2026-01-01 12:00').map((x) => x.v), [2, 1]);
+  eq('a tide at now still counts', L.highestHighs([r('2026-01-01 12:00', 3)], '2026-01-01 12:00').length, 1);
+  eq('asking for none gives none', [L.highestHighs(rs, '2026-01-01 00:00', 0), L.highestHighs(rs, '2026-01-01 00:00', -2)], [[], []]);
+
+  eq('below the flood level', L.floodMarginText(11.837, 12.5), `0.7${L.NB}ft below`);
+  eq('over the flood level', L.floodMarginText(13, 12.5), `0.5${L.NB}ft over`);
+  eq('SF on Nov 25 is at it (0.011 ft short)', L.floodMarginText(7.029, 7.04), 'at flood level');
+  eq('just past the at-band is below', L.floodMarginText(7.0, 7.06), `0.1${L.NB}ft below`);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

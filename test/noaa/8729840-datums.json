@@ -1,0 +1,96 @@
+{
+  "accepted": "Apr 15 2004",
+  "superseded": "",
+  "epoch": "1983-2001",
+  "units": "feet",
+  "OrthometricDatum": "NAVD88",
+  "datums": [
+    {
+      "name": "STND",
+      "description": "Station Datum",
+      "value": 0.0
+    },
+    {
+      "name": "MHHW",
+      "description": "Mean Higher-High Water",
+      "value": 9.69
+    },
+    {
+      "name": "MHW",
+      "description": "Mean High Water",
+      "value": 9.66
+    },
+    {
+      "name": "DTL",
+      "description": "Mean Diurnal Tide Level",
+      "value": 9.06
+    },
+    {
+      "name": "MTL",
+      "description": "Mean Tide Level",
+      "value": 9.06
+    },
+    {
+      "name": "MSL",
+      "description": "Mean Sea Level",
+      "value": 9.05
+    },
+    {
+      "name": "MLW",
+      "description": "Mean Low Water",
+      "value": 8.46
+    },
+    {
+      "name": "MLLW",
+      "description": "Mean Lower-Low Water",
+      "value": 8.43
+    },
+    {
+      "name": "GT",
+      "description": "Great Diurnal Range",
+      "value": 1.26
+    },
+    {
+      "name": "MN",
+      "description": "Mean Range of Tide",
+      "value": 1.2
+    },
+    {
+      "name": "DHQ",
+      "description": "Mean Diurnal High Water Inequality",
+      "value": 0.03
+    },
+    {
+      "name": "DLQ",
+      "description": "Mean Diurnal Low Water Inequality",
+      "value": 0.03
+    },
+    {
+      "name": "NAVD88",
+      "description": "North American Vertical Datum of 1988",
+      "value": 8.75
+    }
+  ],
+  "LAT": 7.254,
+  "LATdate": "20050110",
+  "LATtime": "15:12",
+  "HAT": 10.601,
+  "HATdate": "20050721",
+  "HATtime": "16:18",
+  "min": 6.001,
+  "mindate": "19240106",
+  "mintime": "09:36",
+  "max": 17.1,
+  "maxdate": "19260918",
+  "maxtime": "12:00",
+  "disclaimers": {
+    "disclaimers": [],
+    "self": null
+  },
+  "DatumAnalysisPeriod": [
+    "01/01/1983 - 12/31/2001"
+  ],
+  "NGSLink": "",
+  "ctrlStation": "",
+  "self": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/8729840/datums.json"
+}

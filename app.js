@@ -21,6 +21,7 @@ let dayIndex = null;
 let water = null;            // what the nearest gauge measured: { gauge, dep, temp }
 let CURRENTS = null;         // current-prediction stations, loaded after the first draw
 let flow = null;             // the nearest current station's predictions: { st, rows }
+let flood = null;            // NOAA's minor flood level above MLLW: { ft, by }, when it has one
 
 // ---- data ---------------------------------------------------------------------------
 
@@ -65,6 +66,12 @@ function currentsUrl(id) {
   });
   return `${API}?${q}`;
 }
+
+// Station metadata: flood levels and tidal datums (king-tides). A separate API from the
+// predictions; both answer CORS with `*`.
+const MDAPI = 'https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations';
+const floodUrl = (id) => `${MDAPI}/${id}/floodlevels.json`;
+const datumsUrl = (id) => `${MDAPI}/${id}/datums.json?units=english`;
 
 async function fetchJson(url) {
   const r = await fetch(url);
@@ -322,6 +329,7 @@ function render() {
   if (flow) out.append(currentsBlock(flow, day, now));
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
   if (month.length) out.append(rangeBlock(month, now));
+  if (month.length) out.append(kings(T.highestHighs(month, now, 5), flood));
 }
 
 const dayText = (date, weekday = true) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US',
@@ -381,6 +389,44 @@ function rangeBlock(monthRows, now) {
   const fig = el('figure');
   fig.append(svg);
   sec.append(fig);
+  return sec;
+}
+
+// The month's highest high tides, each set against the station's minor flood level where
+// NOAA has one. Predictions are the astronomical tide alone: wind, low pressure and river
+// flow come on top, which is what the note says and why a tide "below" is not a promise.
+function kings(list, fl) {
+  const sec = el('section', 'kings');
+  sec.append(el('h3', null, 'Highest tides, next 30 days'));
+  if (!list.length) {
+    sec.append(el('p', 'note', 'No high tide is predicted here in the next 30 days.'));
+    return sec;
+  }
+  const level = fl ? `${fl.by === 'NWS' ? 'The National Weather Service' : 'NOAA'} counts minor flooding here from ${T.heightText(fl.ft)}.` : '';
+  sec.append(el('p', 'note', `The month's king tides, highest first, one per day. ${level} These are predictions of the tide alone: wind and low pressure can add a foot or more on the day.`.replace(/ +/g, ' ')));
+  const t = el('table');
+  const head = el('tr');
+  const cols = [['Day', ''], ['Time', 'num'], ['Height', 'num']];
+  if (fl) cols.push(['Flood level', 'num']);
+  for (const [h, cls] of cols) {
+    const th = el('th', cls, h);
+    if (cls) th.style.textAlign = 'right';
+    head.append(th);
+  }
+  const thead = el('thead');
+  thead.append(head);
+  t.append(thead);
+  const body = el('tbody');
+  for (const r of list) {
+    const tr = el('tr');
+    tr.append(el('td', null, dayText(T.dayOf(r.t))));
+    tr.append(el('td', 'num', T.clockText(r.t)));
+    tr.append(el('td', 'num', T.heightText(r.v)));
+    if (fl) tr.append(el('td', fl.ft - r.v < 0.05 ? 'num flood' : 'num', T.floodMarginText(r.v, fl.ft)));
+    body.append(tr);
+  }
+  t.append(body);
+  sec.append(t);
   return sec;
 }
 
@@ -475,6 +521,7 @@ async function show(station) {
   month = [];
   water = null;
   flow = null;
+  flood = null;
   $('#hits').replaceChildren();
   $('#q').value = station.name;
   message(`Loading tides for ${station.name}…`);
@@ -498,6 +545,7 @@ async function show(station) {
     // 30-day request held the block back by seconds on the live site (2026-10-27).
     readGauge(station);
     readCurrents(station);
+    readFlood(station);
     // The month is a second, larger request and the page is complete without it, so it
     // renders after, and only if the reader has not moved on to another station meanwhile.
     try {
@@ -536,6 +584,16 @@ async function readCurrents(station) {
     const got = T.parseCurrents(await getJson(currentsUrl(st.id)));
     if (got.length && current === station) { flow = { st, rows: got }; render(); }
   } catch { /* no block */ }
+}
+
+// The flood level is a bonus: most subordinate stations have none (NOAA answers 404), and
+// then the highest-tides table simply goes without its last column.
+async function readFlood(station) {
+  try {
+    const [levels, datums] = await Promise.all([getJson(floodUrl(station.id)), getJson(datumsUrl(station.id))]);
+    const fl = T.floodLevel(levels, datums);
+    if (fl && current === station) { flood = fl; render(); }
+  } catch { /* no column */ }
 }
 
 function showHits(list) {
