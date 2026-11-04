@@ -671,5 +671,39 @@ for (const st of facts.currents) {
   eq('just past the at-band is below', L.floodMarginText(7.0, 7.06), `0.1${L.NB}ft below`);
 }
 
+// --- edges mutwatch found unpinned (2026-11-03) -----------------------------------------------
+{
+  const days = (...s) => s.map((swing, i) => ({ date: `d${i}`, swing }));
+  eq('a trough plateau counts once, on its first day', L.swingTurns(days(5, 3, 3, 6, 7)).small.map((d) => d.date), ['d1']);
+  eq('the after-window reaches w days', L.swingTurns(days(1, 5, 4, 4, 6, 1)).big.map((d) => d.date), ['d4']);
+  eq('and no further', L.swingTurns(days(1, 5, 4, 4, 4, 4, 9)).big.map((d) => d.date), ['d1']);
+  eq('the default before-window is 4 days, not 5', L.swingTurns(days(9, 1, 1, 1, 1, 5, 1)).big.map((d) => d.date), ['d5']);
+
+  const r = (t, v, type = 'H') => ({ t, v, type });
+  eq('two equal highs in a day: the earlier stays', L.highestHighs([r('2026-01-01 09:00', 5), r('2026-01-01 21:00', 5)], '2026-01-01 00:00').map((x) => x.t), ['2026-01-01 09:00']);
+  eq('asking for one gives one', L.highestHighs([r('2026-01-01 09:00', 5), r('2026-01-02 09:00', 6)], '2026-01-01 00:00', 1).map((x) => x.v), [6]);
+  eq('exactly 0.05 ft off is not at flood level', L.floodMarginText(0, 0.05), `0.1${L.NB}ft below`);
+
+  const dat = (pairs) => ({ datums: pairs.map(([name, value]) => ({ name, value })) });
+  eq('no datums at all, no level', L.floodLevel({ nws_minor: 9 }, null), null);
+  eq('no STND in the list reads as 0', L.floodLevel({ nws_minor: 7 }, dat([['MLLW', 0.5]])), { ft: 6.5, by: 'NWS' });
+
+  const good = { Time: '2026-03-01 05:00', Type: 'flood', Velocity_Major: 2.5, meanFloodDir: 61, meanEbbDir: 239 };
+  eq('a null row and a numeric time are skipped, not thrown on', L.parseCurrents({ current_predictions: { cp: [null, { ...good, Time: 5 }, good] } }).length, 1);
+  eq('an empty-string speed is dropped, not read as 0', L.parseCurrents({ current_predictions: { cp: [{ ...good, Velocity_Major: '' }] } }), []);
+
+  const c = (id, lat, lng) => ({ id, name: id, lat, lng });
+  eq('a tie keeps the lower id when it comes first', L.currentFor({ lat: 37, lng: -122 }, [c('Y', 37.05, -122.0), c('Z', 37.05, -122.0)]).id, 'Y');
+  eq('a station exactly at the bar counts', L.currentFor({ lat: 37, lng: -122 }, [c('A', 37, -122)], 0).id, 'A');
+
+  const tides = [r('2026-03-01 11:00', 5), r('2026-03-01 13:00', 1, 'L')];
+  eq('slack midway: the first of the two nearest wins', L.slackOffset({ t: '2026-03-01 12:00' }, tides).min, 60);
+  eq('an undefined slack, no offset', L.slackOffset(undefined, tides), null);
+  eq('no tide list, no offset', L.slackOffset({ t: '2026-03-01 12:00' }, null), null);
+
+  eq('11.25 degrees rounds up to NNE', L.compass(11.25), 'NNE');
+  eq('a heading past 360 wraps', L.compass(371.25), 'NNE');
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
