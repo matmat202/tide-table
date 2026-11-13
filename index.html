@@ -104,6 +104,11 @@ td{padding:9px 0;border-bottom:1px solid var(--rule);
 tr:last-child td{border-bottom:none}
 td.kind{font-family:var(--f-body)}
 td.num{text-align:right}
+/* Cells had no side padding, so on a phone the four-column highest-tides table fitted with
+   zero pixels between columns ("10:49 am7.0 ftat flood level"). */
+th+th,td+td{padding-left:12px}
+td.num{white-space:nowrap}
+@media (max-width:440px){ .kings table{font-size:13.5px} }
 .tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:2px 6px;border-radius:3px;border:1px solid currentColor}
 .tag.h{color:var(--high)} .tag.l{color:var(--low)}
