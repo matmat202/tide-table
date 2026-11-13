@@ -253,6 +253,27 @@ eq('"off" inverts too', L.stationName('False Egg Island Point, 2 miles off'),
   '2 miles off False Egg Island Point');
 eq('"from" inverts too', L.stationName('Cape Muzon, 4 miles south from'),
   '4 miles south from Cape Muzon');
+eq('"above" inverts too (river miles)', L.stationName('Whitehaven, 2.5 miles above'),
+  '2.5 miles above Whitehaven');
+eq('"below" inverts too', L.stationName('Salisbury, 2 miles below'), '2 miles below Salisbury');
+// The bearing can carry a parenthetical, which must stay at the end and must not be read as
+// the place. The comma inside the second one is the reason it is set aside before splitting.
+eq('a parenthetical qualifier stays at the end', L.stationName('Drum Island, east of (bridge)'),
+  'East of Drum Island (bridge)');
+eq('an unclosed bracket is still set aside',
+  L.stationName('Point Colville, 3.0 nm east of (Lawson Reef, 1 nm'),
+  '3.0 nm east of Point Colville (Lawson Reef, 1 nm');
+eq('a parenthetical on a name that is NOT inverted is left alone',
+  L.stationName('Deer Island (south end)'), 'Deer Island (south end)');
+// Two names dangle INSIDE the bracket, and they disagree about where the place sits: in
+// "Cats Point (bridge west of)" the place being inverted is "bridge", inside the bracket,
+// while in "Cape Utalug (4 miles west of)" it is "Cape Utalug", outside it. Two names out of
+// 6,071 is not worth a rule that would have to guess which, so both are left verbatim -- and
+// pinned here, so that is a decision and not an oversight.
+eq('a bearing dangling inside a bracket is left alone (1 of 2)',
+  L.stationName('Cats Point (bridge west of)'), 'Cats Point (bridge west of)');
+eq('a bearing dangling inside a bracket is left alone (2 of 2)',
+  L.stationName('Cape Utalug (4 miles west of)'), 'Cape Utalug (4 miles west of)');
 // Nine names name no place to put in front; inventing a split would be worse than the
 // dangling word, so they come back exactly as NOAA wrote them.
 eq('with no comma it is returned verbatim', L.stationName('2.4 miles southwest of'),
@@ -270,10 +291,14 @@ eq('a missing name does not throw', L.stationName(undefined), '');
 {
   const curr = JSON.parse(readFileSync(here(pick('data/currents.json', '../site/data/currents.json')), 'utf8')).stations;
   const all = [...shipped, ...curr].map((s) => s.name);
-  const dangling = (n) => /\s(?:of|off|from)$/i.test(n);
+  // Every form the function claims to cover, including the bearing-plus-parenthetical one
+  // ("Drum Island, east of (bridge)") that a plain end-of-string test would miss entirely.
+  const dangling = (n) => /\s(?:of|off|from|above|below)\s*(?:\([^()]*\)?)?$/i.test(n);
   const raw = all.filter(dangling);
   const left = all.map(L.stationName).filter(dangling);
   ok('NOAA ships 1,000+ inverted names', raw.length > 1000, String(raw.length));
+  ok('and the parenthetical form is among them',
+    all.some((n) => /\sof\s*\([^()]*\)?$/i.test(n)), 'no "of (...)" name found');
   ok('exactly the nine that name no place are still dangling', left.length === 9,
     `${left.length} left: ${JSON.stringify(left.slice(0, 12))}`);
   ok('every one of those nine has no comma to split on', left.every((n) => !n.includes(',')),

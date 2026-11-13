@@ -532,8 +532,8 @@ export function parseCurrents(payload) {
 // change across a single channel, so the bar is tighter than the gauge's 40 km: 15 km is
 // what the kill-rule measurement paired stations at (state/scratch/tide-currents).
 // NOAA writes many station names inverted, with the place first and the bearing left
-// dangling off the end: "Pond Point, 7.6 miles SSE of". 1,062 of the 2,569 current stations
-// and 10 of the 3,502 tide stations read that way, and the page showed them verbatim, so a
+// dangling off the end: "Pond Point, 7.6 miles SSE of". 1,095 names across the 2,569 current
+// stations and the 3,502 tide stations read that way, and the page showed them verbatim, so a
 // third of the currents note ended mid-phrase. Put the bearing back in front:
 // "7.6 miles SSE of Pond Point".
 //
@@ -543,17 +543,30 @@ export function parseCurrents(payload) {
 // SSE of"), so a middle segment that is nothing but a distance joins the bearing rather than
 // the place. The result is capitalised, because a station name is a label and starts a line.
 //
-// Nine names have no comma at all, and five of those name no place NOAA could have inverted
-// ("2.4 miles southwest of"); the other four separate the place with spaces, where there is
-// no non-guessing way to tell where it ends ("Pooles Island 2.0 n.mi. SSW of"). All nine are
-// returned exactly as they came -- inventing a split would be worse than the dangling word.
-const DANGLING = /\s(?:of|off|from)$/i;
+// Of those 1,095 it rewrites 1,086 and returns 11 names unchanged on purpose. Nine have no
+// comma at all: five name no place NOAA could have inverted ("2.4 miles southwest of") and
+// four separate the place with spaces, where there is no non-guessing way to tell where it
+// ends ("Pooles Island 2.0 n.mi. SSW of"). The last two dangle INSIDE a bracket and disagree
+// about where the place sits -- in "Cats Point (bridge west of)" it is "bridge", inside the
+// bracket; in "Cape Utalug (4 miles west of)" it is the name outside it. Inventing a split
+// would be worse than the dangling word, so all 11 come back exactly as they came. Every one
+// of them is pinned in the suite, so this is a decision and not an oversight.
+const DANGLING = /\s(?:of|off|from|above|below)$/i;
+// A bearing can carry a parenthetical qualifier ("Drum Island, east of (bridge)"), and one
+// name never closes its bracket ("... 3.0 nm east of (Lawson Reef, 1 nm"), so the closing
+// paren is optional. Nested brackets do not occur in either file.
+const TRAILING_PAREN = /\s*\([^()]*\)?$/;
 const BARE_DISTANCE = /^[\d.]+\s*(?:n\.?\s?mi\.?|nmi\.?|naut(?:ical)? miles?|miles?|mi\.?|yards?|feet|ft\.?)$/i;
 
 export function stationName(name) {
   const s = (name || '').trim();
-  if (!DANGLING.test(s) || !s.includes(',')) return s;
-  const parts = s.split(',').map((x) => x.trim()).filter(Boolean);
+  // Set a trailing parenthetical aside before splitting: it keeps the dangling word at the end
+  // of what we test, and stops a comma INSIDE the bracket being mistaken for the split point.
+  const paren = s.match(TRAILING_PAREN);
+  const head = paren ? s.slice(0, paren.index) : s;
+  const tail = paren ? paren[0] : '';
+  if (!DANGLING.test(head) || !head.includes(',')) return s;
+  const parts = head.split(',').map((x) => x.trim()).filter(Boolean);
   if (parts.length < 2) return s;
   let bearing = parts.pop();
   if (parts.length > 1 && BARE_DISTANCE.test(parts[parts.length - 1])) {
@@ -561,7 +574,7 @@ export function stationName(name) {
   }
   const place = parts.join(', ');
   if (!place) return s;
-  const out = `${bearing} ${place}`;
+  const out = `${bearing} ${place}${tail}`;
   return out.charAt(0).toUpperCase() + out.slice(1);
 }
 
