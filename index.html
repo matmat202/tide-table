@@ -105,10 +105,21 @@ tr:last-child td{border-bottom:none}
 td.kind{font-family:var(--f-body)}
 td.num{text-align:right}
 /* Cells had no side padding, so on a phone the four-column highest-tides table fitted with
-   zero pixels between columns ("10:49 am7.0 ftat flood level"). */
+   zero pixels between columns ("10:49 am7.0 ftat flood level"). The gap is gated at >=8px
+   by shot route 11, so 10px on a phone still leaves margin over the gate. */
 th+th,td+td{padding-left:12px}
-td.num{white-space:nowrap}
+@media (max-width:440px){ th+th,td+td{padding-left:10px} }
+/* No `td.num{white-space:nowrap}` here: it was the whole of the 2026-11-13 overflow. It
+   pinned "at flood level" to one 126px line, which squeezed Day to 33px and pushed the
+   highest-tides table to 312px at a 320px viewport (narrow-reflow) and to 373/442px under
+   WCAG text spacing (text-spacing). Heights already hold together on their own -- heightText
+   joins value and unit with a non-breaking space -- so the rule only ever bought unbroken
+   clock times, at the price of a page that scrolled sideways on a small phone. */
 @media (max-width:440px){ .kings table{font-size:13.5px} }
+/* A data table cannot reflow narrower than its own headings: at 1.5x fonts on a 360px phone
+   the four-column table needs ~366px however the cells wrap. Let the TABLE scroll there so
+   the page does not -- the page scrolling sideways is the thing that strands content. */
+.tscroll{overflow-x:auto}
 .tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:2px 6px;border-radius:3px;border:1px solid currentColor}
 .tag.h{color:var(--high)} .tag.l{color:var(--low)}

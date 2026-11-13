@@ -11,6 +11,15 @@ const el = (tag, cls, text) => {
   return n;
 };
 
+// Every table goes in its own horizontal scroller. A table cannot reflow narrower than its
+// widest heading, so at 1.5x fonts on a 360px phone the four-column highest-tides table wants
+// ~366px no matter how the cells wrap; without this the whole PAGE scrolled sideways there.
+const scroller = (t) => {
+  const d = el('div', 'tscroll');
+  d.append(t);
+  return d;
+};
+
 let STATIONS = [];
 let GAUGES = [];             // stations where NOAA also measures the water (g:1)
 let current = null;          // the station being shown
@@ -325,7 +334,7 @@ function render() {
   out.append(fig);
 
   out.append(el('h3', null, `Tides on ${day.date}`));
-  out.append(table(day));
+  out.append(scroller(table(day)));
   if (flow) out.append(currentsBlock(flow, day, now));
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
   if (month.length) out.append(rangeBlock(month, now));
@@ -426,7 +435,7 @@ function kings(list, fl) {
     body.append(tr);
   }
   t.append(body);
-  sec.append(t);
+  sec.append(scroller(t));
   return sec;
 }
 
@@ -459,7 +468,7 @@ function lows(list) {
     body.append(tr);
   }
   t.append(body);
-  sec.append(t);
+  sec.append(scroller(t));
   return sec;
 }
 
@@ -509,7 +518,7 @@ function currentsBlock({ st, rows: cur }, day, now) {
     body.append(tr);
   }
   t.append(body);
-  sec.append(t);
+  sec.append(scroller(t));
   return sec;
 }
 
