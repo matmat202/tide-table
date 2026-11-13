@@ -113,7 +113,7 @@ function message(text, bad = false) {
 
 function headline(station, now) {
   const box = el('div', 'now');
-  box.append(el('p', 'station', `${station.name} · ${station.region} · station ${station.id}`));
+  box.append(el('p', 'station', `${T.stationName(station.name)} · ${station.region} · station ${station.id}`));
 
   const { next, prev } = T.nextTide(rows, now);
   if (!next) {
@@ -151,7 +151,7 @@ function ago(gauge, t) {
 function measured({ gauge, dep, temp }) {
   const box = el('div', 'water');
   const where = gauge.km > 0
-    ? `At ${gauge.name}, the nearest NOAA gauge (${gauge.km < 10 ? gauge.km.toFixed(1) : Math.round(gauge.km)}${T.NB}km away)`
+    ? `At ${T.stationName(gauge.name)}, the nearest NOAA gauge (${gauge.km < 10 ? gauge.km.toFixed(1) : Math.round(gauge.km)}${T.NB}km away)`
     : 'At this station\'s NOAA gauge';
   if (dep) {
     const p = el('p', 'meas');
@@ -479,7 +479,7 @@ function currentsBlock({ st, rows: cur }, day, now) {
   const sec = el('section', 'currents');
   sec.append(el('h3', null, `Currents on ${day.date}`));
   const km = st.km < 10 ? st.km.toFixed(1) : Math.round(st.km);
-  sec.append(el('p', 'note', `NOAA's nearest current station: ${st.name} (${km}${T.NB}km away). Predictions, not for navigation.`));
+  sec.append(el('p', 'note', `NOAA's nearest current station: ${T.stationName(st.name)} (${km}${T.NB}km away). Predictions, not for navigation.`));
   const nx = T.nextCurrents(cur, now);
   if (nx.slack) {
     const off = T.slackOffset(nx.slack, rows);
@@ -532,8 +532,8 @@ async function show(station) {
   flow = null;
   flood = null;
   $('#hits').replaceChildren();
-  $('#q').value = station.name;
-  message(`Loading tides for ${station.name}…`);
+  $('#q').value = T.stationName(station.name);
+  message(`Loading tides for ${T.stationName(station.name)}…`);
   try {
     // Both asked for at once: each is a full round trip to NOAA, and in series the hourly
     // one held the first draw back by ~0.6 s on a phone link (site-speed, 2026-10-28).
@@ -612,7 +612,7 @@ function showHits(list) {
     const li = el('li');
     const b = el('button');
     b.type = 'button';
-    b.append(el('span', null, s.name));
+    b.append(el('span', null, T.stationName(s.name)));
     b.append(document.createTextNode(' '));
     b.append(el('span', 'where', `${s.region} · ${s.id}`));
     b.addEventListener('click', () => show(s));

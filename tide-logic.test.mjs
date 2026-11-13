@@ -237,6 +237,53 @@ eq('ordering holds for three', L.nearest([
   { id: 'b', name: 'b', region: 'r', lat: 2, lng: 0, tz: 'UTC' },
 ], 0, 0, 3).map((s) => s.id), ['a', 'b', 'c']);
 
+// --- NOAA's inverted station names -----------------------------------------------------------------
+// "Pond Point, 7.6 miles SSE of" is how NOAA writes a bearing, and the page used to show it
+// verbatim. The cases below are all real shipped names, not invented ones.
+eq('a plain name is left alone', L.stationName('Eastport, Friar Roads'), 'Eastport, Friar Roads');
+eq('the bearing moves in front', L.stationName('Pond Point, 7.6 miles SSE of'),
+  '7.6 miles SSE of Pond Point');
+eq('a bare bearing is capitalised', L.stationName('Mark Island, north of'), 'North of Mark Island');
+eq('a name that names two places keeps both',
+  L.stationName('Browns Head, Vinalhaven Island, NNW of'),
+  'NNW of Browns Head, Vinalhaven Island');
+eq('a distance in its own segment joins the bearing, not the place',
+  L.stationName('Mark Island, 0.3 nmi., SSE of'), '0.3 nmi. SSE of Mark Island');
+eq('"off" inverts too', L.stationName('False Egg Island Point, 2 miles off'),
+  '2 miles off False Egg Island Point');
+eq('"from" inverts too', L.stationName('Cape Muzon, 4 miles south from'),
+  '4 miles south from Cape Muzon');
+// Nine names name no place to put in front; inventing a split would be worse than the
+// dangling word, so they come back exactly as NOAA wrote them.
+eq('with no comma it is returned verbatim', L.stationName('2.4 miles southwest of'),
+  '2.4 miles southwest of');
+eq('a place separated by spaces is NOT guessed at', L.stationName('Pooles Island 2.0 n.mi. SSW of'),
+  'Pooles Island 2.0 n.mi. SSW of');
+// "of" inside a name is not a dangling "of".
+eq('"of" mid-name is untouched', L.stationName('Key West, 0.3 mi. W of Ft. Taylor'),
+  'Key West, 0.3 mi. W of Ft. Taylor');
+eq('an empty name stays empty', L.stationName(''), '');
+eq('a missing name does not throw', L.stationName(undefined), '');
+// Corpus level, over the data that actually ships. The second assertion is the positive
+// control for the first: if stationName returned its input, "none left dangling" would pass
+// vacuously, so the count of names it CHANGES has to be large and is pinned here.
+{
+  const curr = JSON.parse(readFileSync(here(pick('data/currents.json', '../site/data/currents.json')), 'utf8')).stations;
+  const all = [...shipped, ...curr].map((s) => s.name);
+  const dangling = (n) => /\s(?:of|off|from)$/i.test(n);
+  const raw = all.filter(dangling);
+  const left = all.map(L.stationName).filter(dangling);
+  ok('NOAA ships 1,000+ inverted names', raw.length > 1000, String(raw.length));
+  ok('exactly the nine that name no place are still dangling', left.length === 9,
+    `${left.length} left: ${JSON.stringify(left.slice(0, 12))}`);
+  ok('every one of those nine has no comma to split on', left.every((n) => !n.includes(',')),
+    JSON.stringify(left.filter((n) => n.includes(','))));
+  ok('rewriting never drops a word', all.every((n) => {
+    const w = (x) => L.fold(x).split(' ').filter(Boolean).sort().join(' ');
+    return w(n) === w(L.stationName(n));
+  }));
+}
+
 // --- search ---------------------------------------------------------------------------------------
 eq('folding strips accents and case', L.fold('Cañaveral  Hárbor'), 'canaveral harbor');
 eq('an empty query finds nothing', L.search(shipped, '   '), []);
@@ -248,6 +295,18 @@ ok('a prefix match outranks a mid-word one', (() => {
 })());
 ok('a station id finds its station', L.search(shipped, '9414290').some((s) => s.id === '9414290'));
 eq('search respects the limit', L.search(shipped, 'bay', 7).length, 7);
+// The box is filled with the DISPLAYED name, so the displayed name has to find its own
+// station -- matching NOAA's raw word order would leave the box holding text that finds
+// nothing. 'Calaveras Point, west of' displays as 'West of Calaveras Point'.
+ok('an inverted station is found by its displayed name', (() => {
+  const st = shipped.find((x) => x.name === 'Calaveras Point, west of');
+  if (!st) return false;                       // the fixture this asserts about must exist
+  return L.search(shipped, L.stationName(st.name)).some((x) => x.id === st.id);
+})());
+ok('and still by the plain place name', (() => {
+  const st = shipped.find((x) => x.name === 'Calaveras Point, west of');
+  return !!st && L.search(shipped, 'calaveras point').some((x) => x.id === st.id);
+})());
 
 // --- formatting -------------------------------------------------------------------------------------
 eq('morning', L.clockText('2026-03-01 06:01'), '6:01 am');

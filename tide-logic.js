@@ -310,7 +310,10 @@ export function search(stations, q, limit = 20) {
   if (!needle) return [];
   const hits = [];
   for (const s of stations) {
-    const name = fold(s.name), region = fold(s.region);
+    // Fold the DISPLAYED name, not NOAA's raw one: the search box is filled with the
+    // displayed name, so matching the raw order would leave the box holding text that
+    // finds nothing. Rewriting only reorders words, so 'calaveras' still matches.
+    const name = fold(stationName(s.name)), region = fold(s.region);
     const i = name.indexOf(needle);
     const j = i < 0 ? region.indexOf(needle) : -1;
     if (i < 0 && j < 0 && !fold(s.id).startsWith(needle)) continue;
@@ -528,6 +531,40 @@ export function parseCurrents(payload) {
 // The current station to read for a tide station: the nearest within `maxKm`. Currents
 // change across a single channel, so the bar is tighter than the gauge's 40 km: 15 km is
 // what the kill-rule measurement paired stations at (state/scratch/tide-currents).
+// NOAA writes many station names inverted, with the place first and the bearing left
+// dangling off the end: "Pond Point, 7.6 miles SSE of". 1,062 of the 2,569 current stations
+// and 10 of the 3,502 tide stations read that way, and the page showed them verbatim, so a
+// third of the currents note ended mid-phrase. Put the bearing back in front:
+// "7.6 miles SSE of Pond Point".
+//
+// The bearing is whatever follows the LAST comma, which keeps a name that names two places
+// intact ("Browns Head, Vinalhaven Island, NNW of" -> "NNW of Browns Head, Vinalhaven
+// Island"). One name splits its distance off into its own segment ("Mark Island, 0.3 nmi.,
+// SSE of"), so a middle segment that is nothing but a distance joins the bearing rather than
+// the place. The result is capitalised, because a station name is a label and starts a line.
+//
+// Nine names have no comma at all, and five of those name no place NOAA could have inverted
+// ("2.4 miles southwest of"); the other four separate the place with spaces, where there is
+// no non-guessing way to tell where it ends ("Pooles Island 2.0 n.mi. SSW of"). All nine are
+// returned exactly as they came -- inventing a split would be worse than the dangling word.
+const DANGLING = /\s(?:of|off|from)$/i;
+const BARE_DISTANCE = /^[\d.]+\s*(?:n\.?\s?mi\.?|nmi\.?|naut(?:ical)? miles?|miles?|mi\.?|yards?|feet|ft\.?)$/i;
+
+export function stationName(name) {
+  const s = (name || '').trim();
+  if (!DANGLING.test(s) || !s.includes(',')) return s;
+  const parts = s.split(',').map((x) => x.trim()).filter(Boolean);
+  if (parts.length < 2) return s;
+  let bearing = parts.pop();
+  if (parts.length > 1 && BARE_DISTANCE.test(parts[parts.length - 1])) {
+    bearing = `${parts.pop()} ${bearing}`;
+  }
+  const place = parts.join(', ');
+  if (!place) return s;
+  const out = `${bearing} ${place}`;
+  return out.charAt(0).toUpperCase() + out.slice(1);
+}
+
 export function currentFor(station, currents, maxKm = 15) {
   if (!station) return null;
   let best = null;
