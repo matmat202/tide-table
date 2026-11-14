@@ -113,14 +113,19 @@ function message(text, bad = false) {
   out.append(el('div', bad ? 'msg bad' : 'msg', text));
 }
 
-function headline(station, now) {
+// The gauge block is NOT part of the headline any more. Measured on the live page at 390px
+// on 2026-11-14: the chart began 634px down, and 155px of that was this block -- the gauge
+// reading plus its wind/pressure caveat -- sitting between the headline and the day strip.
+// It is supplementary to the chart, not a preamble to it, so render() appends it under the
+// chart instead. Its note still says "the table below", which is still true there.
+function headline(station, now, withWater = true) {
   const box = el('div', 'now');
   box.append(el('p', 'station', `${T.stationName(station.name)} · ${station.region} · station ${station.id}`));
 
   const { next, prev } = T.nextTide(rows, now);
   if (!next) {
     box.append(el('p', 'headline', 'No further tides in the fetched window.'));
-    if (water) box.append(measured(water));
+    if (withWater && water) box.append(measured(water));
     return box;
   }
   const kind = next.type === T.H ? 'High' : 'Low';
@@ -136,7 +141,7 @@ function headline(station, now) {
   if (prev) bits.push(`last ${prev.type === T.H ? 'high' : 'low'} was ${T.clockText(prev.t)}`);
   if (after) bits.push(`then ${after.type === T.H ? 'high' : 'low'} at ${T.clockText(after.t)}`);
   box.append(el('p', 'after', bits.join(' · ')));
-  if (water) box.append(measured(water));
+  if (withWater && water) box.append(measured(water));
   return box;
 }
 
@@ -323,7 +328,7 @@ function render() {
   const out = $('#out');
   out.replaceChildren();
   drawnAt = drawWidth();
-  out.append(headline(current, now));
+  out.append(headline(current, now, false));
 
   // The strip is SEVEN days (app.js fetches yesterday .. +5), and with "Sun, Nov 15" on
   // every button it wrapped to three rows on a 390px phone, pushing the chart off the
@@ -357,6 +362,7 @@ function render() {
     ? `${capDay} · ${range} · curve from NOAA's hourly harmonic series.`
     : `${capDay} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`));
   out.append(fig);
+  if (water) out.append(measured(water));
 
   out.append(el('h3', null, longDay === 'today' ? 'Tides today' : `Tides on ${longDay}`));
   out.append(scroller(table(day)));

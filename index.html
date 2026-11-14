@@ -79,8 +79,11 @@ button:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
 .now .headline b{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .now .after{color:var(--ink-2);font-size:14px;margin:6px 0 0}
 
-/* --- what the gauge measured --- */
-.water{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule)}
+/* --- what the gauge measured ---
+   It used to sit inside .now, separated by a rule. It now renders under the chart (see
+   headline() in app.js), so it needs its own card instead of a divider. */
+.water{margin:18px 0 0;padding:13px 16px;border-radius:10px;border:1px solid var(--rule);
+  background:var(--card)}
 .water p{margin:4px 0 0;font-size:14.5px;color:var(--ink-2)}
 .water .meas b{font-weight:650;color:var(--ink)}
 .water .meas b.up{color:var(--sea)}
@@ -138,6 +141,20 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);
   color:var(--muted);font-size:12.5px}
 footer a{color:var(--sea)}
 footer p{margin:5px 0;max-width:64ch}
+/* On a phone everything above the chart is a run-up to it. Measured on the live page at
+   390px on 2026-11-14: the chart started 634px down, so none of it was on the first
+   screen. Moving the gauge block under the chart took out 155px; this takes out the slack
+   in what is left. Nothing is hidden -- only the spacing and the two explanatory
+   paragraphs' type are tightened, and only below 440px. */
+@media (max-width:440px){
+  .wrap{padding-top:16px}
+  .sub{font-size:12.5px;margin-bottom:12px}
+  .now{margin-top:14px;padding:13px}
+  .now .station{margin-bottom:5px}
+  .now .after{margin-top:4px;font-size:13.5px}
+  .days{margin-top:10px}
+  figure{margin-top:13px}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
