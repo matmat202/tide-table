@@ -30,6 +30,7 @@ let dayIndex = null;
 let water = null;            // what the nearest gauge measured: { gauge, dep, temp }
 let CURRENTS = null;         // current-prediction stations, loaded after the first draw
 let flow = null;             // the nearest current station's predictions: { st, rows }
+let drawnAt = 0;            // the width the charts were last drawn for; 0 while a message shows
 let flood = null;            // NOAA's minor flood level above MLLW: { ft, by }, when it has one
 
 // ---- data ---------------------------------------------------------------------------
@@ -108,6 +109,7 @@ function getJson(url) {
 function message(text, bad = false) {
   const out = $('#out');
   out.replaceChildren();
+  drawnAt = 0;          // a message holds no chart, so a resize must not redraw over it
   out.append(el('div', bad ? 'msg bad' : 'msg', text));
 }
 
@@ -171,12 +173,18 @@ function measured({ gauge, dep, temp }) {
   return box;
 }
 
+// Both charts draw in a coordinate space as wide as the page shows them, so an SVG font
+// size is a CSS pixel size. They used a fixed 700-wide viewBox, which a 390px phone shrank
+// to half: every 11px label rendered at about 5.6px, unreadable on the device a tide table
+// is mostly read on. Capped at 700 so a wide screen draws exactly what it always did.
+const drawWidth = () => Math.round(Math.min(700, Math.max(280, $('#out').clientWidth || 700)));
+
 // The curve, as an SVG. NOAA's hourly series where it exists, the interpolation otherwise.
 function chart(day, now) {
   // AXIS is a reserved strip at the bottom for the hour labels. Without it the hour text
   // and a low-water label landed on top of each other, which bin/audit reports as
   // overlapping blocks -- two labels in the same place are unreadable whatever the colour.
-  const W = 700, Hh = 248, padX = 34, padY = 22, AXIS = 30;
+  const W = drawWidth(), Hh = 248, padX = 34, padY = 22, AXIS = 30;
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', `0 0 ${W} ${Hh}`);
   svg.setAttribute('role', 'img');
@@ -203,7 +211,11 @@ function chart(day, now) {
   const span = hi - lo || 1;
   const floorY = Hh - padY - AXIS;           // the curve's baseline, above the axis strip
   const x = (m) => padX + ((m - t0) / 1440) * (W - padX * 2);
-  const y = (v) => floorY - ((v - lo) / span) * (floorY - padY);
+  // Headroom for the time labels: one above the day's highest point, one below its lowest.
+  // The curve used to touch both edges, so those two labels were clamped onto the curve and
+  // its dot drew through them ("2:1●pm") -- invisible at 5.6px, plain once labels were readable.
+  const top = padY + 14, bottom = floorY - 20;
+  const y = (v) => bottom - ((v - lo) / span) * (bottom - top);
 
   // Midnight, 06, 12, 18 gridlines, so the curve can be read against the clock.
   for (let h = 0; h <= 24; h += 6) {
@@ -310,6 +322,7 @@ function render() {
 
   const out = $('#out');
   out.replaceChildren();
+  drawnAt = drawWidth();
   out.append(headline(current, now));
 
   const strip = el('div', 'days');
@@ -361,7 +374,7 @@ function rangeBlock(monthRows, now) {
   sec.append(el('p', 'note', `${said ? `${said}. ` : ''}Each bar is the day's largest rise or fall between high and low water: big days bring the highest highs and lowest lows, small days the gentlest water.`));
   if (days.length < 2) return sec;
 
-  const W = 700, Hh = 132, padX = 4, top = 22, AXIS = 20;
+  const W = drawWidth(), Hh = 132, padX = 4, top = 22, AXIS = 20;
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', `0 0 ${W} ${Hh}`);
   svg.setAttribute('role', 'img');
@@ -639,6 +652,15 @@ $('#locate').addEventListener('click', () => {
     () => message('Your browser would not share a location. Search for a station instead.', true),
     { timeout: 10000 },
   );
+});
+
+// Turning a phone, or resizing a window, changes the width the charts were drawn for.
+// Redraw only when that width changes: a mobile URL bar showing and hiding fires resize
+// with the height alone, and rebuilding the page then would be churn for nothing.
+let resizeTimer = 0;
+addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (drawnAt && drawWidth() !== drawnAt) render(); }, 150);
 });
 
 // ---- start -------------------------------------------------------------------------------
