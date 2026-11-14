@@ -371,8 +371,17 @@ const dayText = (date, weekday = true) => new Date(`${date}T12:00:00Z`).toLocale
 
 // "Sun 15" -- the day strip's label. No month: seven of these have to sit in one row on a
 // 390px phone, and the month is already in the heading and the chart caption.
-const shortDay = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US',
-  { weekday: 'short', day: 'numeric', timeZone: 'UTC' });
+//
+// Built from the two parts rather than asked for as one format. en-US has no conventional
+// pattern for weekday-plus-day-without-month, and toLocaleDateString({weekday,day}) answers
+// "15 Sun" -- measured on the live page on 2026-11-14, number first, which is not how anyone
+// writes a date. The parts are still localised; only the order is ours.
+const shortDay = (date) => {
+  const d = new Date(`${date}T12:00:00Z`);
+  const wd = d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+  const dn = d.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'UTC' });
+  return `${wd} ${dn}`;
+};
 
 // Each day's biggest swing for the month, with the big and small tides named. The month
 // starts yesterday, so today can be a turn; the bars start at today.
