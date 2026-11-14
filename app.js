@@ -325,28 +325,40 @@ function render() {
   drawnAt = drawWidth();
   out.append(headline(current, now));
 
+  // The strip is SEVEN days (app.js fetches yesterday .. +5), and with "Sun, Nov 15" on
+  // every button it wrapped to three rows on a 390px phone, pushing the chart off the
+  // first screen. Short labels ("Sun 15") in one row that scrolls ITSELF -- the page
+  // scrolling sideways is the thing that strands content, same reasoning as .tscroll.
+  // Each button also carries the long form, which the day heading and the chart caption
+  // read, so the three always name the day the same way.
   const strip = el('div', 'days');
+  let currentBtn = null;
   days.forEach((d, i) => {
-    const b = el('button', null, d.date === T.dayOf(now)
-      ? 'Today' : new Date(`${d.date}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }));
+    const isToday = d.date === T.dayOf(now);
+    const b = el('button', null, isToday ? 'Today' : shortDay(d.date));
     b.type = 'button';
-    if (i === dayIndex) b.setAttribute('aria-current', 'true');
+    b.dataset.long = isToday ? 'today' : dayText(d.date);
+    if (i === dayIndex) { b.setAttribute('aria-current', 'true'); currentBtn = b; }
     b.addEventListener('click', () => { dayIndex = i; render(); });
     strip.append(b);
   });
   out.append(strip);
+  // A day picked off the right-hand end must still be visible after the re-render.
+  if (currentBtn) currentBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  const longDay = currentBtn ? currentBtn.dataset.long : day.date;
 
   const fig = el('figure');
   const { svg, usedHourly } = chart(day, now);
   fig.append(svg);
   const range = day.range === null ? 'only one kind of tide this day, so no range'
     : `range ${day.range.toFixed(1)}${T.NB}ft`;
+  const capDay = longDay === 'today' ? dayText(day.date) : longDay;
   fig.append(el('figcaption', null, usedHourly
-    ? `${day.date} · ${range} · curve from NOAA's hourly harmonic series.`
-    : `${day.date} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`));
+    ? `${capDay} · ${range} · curve from NOAA's hourly harmonic series.`
+    : `${capDay} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`));
   out.append(fig);
 
-  out.append(el('h3', null, `Tides on ${day.date}`));
+  out.append(el('h3', null, longDay === 'today' ? 'Tides today' : `Tides on ${longDay}`));
   out.append(scroller(table(day)));
   if (flow) out.append(currentsBlock(flow, day, now));
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
@@ -356,6 +368,11 @@ function render() {
 
 const dayText = (date, weekday = true) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US',
   { ...(weekday ? { weekday: 'short' } : {}), month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+// "Sun 15" -- the day strip's label. No month: seven of these have to sit in one row on a
+// 390px phone, and the month is already in the heading and the chart caption.
+const shortDay = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US',
+  { weekday: 'short', day: 'numeric', timeZone: 'UTC' });
 
 // Each day's biggest swing for the month, with the big and small tides named. The month
 // starts yesterday, so today can be a turn; the bars start at today.

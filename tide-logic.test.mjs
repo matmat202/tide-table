@@ -124,8 +124,17 @@ for (const st of facts.stations) {
 
 // Pensacola is DIURNAL — one high and one low a day. A page that assumes four tides a day
 // is wrong there, so the fixture pins it.
+//
+// It is diurnal MOST days, not every day. While the fixture window was three days (Mar 1-3)
+// this read `every(count <= 2)` and passed; widening it to seven on 2026-11-14 showed
+// [2,2,2,3,4,2,2] — Pensacola goes semidiurnal around equatorial tides and back to one
+// high and one low near the tropic tides. The three-day sample was not the population.
+// What the page must survive is a ONE-HIGH-ONE-LOW day, so that is what is asserted; the
+// exact run is pinned too, so a silent change in the captured data is caught.
 const pens = facts.stations.find((s) => s.id === '8729840');
-ok('Pensacola really is diurnal in the fixture', pens.days.every((d) => d.count <= 2), JSON.stringify(pens.days.map((d) => d.count)));
+const pensCounts = pens.days.map((d) => d.count);
+ok('Pensacola gives the page a one-high-one-low day', pensCounts.filter((c) => c <= 2).length >= 5, JSON.stringify(pensCounts));
+eq('Pensacola tide counts over the fixture week', pensCounts, [2, 2, 2, 3, 4, 2, 2]);
 
 // --- the curve, scored against NOAA's harmonic hourly series ------------------------------
 for (const st of facts.stations) {

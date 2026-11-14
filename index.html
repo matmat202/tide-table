@@ -124,7 +124,12 @@ th+th,td+td{padding-left:12px}
   padding:2px 6px;border-radius:3px;border:1px solid currentColor}
 .tag.h{color:var(--high)} .tag.l{color:var(--low)}
 .tag.flood{color:var(--high)} .tag.ebb{color:var(--low)} .tag.slack{color:var(--ink-2)}
-.days{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}
+/* Seven day buttons do not fit one row on a phone. They used to WRAP, to three rows at
+   390px, which pushed the chart off the first screen. One row that scrolls itself: the
+   strip takes the overflow so the page does not, exactly as .tscroll does for the table. */
+.days{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin:14px 0 0;
+  scrollbar-width:thin;-webkit-overflow-scrolling:touch;scroll-padding:0 6px}
+.days button{flex:0 0 auto;white-space:nowrap}
 .days button[aria-current="true"]{background:var(--sea);color:var(--paper);border-color:var(--sea)}
 .msg{margin-top:18px;padding:12px 14px;border-radius:8px;background:var(--sunk);
   color:var(--ink-2);font-size:14px}
