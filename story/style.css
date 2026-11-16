@@ -1,0 +1,43 @@
+:root { --paper: #f3eee3; --ink: #1c1a17; --mute: #6a655d; --red: #a3201b; --gold: #8a5e00; --green: #2f6b43; }
+* { box-sizing: border-box; }
+html { background: var(--paper); color: var(--ink); }
+body { margin: 0; font: 18px/1.55 Georgia, 'Times New Roman', serif; }
+#gl { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+/* The plot box: the GL layer draws into this rectangle; the axes sit on it. */
+#plot { position: fixed; z-index: 0; pointer-events: none;
+  left: 40vw; right: 4vw; top: 14vh; bottom: 16vh; }
+#axes { position: absolute; inset: 0; transition: opacity .15s; z-index: 2; }
+#axes .tick { position: absolute; bottom: -1.9em; transform: translateX(-50%); white-space: nowrap;
+  font: 12px/1 ui-monospace, Menlo, monospace; color: var(--mute); }
+#axes .val { position: absolute; top: calc(10% - 1.6em); transform: translateX(-50%);
+  font: 700 13px/1 ui-monospace, Menlo, monospace; color: var(--red); }
+#axes .val.gold { color: var(--gold); }
+#axes .val.ink { color: var(--ink); }
+#axes .val.green { color: var(--green); }
+#axes .val.two { top: calc(10% - 2.5em); text-align: center; line-height: 1.15; }
+#axes .unit { position: absolute; right: 0; bottom: -3.6em; font: 12px/1 ui-monospace, Menlo, monospace; color: var(--mute); }
+main { position: relative; z-index: 3; width: 34vw; margin-left: 3vw; }
+.step { min-height: 100vh; display: flex; align-items: center; }
+.step > div { background: rgba(243,238,227,.94); padding: 1.1em 1.3em; border-top: 3px solid var(--ink); }
+h1 { font: 700 clamp(34px, 4.6vw, 64px)/1.02 Georgia, serif; margin: 0 0 .3em; letter-spacing: -.01em; }
+h2 { font: 700 26px/1.15 Georgia, serif; margin: 0 0 .4em; }
+.kicker { font: 12px/1 ui-monospace, Menlo, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin: 0 0 1em; }
+p { margin: 0 0 .8em; }
+p:last-child { margin-bottom: 0; }
+b[data-fact] { color: var(--red); font-variant-numeric: tabular-nums; }
+.w { font-style: italic; font-weight: 700; }
+.own { color: var(--green); } .borrow { color: var(--red); }
+.small { font-size: 14px; color: var(--mute); }
+a { color: var(--red); }
+#err { display: none; }
+body.failed #err, body.nogl #err { display: block; position: fixed; z-index: 9; left: 40vw; top: 40vh; color: var(--red); }
+body.nogl #err::before { content: 'This page draws its charts with WebGL, which this browser has turned off.'; }
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  #plot { left: 5vw; right: 5vw; top: 7vh; bottom: 60vh; }
+  #axes .unit { display: none; }
+  main { width: auto; margin: 0 4vw; }
+  .step { align-items: flex-end; padding-bottom: 6vh; min-height: 100vh; }
+  #axes .tick { font-size: 9px; }
+  #axes .val { font-size: 10px; }
+}

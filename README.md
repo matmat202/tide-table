@@ -12,6 +12,10 @@ local time, not yours**.
   stations publish only high and low water, so there the curve is interpolated between
   them — a shape, not a prediction. The caption always says which you are looking at.
 
+**[The story](https://matmat202.github.io/tide-table/story/)**: nearly two in three of
+these stations have no tide of their own. NOAA shifts another station's tide for them, and
+108 stations lend to all the rest, one of them across 6,468 km of Pacific.
+
 Predictions come live from [NOAA CO-OPS](https://tidesandcurrents.noaa.gov/). They are
 astronomical: real water level also answers to wind and barometric pressure, so **do not
 navigate on this**.

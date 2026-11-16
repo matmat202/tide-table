@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Borrowed Tides · most of NOAA's tide tables are another place's tide, shifted</title>
+<meta name="description" content="A scrolling story from NOAA's own station list: nearly two in three of the places NOAA predicts tides for have no tide of their own, and borrow one from just over a hundred stations, some of them an ocean away.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="plot" aria-hidden="true"><div id="axes"></div></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<p id="err" role="alert"></p>
+<main>
+
+<section class="step" data-kind="map"><div>
+  <p class="kicker">Tide Table · a story</p>
+  <h1>Borrowed tides</h1>
+  <p>NOAA publishes tide predictions for <b data-fact="n"></b> places, from the Arctic
+  coast of Alaska to Puerto Rico and out across the Pacific. Each dot here is one of them.
+  Together they draw the coast.</p>
+  <p class="small">Scroll ↓</p>
+</div></section>
+
+<section class="step" data-kind="kind"><div>
+  <p class="kicker">Chapter 1 · Two kinds of tide</p>
+  <h2>Nearly two in three have no tide of their own</h2>
+  <p>At <b data-fact="ref"></b> of them, <span class="w own">someone measured the water</span>
+  long enough to work out that place's own tide: the dozens of rhythms, from the sun, the
+  moon and the shape of the basin, that add up to its rise and fall.</p>
+  <p>The other <b data-fact="sub"></b>, <b data-fact="subshare"></b>, have none. For them
+  NOAA takes another station's tide and shifts it: high water so many minutes later, so
+  many inches lower. NOAA calls them subordinate.</p>
+</div></section>
+
+<section class="step" data-kind="lend"><div>
+  <p class="kicker">Chapter 2 · The lenders</p>
+  <h2>A hundred stations lend the rest their tide</h2>
+  <p>Gather every borrowed station round the one it borrows from. All
+  <b data-fact="lent"></b> borrowed tides come from <span class="w borrow">just
+  <b data-fact="lenders"></b> stations</span>.</p>
+  <p><b data-fact="topname:0"></b>, at the mouth of the Savannah River, lends its tide to
+  <b data-fact="topn:0"></b> places; <b data-fact="topname:1"></b> to
+  <b data-fact="topn:1"></b>; <b data-fact="topname:2"></b> to <b data-fact="topn:2"></b>.
+  The ten busiest lenders cover <b data-fact="top10"></b> of every borrowed tide.</p>
+  <p class="small">Most stations with a tide of their own lend it to no one:
+  <b data-fact="idle"></b> of the <b data-fact="ref"></b>, drawn faint.</p>
+</div></section>
+
+<section class="step" data-kind="dist"><div>
+  <p class="kicker">Chapter 3 · How far</p>
+  <h2>Most borrow from up the coast</h2>
+  <p>Now stack the borrowed stations by how far they are, in a straight line, from the
+  station whose tide they use. Half are within <b data-fact="median"></b>: a creek borrowing
+  from the harbour at its mouth, a pier from the inlet down the beach.</p>
+  <p>But the columns do not stop. <b data-fact="far"></b> borrow from a station
+  <span class="w borrow"><b data-fact="farkm"></b> or more away</span>, and
+  <b data-fact="over1000"></b> from more than a thousand.</p>
+</div></section>
+
+<section class="step" data-kind="far"><div>
+  <p class="kicker">Chapter 4 · Across an ocean</p>
+  <h2>Easter Island's tide comes from Samoa</h2>
+  <p>Here are the stations that borrow from <b data-fact="farkm"></b> or more away. Almost
+  all of them, <b data-fact="farelse"></b> of <b data-fact="far"></b>, are outside the
+  United States: harbours in Cuba, Jamaica and Haiti, on the coasts of Mexico and Central
+  America, on Pacific atolls. <b data-fact="farlend:1"></b>, in Virginia, lends its tide to
+  <b data-fact="farlendn:1"></b> of them, ports in Cuba and Nicaragua among them.</p>
+  <p>The farthest is <b data-fact="farthest"></b>. NOAA predicts its tide by shifting the
+  tide at <b data-fact="farfrom"></b>, in American Samoa: <b data-fact="farthestkm"></b>
+  away, across open Pacific.</p>
+  <p class="small">An offset only shifts a tide; it cannot change its shape. The further
+  apart two places are, the less reason to think they share one.</p>
+</div></section>
+
+<section class="step" data-kind="us"><div>
+  <p class="kicker">Chapter 5 · Is it only the islands?</p>
+  <h2>Not only the islands</h2>
+  <p>The <b data-fact="elsen"></b> stations outside any US state, from Mexico to Kiribati,
+  borrow almost every tide: <b data-fact="elsesub"></b>. Fade them out, and the
+  <b data-fact="usn"></b> in the states and territories still borrow
+  <b data-fact="ussub"></b>.</p>
+  <p>It depends on the coast. Texas borrows <b data-fact="state:TX"></b> of its
+  <b data-fact="staten:TX"></b>, and Puerto Rico <b data-fact="state:PR"></b> of its
+  <b data-fact="staten:PR"></b>. South Carolina borrows <b data-fact="state:SC"></b>,
+  California <b data-fact="state:CA"></b>, Florida <b data-fact="state:FL"></b> and Alaska
+  <b data-fact="state:AK"></b>.</p>
+</div></section>
+
+<section class="step" data-kind="map"><div>
+  <p class="kicker">Coda · Your tide</p>
+  <h2>Look up any of them</h2>
+  <p><a href="../">Tide Table</a> gives the next high and low water at every one of these
+  stations, in the station's own local time. Where a station has a tide of its own it draws
+  NOAA's hourly curve; where it borrows one, NOAA publishes only the shifted highs and lows,
+  and the page says so under the chart.</p>
+  <p class="small">From NOAA CO-OPS's list of tide prediction stations, fetched
+  <b data-fact="listed"></b>; a station's kind and the station it borrows from are NOAA's
+  own fields. Distances are great-circle. NOAA files <b data-fact="bad"></b> at coordinates
+  more than 16,000 km from the stations they borrow from, which cannot be right: they are
+  counted, but left out of every distance and off the map. So are
+  <b data-fact="offmap"></b>, which are real but thousands of km from everything else.
+  <b data-fact="self"></b>, in Palau, is filed as borrowing from itself.</p>
+</div></section>
+
+</main>
+<script type="module" src="story.js"></script>
+</body>
+</html>
