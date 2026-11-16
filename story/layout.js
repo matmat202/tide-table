@@ -11,10 +11,11 @@ export const F = { sub: 1, us: 2, hidden: 4 };
 
 /* The dots, in story.json's fixed order. */
 export function dots(D) {
-  return D.dots.map(([x, y, f, ref, bin], i) => {
+  return D.dots.map(([x, y, f, ref, bin, shift], i) => {
     if (ref >= D.dots.length || ref === i) throw new Error(`dot ${i}: bad reference ${ref}`);
     if (bin >= D.dist.bins.length + 1) throw new Error(`dot ${i}: bad distance column ${bin}`);
-    return { i, x, y, sub: !!(f & F.sub), us: !!(f & F.us), hidden: !!(f & F.hidden), ref, bin };
+    if (shift >= D.shift.bins.length + 1 || (shift >= 0 && !(f & F.sub))) throw new Error(`dot ${i}: bad shift column ${shift}`);
+    return { i, x, y, sub: !!(f & F.sub), us: !!(f & F.us), hidden: !!(f & F.hidden), ref, bin, shift };
   });
 }
 
@@ -82,16 +83,23 @@ export function perRow(maxN, K, a, top = TOP) {
   throw new Error(`no row width fits ${maxN} dots`);
 }
 
-/* Borrowed stations stacked by distance column, nearest first; everything else unlit. */
-export function columns(ds, K, a) {
+/* Columns charts: borrowed stations stacked by distance (`bin`) or by time shift (`shift`),
+ * the columns from `hot` up in the chapter's colour; everything else unlit. */
+export const COLS = {
+  dist: { key: 'bin', hot: FARBIN, colour: C.red },
+  shift: { key: 'shift', hot: 3, colour: C.gold }, // from an hour up (story.json shift.bins)
+};
+export function columns(ds, K, a, spec = COLS.dist) {
+  const kk = spec.key;
   const n = new Array(K).fill(0);
-  for (const d of ds) if (d.bin >= 0) n[d.bin]++;
+  for (const d of ds) if (d[kk] >= 0) n[d[kk]]++;
   const per = perRow(Math.max(...n), K, a), colW = 1 / K, barW = colW * 0.8, cw = barW / per, chh = cw * a;
   const slots = new Float32Array(ds.length * 4), at = new Array(K).fill(0);
   for (const d of ds) {
-    if (d.bin < 0) { slots.set([0.5, 0.45, C.grey, 0], d.i * 4); continue; }
-    const j = at[d.bin]++, r = Math.floor(j / per), c = j % per;
-    slots.set([d.bin * colW + (colW - barW) / 2 + (c + 0.5) * cw, (r + 0.5) * chh, d.bin >= FARBIN ? C.red : C.slate, 1], d.i * 4);
+    const b = d[kk];
+    if (b < 0) { slots.set([0.5, 0.45, C.grey, 0], d.i * 4); continue; }
+    const j = at[b]++, r = Math.floor(j / per), c = j % per;
+    slots.set([b * colW + (colW - barW) / 2 + (c + 0.5) * cw, (r + 0.5) * chh, b >= spec.hot ? spec.colour : C.slate, 1], d.i * 4);
   }
   return { kind: 'columns', slots, per, cell: cw, K };
 }

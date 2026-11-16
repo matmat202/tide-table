@@ -14,7 +14,8 @@ local time, not yours**.
 
 **[The story](https://matmat202.github.io/tide-table/story/)**: nearly two in three of
 these stations have no tide of their own. NOAA shifts another station's tide for them, and
-108 stations lend to all the rest, one of them across 6,468 km of Pacific.
+108 stations lend to all the rest, one of them across 6,468 km of Pacific; a third are
+shifted an hour or more.
 
 Predictions come live from [NOAA CO-OPS](https://tidesandcurrents.noaa.gov/). They are
 astronomical: real water level also answers to wind and barometric pressure, so **do not

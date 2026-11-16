@@ -2,7 +2,7 @@
  * reader scrolls from one step to the next, every dot flies from the old layout to the
  * new one. Numbers in the prose are not typed in: a <b data-fact="..."> is filled from
  * story.json, so the text cannot drift from the chart. Modelled on stanford-on-github/story. */
-import { dots, maps, map, lend, columns } from './layout.js';
+import { dots, maps, map, lend, columns, COLS } from './layout.js';
 import { createPoints } from './gl.js';
 
 // 0 ink, 1 borrowed / far (red), 2 gold, 3 own tide (green), 4 slate, 5 grey
@@ -41,6 +41,16 @@ export function fact(D, spec) {
     case 'farelse': return fmt(T.farelse);
     case 'farlend': return place(T.farlend[Number(a)].name);
     case 'farlendn': return fmt(T.farlend[Number(a)].n);
+    case 'shiftn': return fmt(D.shift.n);
+    case 'shiftmiss': return fmt(D.shift.missing);
+    case 'shiftmedian': return `${D.shift.median} minutes`;
+    case 'shifthour': return fmt(D.shift.hour);
+    case 'shifthourshare': return pct(D.shift.hour / D.shift.n);
+    case 'shiftthree': return fmt(D.shift.three);
+    case 'shiftmax': return place(D.shift.max.name);
+    case 'shiftmaxhm': return hm(D.shift.max.min);
+    case 'shiftmaxfrom': return place(D.shift.max.from);
+    case 'shiftfetched': { const [y, m, d] = D.shift.fetched.split('-').map(Number); return `${MONTHS[m - 1]} ${d}, ${y}`; }
     case 'farthest': return place(T.farthest.name);
     case 'farthestkm': return `${fmt(T.farthest.km)} km`;
     case 'farfrom': return place(T.farthest.from);
@@ -62,7 +72,8 @@ export function fact(D, spec) {
 export function layoutFor(step, ds, D, aspect) {
   const k = step.dataset.kind;
   if (k === 'lend') return lend(ds, aspect, D.aspect);
-  if (k === 'dist') return columns(ds, D.dist.bins.length + 1, aspect);
+  if (k === 'dist') return { ...columns(ds, D.dist.bins.length + 1, aspect, COLS.dist), chart: 'dist' };
+  if (k === 'shift') return { ...columns(ds, D.shift.bins.length + 1, aspect, COLS.shift), chart: 'shift' };
   if (!maps[k]) throw new Error(`unknown layout ${k}`);
   return map(ds, aspect, D.aspect, maps[k]);
 }
@@ -71,6 +82,17 @@ export function layoutFor(step, ds, D, aspect) {
 export function binLabels(D) {
   const B = D.dist.bins;
   return [`<${B[0]}`, ...B.slice(1).map((b, i) => `${fmt(B[i])}–${fmt(b)}`), `${fmt(B.at(-1))}+`];
+}
+/* The time-shift columns' labels, minutes below an hour and hours above: "<15m" … "6h+". */
+export const mins = (m) => (m < 60 ? `${m}m` : `${m / 60}h`);
+export function shiftLabels(D) {
+  const B = D.shift.bins;
+  return [`<${mins(B[0])}`, ...B.slice(1).map((b, i) => `${mins(B[i])}–${mins(b)}`), `${mins(B.at(-1))}+`];
+}
+/* 696 -> "11 hours 36 minutes" */
+export function hm(m) {
+  const h = Math.floor(Math.abs(m) / 60), r = Math.abs(m) % 60;
+  return [h && `${h} hour${h > 1 ? 's' : ''}`, r && `${r} minute${r > 1 ? 's' : ''}`].filter(Boolean).join(' ');
 }
 
 async function main() {
@@ -116,17 +138,20 @@ async function main() {
     return { i, t: Math.min(1, Math.max(0, 1 - (top - line) / (innerHeight - line))) };
   };
 
-  const labels = binLabels(D);
+  const charts = {
+    dist: [binLabels(D), D.dist.count, COLS.dist.hot, '', 'borrowed stations, by km to the station they borrow from'],
+    shift: [shiftLabels(D), D.shift.count, COLS.shift.hot, 'gold', 'borrowed stations, by how far NOAA shifts their high water in time'],
+  };
   const drawAxes = (lay) => {
     const html = [];
     if (lay.kind === 'columns') {
-      const narrow = plot.clientWidth < 600;
+      const narrow = plot.clientWidth < 600, [labels, count, hot, cls, unit] = charts[lay.chart];
       labels.forEach((lab, i) => {
         const x = ((i + 0.5) / lay.K) * 100;
         html.push(`<span class="tick" style="left:${x}%">${narrow ? lab.replace(',000', 'k') : lab}</span>`);
-        html.push(`<span class="val ${i >= 6 ? '' : 'ink'}" style="left:${x}%">${fmt(D.dist.count[i])}</span>`);
+        html.push(`<span class="val ${i >= hot ? cls : 'ink'}" style="left:${x}%">${fmt(count[i])}</span>`);
       });
-      html.push(`<span class="unit">borrowed stations, by km to the station they borrow from</span>`);
+      html.push(`<span class="unit">${unit}</span>`);
     }
     axes.innerHTML = html.join('');
   };
