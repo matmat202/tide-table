@@ -155,7 +155,9 @@ function ago(gauge, t) {
 
 // What the water is actually doing: the gap between the gauge and the prediction, which is
 // the one thing a tide table cannot know in advance.
-function measured({ gauge, dep, temp }) {
+// longDay is the strip's own label for the day on show ('today', else 'Thu, Nov 19'). The
+// reading is from NOW: on another day the table below is not what it is measured against.
+function measured({ gauge, dep, temp }, longDay = 'today') {
   const box = el('div', 'water');
   const where = gauge.km > 0
     ? `At ${T.stationName(gauge.name)}, the nearest NOAA gauge (${gauge.km < 10 ? gauge.km.toFixed(1) : Math.round(gauge.km)}${T.NB}km away)`
@@ -168,7 +170,7 @@ function measured({ gauge, dep, temp }) {
     p.append(document.createTextNode('.'));
     box.append(p);
     if (!calm) {
-      box.append(el('p', 'note', `Wind, air pressure and river flow move the water as well as the moon. While this lasts, tides ${gauge.km > 0 ? 'nearby' : 'here'} run about ${Math.abs(dep.diff).toFixed(1)}${T.NB}ft ${dep.diff > 0 ? 'higher' : 'lower'} than the table below.`));
+      box.append(el('p', 'note', `Wind, air pressure and river flow move the water as well as the moon. While this lasts, tides ${gauge.km > 0 ? 'nearby' : 'here'} run about ${Math.abs(dep.diff).toFixed(1)}${T.NB}ft ${dep.diff > 0 ? 'higher' : 'lower'} than ${longDay === 'today' ? 'the table below' : `predicted. That is a reading from now, not a forecast for ${longDay}`}.`));
     }
     if (ago(gauge, dep.t) > STALE_MIN) box.append(el('p', 'note', `That is the gauge's latest reading; it has not reported since ${T.clockText(dep.t)}.`));
   } else {
@@ -362,11 +364,11 @@ function render() {
     ? `${capDay} · ${range} · curve from NOAA's hourly harmonic series.`
     : `${capDay} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`));
   out.append(fig);
-  if (water) out.append(measured(water));
+  if (water) out.append(measured(water, longDay));
 
   out.append(el('h3', null, longDay === 'today' ? 'Tides today' : `Tides on ${longDay}`));
   out.append(scroller(table(day)));
-  if (flow) out.append(currentsBlock(flow, day, now));
+  if (flow) out.append(currentsBlock(flow, day, now, longDay));
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
   if (month.length) out.append(rangeBlock(month, now));
   if (month.length) out.append(kings(T.highestHighs(month, now, 5), flood));
@@ -520,13 +522,15 @@ function lows(list) {
 // The nearest current station's day: when the water stops (slack) and when it runs
 // hardest each way. Placed under the tides because it is read against them: slack is NOT
 // high or low water, and the line above the table says by how much, here, today.
-function currentsBlock({ st, rows: cur }, day, now) {
+// The 'Next slack' line is about NOW, so it shows only on today: under another day's table
+// it named a slack that table does not list (2026-11-16, live: Thursday said "in 24m").
+function currentsBlock({ st, rows: cur }, day, now, longDay = 'today') {
   const sec = el('section', 'currents');
-  sec.append(el('h3', null, `Currents on ${day.date}`));
+  sec.append(el('h3', null, longDay === 'today' ? 'Currents today' : `Currents on ${longDay}`));
   const km = st.km < 10 ? st.km.toFixed(1) : Math.round(st.km);
   sec.append(el('p', 'note', `NOAA's nearest current station: ${T.stationName(st.name)} (${km}${T.NB}km away). Predictions, not for navigation.`));
   const nx = T.nextCurrents(cur, now);
-  if (nx.slack) {
+  if (nx.slack && longDay === 'today') {
     const off = T.slackOffset(nx.slack, rows);
     let line = `Next slack ${T.clockText(nx.slack.t)}, ${T.untilText(now, nx.slack.t)}`;
     if (off && Math.abs(off.min) >= 10 && Math.abs(off.min) <= 240) {
