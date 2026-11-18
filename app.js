@@ -27,7 +27,7 @@ let rows = [];               // high/low predictions
 let hourly = [];             // NOAA's harmonic series, when the station has one
 let month = [];              // high/low for the next 30 days, for the daylight lows
 let dayIndex = null;
-let water = null;            // what the nearest gauge measured: { gauge, dep, temp }
+let water = null;            // what the nearest gauge measured: { gauge, dep, temp, seen }
 let CURRENTS = null;         // current-prediction stations, loaded after the first draw
 let flow = null;             // the nearest current station's predictions: { st, rows }
 let drawnAt = 0;            // the width the charts were last drawn for; 0 while a message shows
@@ -53,11 +53,12 @@ function predictionUrl(station, interval, ahead = 5) {
   return `${API}?${q}`;
 }
 
-// The last two hours at a gauge, in its own local time: measured levels, or the six-minute
-// prediction for the same minutes, which is what the measurement is paired against.
+// A gauge, in its own local time: the last two hours of six-minute prediction, which is
+// what the measurement is paired against, and a day of measured levels -- 24 hours back
+// always covers the station's whole day so far, which the chart draws beside the curve.
 function gaugeUrl(id, product) {
   const q = new URLSearchParams({
-    product, application: 'tide-table', station: id, range: '2',
+    product, application: 'tide-table', station: id, range: product === 'water_level' ? '24' : '2',
     datum: 'MLLW', time_zone: 'lst_ldt', units: 'english', format: 'json',
   });
   if (product === 'predictions') q.set('interval', '6');
@@ -213,7 +214,11 @@ function chart(day, now) {
     return { svg, usedHourly };
   }
 
-  const vs = pts.map((p) => p.v).concat(dayRows.map((r) => r.v));
+  // The measured water, on top of the prediction -- but only from the station's OWN gauge.
+  // A neighbour's gauge up to 40 km off has its own tide times, so its trace on this curve
+  // would show a phase error as if it were a surge. Today only: readings exist up to now.
+  const seen = water && water.gauge.km === 0 ? T.observedLines(water.seen, day.date) : [];
+  const vs = pts.map((p) => p.v).concat(dayRows.map((r) => r.v), seen.flat().map((p) => p.v));
   const lo = Math.min(...vs), hi = Math.max(...vs);
   const span = hi - lo || 1;
   const floorY = Hh - padY - AXIS;           // the curve's baseline, above the axis strip
@@ -250,6 +255,15 @@ function chart(day, now) {
   path.setAttribute('stroke', 'var(--sea)'); path.setAttribute('stroke-width', '2.5');
   svg.append(path);
 
+  for (const line of seen) {
+    const o = document.createElementNS(svg.namespaceURI, 'path');
+    o.setAttribute('class', 'observed');
+    o.setAttribute('d', line.map((p, i) => `${i ? 'L' : 'M'}${x(p.m).toFixed(1)},${y(p.v).toFixed(1)}`).join(''));
+    o.setAttribute('fill', 'none'); o.setAttribute('stroke', 'var(--ink)');
+    o.setAttribute('stroke-width', '2'); o.setAttribute('stroke-linejoin', 'round');
+    svg.append(o);
+  }
+
   // The extremes themselves, which are the exact numbers, marked on the sketch.
   for (const r of dayRows) {
     const m = T.wallMinutes(r.t);
@@ -279,8 +293,9 @@ function chart(day, now) {
   }
 
   const kinds = dayRows.map((r) => `${r.type === T.H ? 'high' : 'low'} ${T.clockText(r.t)} at ${T.heightText(r.v)}`);
-  svg.setAttribute('aria-label', `Tide curve for ${day.date}: ${kinds.join(', ')}.`);
-  return { svg, usedHourly };
+  const said = seen.length ? ' The gauge\'s measured level is drawn as a dark line.' : '';
+  svg.setAttribute('aria-label', `Tide curve for ${day.date}: ${kinds.join(', ')}.${said}`);
+  return { svg, usedHourly, measured: seen.length > 0 };
 }
 
 function table(day) {
@@ -355,14 +370,15 @@ function render() {
   const longDay = currentBtn ? currentBtn.dataset.long : day.date;
 
   const fig = el('figure');
-  const { svg, usedHourly } = chart(day, now);
+  const { svg, usedHourly, measured: drewGauge } = chart(day, now);
   fig.append(svg);
   const range = day.range === null ? 'only one kind of tide this day, so no range'
     : `range ${day.range.toFixed(1)}${T.NB}ft`;
   const capDay = longDay === 'today' ? dayText(day.date) : longDay;
-  fig.append(el('figcaption', null, usedHourly
+  const gaugeCap = drewGauge ? ' Dark line: what the gauge measured.' : '';
+  fig.append(el('figcaption', null, (usedHourly
     ? `${capDay} · ${range} · curve from NOAA's hourly harmonic series.`
-    : `${capDay} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`));
+    : `${capDay} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`) + gaugeCap));
   out.append(fig);
   if (water) out.append(measured(water, longDay));
 
@@ -623,12 +639,13 @@ async function readGauge(station) {
   try {
     const [obs, pred] = await Promise.all([
       getJson(gaugeUrl(gauge.id, 'water_level')), getJson(gaugeUrl(gauge.id, 'predictions'))]);
-    const dep = T.departure(T.parseObserved(obs), T.parseHourly(pred));
+    const seen = T.parseObserved(obs);
+    const dep = T.departure(seen, T.parseHourly(pred));
     let temp = null;
     if (gauge.w) {
       try { temp = T.parseTemp(await getJson(gaugeUrl(gauge.id, 'water_temperature'))); } catch { /* none */ }
     }
-    if (current === station) { water = { gauge, dep, temp }; render(); }
+    if (current === station) { water = { gauge, dep, temp, seen }; render(); }
   } catch { /* no block */ }
 }
 

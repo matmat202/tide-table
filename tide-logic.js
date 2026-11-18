@@ -247,6 +247,27 @@ export function departure(observed, predicted, span = 10) {
   return { t: now.t, v: now.v, predicted: p.get(now.t), diff, n: last.length };
 }
 
+// What the gauge measured on one day, as chart lines: only readings dated `date`, so a
+// gauge that went quiet last week draws nothing on today's axis rather than an old trace
+// that looks like a measurement. A gap of more than OBS_GAP_MIN between readings (NOAA
+// drops a reading it could not take) starts a new line -- joining across an outage would
+// draw water nobody measured. Lines of one reading are dropped: a dot is not a trace.
+export const OBS_GAP_MIN = 30;
+export function observedLines(observed, date) {
+  const lines = [];
+  let line = [], last = null;
+  for (const r of observed || []) {
+    if (r.t.slice(0, 10) !== date) continue;
+    const m = wallMinutes(r.t);
+    if (m === null || !Number.isFinite(r.v)) continue;
+    if (last !== null && m - last > OBS_GAP_MIN) { lines.push(line); line = []; }
+    line.push({ m, v: r.v });
+    last = m;
+  }
+  lines.push(line);
+  return lines.filter((l) => l.length > 1);
+}
+
 // Within a quarter of a foot the honest word is 'as predicted': that is about the spread
 // of an ordinary calm day at most gauges, and calling 0.1 ft 'above' would be noise.
 export const CALM_FT = 0.25;

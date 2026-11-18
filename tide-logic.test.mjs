@@ -798,5 +798,26 @@ for (const st of facts.currents) {
   eq('a heading past 360 wraps', L.compass(371.25), 'NNE');
 }
 
+// --- the measured trace on the chart ---------------------------------------------------------
+{
+  const o = (t, v) => ({ t, v });
+  const obs = [o('2026-03-01 23:48', 9), o('2026-03-01 23:54', 9),
+    o('2026-03-02 00:00', 1), o('2026-03-02 00:06', 2), o('2026-03-02 00:12', 3),
+    o('2026-03-02 00:48', 4), o('2026-03-02 00:54', 5), o('2026-03-02 01:00', 6),
+    o('2026-03-02 02:00', 7)];
+  const lines = L.observedLines(obs, '2026-03-02');
+  eq('observed: only the day asked for, split at the outage, lone readings dropped',
+    lines.map((l) => l.map((p) => p.v)), [[1, 2, 3], [4, 5, 6]]);
+  eq('observed: minutes are the station wall clock', lines[0][0].m, L.wallMinutes('2026-03-02 00:00'));
+  eq('observed: a gap of exactly OBS_GAP_MIN stays one line',
+    L.observedLines([o('2026-03-02 00:00', 1), o('2026-03-02 00:30', 2)], '2026-03-02').length, 1);
+  eq('observed: a week-old gauge draws nothing today', L.observedLines(obs, '2026-03-09'), []);
+  eq('observed: no readings, no lines', L.observedLines([], '2026-03-02'), []);
+  // The real SF fixture: 31 six-minute readings over three hours, one unbroken line.
+  const sf = L.parseObserved(load('9414290', 'water_level'));
+  const sfl = L.observedLines(sf, sf[0].t.slice(0, 10));
+  eq('observed: the SF fixture is one line of every reading', [sfl.length, sfl[0].length], [1, sf.length]);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
