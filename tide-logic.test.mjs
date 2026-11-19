@@ -819,5 +819,45 @@ for (const st of facts.currents) {
   eq('observed: the SF fixture is one line of every reading', [sfl.length, sfl[0].length], [1, sf.length]);
 }
 
+// --- observedLines gaps, and the distance a dangling bearing may absorb ----------------
+// Added 2026-11-18. mutwatch's blind probe named OBS_GAP_MIN and observedLines as never
+// reached by test/equiv-sweep.mjs, and three mutants were surviving this suite. Each case
+// below names the mutation it kills, so a later edit can tell which are load-bearing.
+{
+  const day = '2026-03-01';
+  const rr = (hhmm, v) => ({ t: `${day} ${hhmm}`, v });
+  const vals = (ls) => ls.map((l) => l.map((p) => p.v));
+
+  // kills L255 `OBS_GAP_MIN = 30` -> `31`: 31 minutes apart is an outage, not a trace
+  eq('observed: a 31-minute gap starts a new line',
+     vals(L.observedLines([rr('00:00', 1), rr('00:10', 2), rr('00:41', 3), rr('00:51', 4)], day)),
+     [[1, 2], [3, 4]]);
+  eq('observed: a gap of exactly OBS_GAP_MIN stays one line',
+     vals(L.observedLines([rr('00:00', 1), rr('00:30', 2), rr('00:40', 3)], day)),
+     [[1, 2, 3]]);
+  eq('observed: a line of a single reading is dropped -- a dot is not a trace',
+     vals(L.observedLines([rr('00:00', 1), rr('02:00', 2), rr('02:10', 3)], day)),
+     [[2, 3]]);
+  // kills L262 `m === null || !Number.isFinite(r.v)` -> `&&`: either side alone drops it
+  eq('observed: a reading with no value is dropped, not drawn',
+     vals(L.observedLines([rr('00:00', 1), rr('00:10', NaN), rr('00:20', 3)], day)),
+     [[1, 3]]);
+  eq('observed: a reading with an unparseable time is dropped, not drawn',
+     vals(L.observedLines([rr('00:00', 1), { t: `${day} ohno`, v: 2 }, rr('00:20', 3)], day)),
+     [[1, 3]]);
+  eq('observed: a reading from another day never reaches this axis',
+     vals(L.observedLines([rr('00:00', 1), { t: '2026-02-28 00:10', v: 9 }, rr('00:20', 3)], day)),
+     [[1, 3]]);
+  eq('observed: no readings at all is no lines', L.observedLines(null, day), []);
+}
+
+// kills L593 `parts.length > 1` -> `>=`: a bare distance is folded into the bearing only
+// while a place name would survive it. Absorbing the last part empties `place`, and the
+// guard below it then returns the whole name unchanged -- a silent no-op, not a reorder.
+eq('stationName folds a bare distance into the bearing when a place remains',
+   L.stationName('Pooles Island, 2.0 n.mi., SSW of'), '2.0 n.mi. SSW of Pooles Island');
+eq('stationName keeps a lone distance as the place rather than emptying it',
+   L.stationName('2.0 n.mi., SSW of'), 'SSW of 2.0 n.mi.');
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
