@@ -55,7 +55,10 @@ h1{font-family:var(--f-head);font-size:clamp(26px,6vw,34px);margin:0 0 2px;lette
 td.minus{color:var(--low);font-weight:600}
 /* --- picking a station --- */
 .pick{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
-#q{flex:1 1 220px;min-width:0;font:inherit;padding:10px 12px;border-radius:8px;
+/* basis 150, not 220: at 360px the content box is 328px wide, 220 + 8 + the ~115px button
+   did not fit, and "Nearest me" wrapped to a row of its own -- 54px that pushed the chart
+   down (route 11 pins one row at 360 and 390). */
+#q{flex:1 1 150px;min-width:0;font:inherit;padding:10px 12px;border-radius:8px;
   border:1px solid var(--rule);background:var(--card);color:var(--ink)}
 #q:focus-visible{outline:2px solid var(--sea);outline-offset:1px}
 button{font:inherit;padding:10px 14px;border-radius:8px;border:1px solid var(--rule);
@@ -163,7 +166,7 @@ footer p{margin:5px 0;max-width:64ch}
   <p class="sub">The next high and low water at any of NOAA&rsquo;s 3,502 prediction stations &mdash; in the station&rsquo;s own local time, not yours. Where NOAA has a gauge, what the water is actually doing now.</p>
 
   <div class="pick">
-    <input id="q" type="search" autocomplete="off" placeholder="Search a harbour, bay or pier&hellip;" aria-label="Search for a tide station">
+    <input id="q" type="search" autocomplete="off" placeholder="Harbour, bay or pier&hellip;"Search a harbour, bay or pier&hellip;"hellip;" aria-label="Search for a tide station">
     <button id="locate" type="button">Nearest me</button>
   </div>
   <ul id="hits" aria-label="Matching stations"></ul>
