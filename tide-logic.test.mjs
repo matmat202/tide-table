@@ -420,6 +420,12 @@ for (const g of facts.gauges) {
   eq('words: just over calm', L.departureText(0.25), '0.3\u00a0ft above the prediction');
   eq('words: above', L.departureText(1.16), '1.2\u00a0ft above the prediction');
   eq('words: below', L.departureText(-0.6), '0.6\u00a0ft below the prediction');
+  // departureText's `diff > 0` cannot be told from `diff >= 0`: they differ only at
+  // diff === 0 (and -0), and both are caught by the `Math.abs(diff) < CALM_FT` line
+  // above, which returns 'about as predicted'. Compared both versions over 400,008
+  // inputs -- every ten-thousandth from -20 to +20 ft plus 0, -0, NaN, +/-Infinity
+  // and +/-Number.MIN_VALUE -- and they never disagree. Accepted in
+  // projects/mutation-audit/pins.json rather than pinned by a test (2026-11-22).
   eq('words: no number, no words', L.departureText(NaN), '');
   // Which gauge to read.
   const st = (id, lat, lng, g) => ({ id, lat, lng, ...(g ? { g: 1 } : {}) });
