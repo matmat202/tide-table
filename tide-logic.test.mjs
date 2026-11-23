@@ -865,5 +865,31 @@ eq('stationName folds a bare distance into the bearing when a place remains',
 eq('stationName keeps a lone distance as the place rather than emptying it',
    L.stationName('2.0 n.mi., SSW of'), 'SSW of 2.0 n.mi.');
 
+// --- the reader's recent stations ----------------------------------------------------
+eq('recent: garbage in storage is no stations', L.parseRecent('{not json'), []);
+eq('recent: a non-list is no stations', L.parseRecent('{"a":1}'), []);
+eq('recent: null storage is no stations', L.parseRecent(null), []);
+eq('recent: only NOAA-shaped ids survive, deduped, in order',
+   L.parseRecent(JSON.stringify(['9414290', 42, '<img>', '9414290', 'TEC4567', ''])), ['9414290', 'TEC4567']);
+eq('recent: storage is capped at RECENT_MAX',
+   L.parseRecent(JSON.stringify(['1000001', '1000002', '1000003', '1000004', '1000005', '1000006'])),
+   ['1000001', '1000002', '1000003', '1000004', '1000005']);
+eq('recent: a new station goes to the front', L.pushRecent(['A000001', 'B000002'], 'C000003'), ['C000003', 'A000001', 'B000002']);
+eq('recent: a revisited station moves, not repeats', L.pushRecent(['A000001', 'B000002', 'C000003'], 'B000002'), ['B000002', 'A000001', 'C000003']);
+eq('recent: pushing past the cap drops the oldest',
+   L.pushRecent(['1000001', '1000002', '1000003', '1000004', '1000005'], '1000009'),
+   ['1000009', '1000001', '1000002', '1000003', '1000004']);
+eq('recent: a malformed id is not stored', L.pushRecent(['A000001'], 'x'), ['A000001']);
+{
+  const sts = [{ id: '1000001' }, { id: '9414290' }, { id: '8443970' }, { id: '9455920' }];
+  eq('start: the URL wins over the reader\'s habit', L.startStation(sts, '8443970', ['9455920'], '9414290').id, '8443970');
+  eq('start: no URL opens the newest recent station', L.startStation(sts, null, ['9455920', '8443970'], '9414290').id, '9455920');
+  eq('start: a recent id no longer shipped is skipped, not fatal', L.startStation(sts, null, ['7777777', '8443970'], '9414290').id, '8443970');
+  eq('start: an unknown URL id falls to recent', L.startStation(sts, '7777777', ['8443970'], '9414290').id, '8443970');
+  eq('start: no URL and no history opens the fallback', L.startStation(sts, null, [], '9414290').id, '9414290');
+  eq('start: nothing known opens the first station', L.startStation(sts, null, [], '0000000').id, '1000001');
+  eq('start: an empty list opens nothing', L.startStation([], null, ['9414290'], '9414290'), null);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

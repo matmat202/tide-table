@@ -33,6 +33,14 @@ let flow = null;             // the nearest current station's predictions: { st,
 let drawnAt = 0;            // the width the charts were last drawn for; 0 while a message shows
 let flood = null;            // NOAA's minor flood level above MLLW: { ft, by }, when it has one
 
+// The reader's recent stations (tide-logic.js says why). Storage can be absent or refuse a
+// write -- private modes, a full quota -- and then the page simply forgets; it never breaks.
+const RECENT_KEY = 'tide-table:recent';
+const readRecent = () => { try { return T.parseRecent(localStorage.getItem(RECENT_KEY)); } catch { return []; } };
+const saveRecent = (id) => {
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(T.pushRecent(readRecent(), id))); } catch { /* forget */ }
+};
+
 // ---- data ---------------------------------------------------------------------------
 
 const ymd = (d) => `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}${String(d.getUTCDate()).padStart(2, '0')}`;
@@ -614,6 +622,7 @@ async function show(station) {
     const url = new URL(location.href);
     url.searchParams.set('station', station.id);
     history.replaceState(null, '', url);
+    saveRecent(station.id);
     render();
     // Not awaited: the gauge is independent of the month list, and waiting behind that
     // 30-day request held the block back by seconds on the live site (2026-10-27).
@@ -671,9 +680,11 @@ async function readFlood(station) {
   } catch { /* no column */ }
 }
 
-function showHits(list) {
+function showHits(list, label = 'Matching stations') {
   const ul = $('#hits');
   ul.replaceChildren();
+  ul.setAttribute('aria-label', label);
+  if (list.length && label !== 'Matching stations') ul.append(el('li', 'head', label));
   for (const s of list) {
     const li = el('li');
     const b = el('button');
@@ -687,9 +698,23 @@ function showHits(list) {
   }
 }
 
+// The stations this reader looked at before, other than the one on screen.
+const recentHits = () => readRecent().filter((id) => !current || id !== current.id)
+  .map((id) => STATIONS.find((s) => s.id === id)).filter(Boolean);
+
 $('#q').addEventListener('input', (e) => {
   const q = e.target.value.trim();
-  showHits(q.length < 2 ? [] : T.search(STATIONS, q, 12));
+  if (q.length < 2) showHits(recentHits(), 'Recent stations');
+  else showHits(T.search(STATIONS, q, 12));
+});
+
+// Tapping the box while it still names the station on screen offers the recent ones, and
+// selects the name so typing replaces it -- otherwise a phone user had to delete
+// "San Francisco" a letter at a time before searching anything else.
+$('#q').addEventListener('focus', (e) => {
+  if (!current || e.target.value !== T.stationName(current.name)) return;
+  e.target.select();
+  showHits(recentHits(), 'Recent stations');
 });
 
 $('#locate').addEventListener('click', () => {
@@ -722,8 +747,9 @@ addEventListener('resize', () => {
   // The start station's id is known before the 470 KB list is: it is in the URL, or it is
   // San Francisco. Its two NOAA requests go out now, alongside the list, instead of after
   // it -- on a phone link that was the difference between 5.6 s and ~2.5 s to the answer.
-  const startId = new URL(location.href).searchParams.get('station') || '9414290';
-  if (/^[0-9A-Z]{5,10}$/.test(startId)) {
+  const recent = readRecent();
+  const startId = new URL(location.href).searchParams.get('station') || recent[0] || '9414290';
+  if (T.STATION_ID.test(startId)) {
     prefetch(predictionUrl(startId, 'h'));
     prefetch(predictionUrl(startId, 'hilo'));
   }
@@ -734,9 +760,7 @@ addEventListener('resize', () => {
     message('Could not load the station list.', true);
     return;
   }
-  const want = new URL(location.href).searchParams.get('station');
-  const start = (want && STATIONS.find((s) => s.id === want))
-    || STATIONS.find((s) => s.id === '9414290')   // San Francisco: a mixed tide, well known
-    || STATIONS[0];
+  // A shared link, else the reader's last station, else San Francisco: a mixed tide, well known.
+  const start = T.startStation(STATIONS, new URL(location.href).searchParams.get('station'), recent, '9414290');
   if (start) show(start);
 })();

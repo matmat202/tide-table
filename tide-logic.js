@@ -640,3 +640,36 @@ export function slackOffset(slack, tides) {
   }
   return best;
 }
+
+// ---- the reader's own stations ----------------------------------------------------------
+
+// The stations this reader has looked at, newest first, kept in localStorage. Someone who
+// checks one beach every morning should land on it from the bare URL, not on San Francisco,
+// and two or three spots should be one tap apart. Whatever storage holds is untrusted: a
+// stale build, a hand edit or another site's key can put anything there, so only ids
+// shaped like NOAA's survive, and never more than RECENT_MAX.
+export const RECENT_MAX = 5;
+export const STATION_ID = /^[0-9A-Z]{5,10}$/;
+export function parseRecent(raw) {
+  let got;
+  try { got = JSON.parse(raw); } catch { return []; }
+  if (!Array.isArray(got)) return [];
+  const out = [];
+  for (const id of got) {
+    if (typeof id === 'string' && STATION_ID.test(id) && !out.includes(id)) out.push(id);
+  }
+  return out.slice(0, RECENT_MAX);
+}
+
+// `id` moved to the front; an id already present moves rather than repeats.
+export function pushRecent(ids, id, max = RECENT_MAX) {
+  if (typeof id !== 'string' || !STATION_ID.test(id)) return ids.slice(0, max);
+  return [id, ...ids.filter((x) => x !== id)].slice(0, max);
+}
+
+// Which station the page opens on: the URL's, else the newest recent one that still exists
+// in the shipped list, else the fallback. A shared link always wins over the reader's habit.
+export function startStation(stations, urlId, recent, fallbackId) {
+  const byId = (id) => (id ? stations.find((s) => s.id === id) : undefined);
+  return byId(urlId) || recent.map(byId).find(Boolean) || byId(fallbackId) || stations[0] || null;
+}
