@@ -26,7 +26,7 @@ let current = null;          // the station being shown
 let rows = [];               // high/low predictions
 let hourly = [];             // NOAA's harmonic series, when the station has one
 let month = [];              // high/low for the next 30 days, for the daylight lows
-let dayIndex = null;
+let picked = null;            // the date the reader picked on the strip; null = today
 let water = null;            // what the nearest gauge measured: { gauge, dep, temp, seen }
 let CURRENTS = null;         // current-prediction stations, loaded after the first draw
 let flow = null;             // the nearest current station's predictions: { st, rows }
@@ -333,12 +333,25 @@ function table(day) {
   return t;
 }
 
-// Which day the strip should start on. The fetched window opens YESTERDAY, so index 0 is
-// the wrong answer and showing it was a real bug the browser shot caught: the page opened
-// on yesterday's tides with no now-marker anywhere.
-function todayIndex(days, now) {
-  const i = days.findIndex((d) => d.date === T.dayOf(now));
-  return i < 0 ? 0 : i;
+// Open a day the page names further down (a daylight low, a king tide) on the strip, and
+// bring the chart back into view: the lists sit below the fold, and render() now keeps the
+// reader where they were.
+function openDay(date) {
+  picked = date;
+  render();
+  const fig = $('#out figure');
+  if (fig) fig.scrollIntoView({ block: 'center' });
+}
+
+// A list row's day as a button that opens it, when the strip has that day; plain text if not.
+function dayCell(date, text) {
+  const td = el('td');
+  if (!T.groupByDay(rows).some((d) => d.date === date)) { td.textContent = text; return td; }
+  const b = el('button', 'dayjump', text);
+  b.type = 'button';
+  b.addEventListener('click', () => openDay(date));
+  td.append(b);
+  return td;
 }
 
 function render() {
@@ -346,16 +359,22 @@ function render() {
   const now = T.wallNow(new Date(), current.tz);
   const days = T.groupByDay(rows);
   if (!days.length) { message('NOAA returned no predictions for this station.', true); return; }
-  if (dayIndex === null) dayIndex = todayIndex(days, now);
-  dayIndex = Math.min(Math.max(0, dayIndex), days.length - 1);
+  // The fetched window opens YESTERDAY, so index 0 is the wrong default: the page once
+  // opened on yesterday's tides with no now-marker anywhere (the browser shot caught it).
+  const dayIndex = T.pickDay(days, picked, T.dayOf(now));
   const day = days[dayIndex];
 
+  // Emptying #out collapses the page, and the browser then clamps the scroll to the top: every
+  // late arrival (the month, the gauge, the currents) threw a reader who had scrolled down to
+  // the month lists back up to the headline. Hold the height while it is rebuilt.
   const out = $('#out');
+  const y = window.scrollY;
+  out.style.minHeight = `${out.offsetHeight}px`;
   out.replaceChildren();
   drawnAt = drawWidth();
   out.append(headline(current, now, false));
 
-  // The strip is SEVEN days (app.js fetches yesterday .. +5), and with "Sun, Nov 15" on
+  // The strip is SEVEN days until the month arrives (yesterday .. +5), then the month's 31. With "Sun, Nov 15" on
   // every button it wrapped to three rows on a 390px phone, pushing the chart off the
   // first screen. Short labels ("Sun 15") in one row that scrolls ITSELF -- the page
   // scrolling sideways is the thing that strands content, same reasoning as .tscroll.
@@ -365,16 +384,21 @@ function render() {
   let currentBtn = null;
   days.forEach((d, i) => {
     const isToday = d.date === T.dayOf(now);
-    const b = el('button', null, isToday ? 'Today' : shortDay(d.date));
+    const b = el('button', null, isToday ? 'Today' : shortDay(d.date, i === 0));
     b.type = 'button';
     b.dataset.long = isToday ? 'today' : dayText(d.date);
     if (i === dayIndex) { b.setAttribute('aria-current', 'true'); currentBtn = b; }
-    b.addEventListener('click', () => { dayIndex = i; render(); });
+    b.addEventListener('click', () => { picked = d.date; render(); });
     strip.append(b);
   });
   out.append(strip);
   // A day picked off the right-hand end must still be visible after the re-render.
-  if (currentBtn) currentBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  // Scrolled within the strip only: scrollIntoView would also move the page.
+  if (currentBtn) {
+    const sr = strip.getBoundingClientRect(), br = currentBtn.getBoundingClientRect();
+    if (br.right > sr.right) strip.scrollLeft += br.right - sr.right + 6;
+    else if (br.left < sr.left) strip.scrollLeft -= sr.left - br.left + 6;
+  }
   const longDay = currentBtn ? currentBtn.dataset.long : day.date;
 
   const fig = el('figure');
@@ -386,7 +410,8 @@ function render() {
   const gaugeCap = drewGauge ? ' Dark line: what the gauge measured.' : '';
   fig.append(el('figcaption', null, (usedHourly
     ? `${capDay} · ${range} · curve from NOAA's hourly harmonic series.`
-    : `${capDay} · ${range} · curve interpolated between high and low water (this station publishes no hourly series).`) + gaugeCap));
+    : `${capDay} · ${range} · curve interpolated between high and low water (${hourly.length
+      ? "NOAA's hourly series did not arrive for this day" : 'this station publishes no hourly series'}).`) + gaugeCap));
   out.append(fig);
   if (water) out.append(measured(water, longDay));
 
@@ -396,6 +421,8 @@ function render() {
   if (month.length) out.append(lows(T.daylightLows(month, current, now, 5)));
   if (month.length) out.append(rangeBlock(month, now));
   if (month.length) out.append(kings(T.highestHighs(month, now, 5), flood));
+  out.style.minHeight = '';
+  window.scrollTo(window.scrollX, y);
 }
 
 const dayText = (date, weekday = true) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US',
@@ -408,8 +435,10 @@ const dayText = (date, weekday = true) => new Date(`${date}T12:00:00Z`).toLocale
 // pattern for weekday-plus-day-without-month, and toLocaleDateString({weekday,day}) answers
 // "15 Sun" -- measured on the live page on 2026-11-14, number first, which is not how anyone
 // writes a date. The parts are still localised; only the order is ours.
-const shortDay = (date) => {
+// Once the strip runs a month, "Tue 24" could be either month, so the 1st says "Dec 1".
+const shortDay = (date, first = false) => {
   const d = new Date(`${date}T12:00:00Z`);
+  if (!first && date.endsWith('-01')) return dayText(date, false);
   const wd = d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
   const dn = d.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'UTC' });
   return `${wd} ${dn}`;
@@ -499,7 +528,7 @@ function kings(list, fl) {
   const body = el('tbody');
   for (const r of list) {
     const tr = el('tr');
-    tr.append(el('td', null, dayText(T.dayOf(r.t))));
+    tr.append(dayCell(T.dayOf(r.t), dayText(T.dayOf(r.t))));
     tr.append(el('td', 'num', T.clockText(r.t)));
     tr.append(el('td', 'num', T.heightText(r.v)));
     if (fl) tr.append(el('td', fl.ft - r.v < 0.05 ? 'num flood' : 'num', T.floodMarginText(r.v, fl.ft)));
@@ -533,7 +562,7 @@ function lows(list) {
   const body = el('tbody');
   for (const r of list) {
     const tr = el('tr');
-    tr.append(el('td', null, new Date(`${T.dayOf(r.t)}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' })));
+    tr.append(dayCell(T.dayOf(r.t), dayText(T.dayOf(r.t))));
     tr.append(el('td', 'num', T.clockText(r.t)));
     tr.append(el('td', r.v < 0 ? 'num minus' : 'num', T.heightText(r.v)));
     body.append(tr);
@@ -599,7 +628,7 @@ function currentsBlock({ st, rows: cur }, day, now, longDay = 'today') {
 
 async function show(station) {
   current = station;
-  dayIndex = null;      // resolved to today's index in render(), once the days are known
+  picked = null;        // today, resolved in render() once the days are known
   month = [];
   water = null;
   flow = null;
@@ -631,9 +660,19 @@ async function show(station) {
     readFlood(station);
     // The month is a second, larger request and the page is complete without it, so it
     // renders after, and only if the reader has not moved on to another station meanwhile.
+    // Its hourly series is asked for alongside, so the strip's extra days get NOAA's curve
+    // rather than an interpolation (6 ft out at Anchorage); if it fails they interpolate,
+    // and the caption says so.
     try {
+      const hourlyMonthP = getJson(predictionUrl(station.id, 'h', 30)).then(T.parseHourly).catch(() => []);
       const got = T.parseRows(await getJson(predictionUrl(station.id, 'hilo', 30)));
-      if (current === station) { month = got; render(); }
+      const hm = await hourlyMonthP;
+      if (current === station) {
+        month = got;
+        rows = T.mergeByTime(rows, got);
+        hourly = T.mergeByTime(hourly, hm);
+        render();
+      }
     } catch { /* the list is a bonus; its failure leaves the page as it was */ }
   } catch (e) {
     message(`Could not reach NOAA: ${e.message}`, true);

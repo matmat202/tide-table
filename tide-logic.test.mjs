@@ -891,5 +891,24 @@ eq('recent: a malformed id is not stored', L.pushRecent(['A000001'], 'x'), ['A00
   eq('start: an empty list opens nothing', L.startStation([], null, ['9414290'], '9414290'), null);
 }
 
+// --- the strip past the first week --------------------------------------------------
+{
+  const week = [{ t: '2026-11-22 03:00', v: 1, type: 'L' }, { t: '2026-11-22 09:00', v: 6, type: 'H' }, { t: '2026-11-23 04:00', v: 2, type: 'L' }];
+  const month = [{ t: '2026-11-22 09:00', v: 6.5, type: 'H' }, { t: '2026-12-20 15:00', v: -1.7, type: 'L' },
+    { t: '2026-11-30 10:00', v: 7, type: 'H' }, { t: '2026-11-22 03:00', v: 1, type: 'L' }];
+  const m = L.mergeByTime(week, month);
+  eq('merge: union by time, sorted, no repeats', m.map((r) => r.t),
+     ['2026-11-22 03:00', '2026-11-22 09:00', '2026-11-23 04:00', '2026-11-30 10:00', '2026-12-20 15:00']);
+  eq('merge: the later fetch wins a shared time', m[1].v, 6.5);
+  eq('merge: a day only the week had is kept', L.groupByDay(m).map((d) => d.date), ['2026-11-22', '2026-11-23', '2026-11-30', '2026-12-20']);
+  eq('merge: nothing from the month leaves the week as it was', L.mergeByTime(week, []).map((r) => r.v), [1, 6, 2]);
+  const days = L.groupByDay(m);
+  eq('pick: a picked day weeks out opens', L.pickDay(days, '2026-12-20', '2026-11-23'), 3);
+  eq('pick: nothing picked opens today', L.pickDay(days, null, '2026-11-23'), 1);
+  eq('pick: a picked day outside the window falls back to today', L.pickDay(days, '2027-01-05', '2026-11-23'), 1);
+  eq('pick: today outside the window opens the first day', L.pickDay(days, null, '2026-10-01'), 0);
+  eq('pick: an empty strip opens index 0', L.pickDay([], '2026-11-23', '2026-11-23'), 0);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

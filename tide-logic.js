@@ -673,3 +673,28 @@ export function startStation(stations, urlId, recent, fallbackId) {
   const byId = (id) => (id ? stations.find((s) => s.id === id) : undefined);
   return byId(urlId) || recent.map(byId).find(Boolean) || byId(fallbackId) || stations[0] || null;
 }
+
+// ---- the day strip, past the first week -----------------------------------------------------
+
+// The first fetch covers yesterday .. +5 so the page draws fast; the 30-day month arrives
+// after. The month lists (lowest daylight tides, king tides) name days weeks out, and a
+// reader who taps one should get that day's curve, so the month's rows are folded into the
+// strip's. Union by time, sorted; where both have a row at one time the later fetch wins.
+export function mergeByTime(a, b) {
+  const byT = new Map();
+  for (const r of a) byT.set(r.t, r);
+  for (const r of b) byT.set(r.t, r);
+  return [...byT.values()].sort((x, y) => (x.t < y.t ? -1 : x.t > y.t ? 1 : 0));
+}
+
+// Which day the strip shows: the one the reader picked, if it is still in the window, else
+// the station's today, else the first. Picked by DATE, not index -- the strip grows when the
+// month arrives, and an index would be a different day if the window ever started elsewhere.
+export function pickDay(days, picked, today) {
+  if (picked) {
+    const i = days.findIndex((d) => d.date === picked);
+    if (i >= 0) return i;
+  }
+  const t = days.findIndex((d) => d.date === today);
+  return t < 0 ? 0 : t;
+}

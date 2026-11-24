@@ -138,6 +138,10 @@ th+th,td+td{padding-left:12px}
   scrollbar-width:thin;-webkit-overflow-scrolling:touch;scroll-padding:0 6px}
 .days button{flex:0 0 auto;white-space:nowrap}
 .days button[aria-current="true"]{background:var(--sea);color:var(--paper);border-color:var(--sea)}
+/* A day in the month lists, opening it on the strip: reads as a link, sized as a target. */
+button.dayjump{padding:4px 0;min-height:24px;border:none;border-radius:0;background:none;
+  color:var(--sea);text-decoration:underline;text-underline-offset:2px;text-align:left}
+button.dayjump:hover{background:none;text-decoration-thickness:2px}
 .msg{margin-top:18px;padding:12px 14px;border-radius:8px;background:var(--sunk);
   color:var(--ink-2);font-size:14px}
 .msg.bad{border-left:4px solid var(--alert)}
